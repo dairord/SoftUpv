@@ -34,7 +34,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="99.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="99.0" fitWidth="325.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: darken;">
                      <image>
                         <Image url="@../images/logo.png" />
                      </image>
