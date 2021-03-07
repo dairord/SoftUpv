@@ -4,9 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.InicioController">
    <children>
-      <VBox layoutX="-1.0" prefHeight="402.0" prefWidth="600.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <VBox layoutX="-1.0" prefHeight="402.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="TOP_RIGHT" prefHeight="107.0" prefWidth="600.0">
                <children>
@@ -36,29 +33,12 @@
             <HBox prefHeight="100.0" prefWidth="200.0" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <MenuBar fx:id="opcionBoton">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="Comprar">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="Close" />
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Alquilar">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="Delete" />
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Compartir">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="About" />
-                        </items>
-                      </Menu>
-                    </menus>
+                  <ComboBox fx:id="queBuscas" prefWidth="150.0" promptText="Que buscas?">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
-                  </MenuBar>
-                  <ComboBox fx:id="tipo" prefHeight="27.0" prefWidth="86.0" promptText="tipo" />
+                  </ComboBox>
+                  <ComboBox fx:id="tipo" prefHeight="27.0" prefWidth="86.0" promptText="Tipo" />
                   <TextField fx:id="ciudadText" promptText="Ciudad">
                      <HBox.margin>
                         <Insets left="20.0" />
