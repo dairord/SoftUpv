@@ -29,13 +29,15 @@ public class InicioController implements Initializable {
     @FXML
     private Button compartirBoton;
     @FXML
-    private ComboBox<?> tipo;
+    private ComboBox<String> tipo;
     @FXML
     private TextField ciudadText;
     @FXML
     private Button iniciaBoton;
     @FXML
     private Hyperlink registrarse;
+    @FXML
+    private Button buscarBoton;
 
     /**
      * Initializes the controller class.
@@ -59,6 +61,10 @@ public class InicioController implements Initializable {
 
     @FXML
     private void inicia(ActionEvent event) {
+    }
+
+    @FXML
+    private void buscar(ActionEvent event) {
     }
     
 }
