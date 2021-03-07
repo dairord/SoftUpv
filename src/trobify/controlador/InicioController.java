@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
 /**
@@ -23,19 +24,15 @@ import javafx.scene.control.TextField;
 public class InicioController implements Initializable {
 
     @FXML
-    private Button comprarBoton;
-    @FXML
-    private Button alquilarBoton;
-    @FXML
-    private Button compartirBoton;
-    @FXML
-    private ComboBox<String> tipo;
-    @FXML
-    private TextField ciudadText;
-    @FXML
     private Button iniciaBoton;
     @FXML
     private Hyperlink registrarse;
+    @FXML
+    private MenuBar opcionBoton;
+    @FXML
+    private ComboBox<?> tipo;
+    @FXML
+    private TextField ciudadText;
     @FXML
     private Button buscarBoton;
 
@@ -46,18 +43,6 @@ public class InicioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
-    @FXML
-    private void comprar(ActionEvent event) {
-    }
-
-    @FXML
-    private void alquilar(ActionEvent event) {
-    }
-
-    @FXML
-    private void compartir(ActionEvent event) {
-    }
 
     @FXML
     private void inicia(ActionEvent event) {
