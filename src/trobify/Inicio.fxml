@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="trobify.InicioController">
+   <children>
+      <Button fx:id="comprarBoton" layoutX="41.0" layoutY="200.0" mnemonicParsing="false" onAction="#comprar" text="Comprar" />
+      <Button fx:id="alquilarBoton" layoutX="107.0" layoutY="200.0" mnemonicParsing="false" onAction="#alquilar" text="Alquilar" />
+      <Button fx:id="compartirBoton" layoutX="166.0" layoutY="200.0" mnemonicParsing="false" onAction="#compartir" text="Compartir" />
+      <ComboBox fx:id="tipo" layoutX="280.0" layoutY="200.0" prefHeight="27.0" prefWidth="86.0" promptText="tipo" />
+      <TextField fx:id="ciudadText" layoutX="409.0" layoutY="200.0" promptText="Ciudad" />
+      <Button fx:id="iniciaBoton" layoutX="380.0" layoutY="25.0" mnemonicParsing="false" onAction="#inicia" text="Inicia sesión" />
+      <Hyperlink fx:id="registrarse" layoutX="476.0" layoutY="26.0" text="Registrate" underline="true" />
+   </children>
+</AnchorPane>
