@@ -21,6 +21,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -36,6 +37,7 @@ public class FavoritosController implements Initializable {
     @FXML
     private VBox listaViviendas;
 
+    private static Stage s;
     /**
      * Initializes the controller class.
      */
@@ -86,5 +88,7 @@ public class FavoritosController implements Initializable {
         miniatura.getChildren().addAll(foto, datos);        
         return miniatura;
     }
-    
+     public static void pasarStage(Stage m){
+         s = m;
+     }
 }

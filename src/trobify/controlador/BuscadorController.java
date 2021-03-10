@@ -55,6 +55,9 @@ public class BuscadorController implements Initializable {
     @FXML
     private TextField numHabitaciones;
     
+    private static Stage s;
+    private static String ciu;
+    private static String tip;
     /**
      * Initializes the controller class.
      */
@@ -64,6 +67,7 @@ public class BuscadorController implements Initializable {
         ArrayList <String> tiposViviendas = new ArrayList <String> ();
      tiposViviendas.add("Piso");
      tiposViviendas.add("Casa");
+     tiposViviendas.add("Indiferente");
     ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
     tipoVivienda.setItems(viviendas);
     
@@ -95,11 +99,27 @@ public class BuscadorController implements Initializable {
      ObservableList<String> variaFecha = FXCollections.observableList(varf);
      variacionFecha.setItems(variaFecha);
      variacionFecha.getSelectionModel().selectFirst();
+     
+     //poner directamente el nombre de la ciudad buscada y tipo vivienda
+     ciudad.setText(ciu);
+     System.out.print(ciu);
+     tipoVivienda.getSelectionModel().select(tip);
+     
     }    
     
     
     @FXML
-    private void guardarFiltros(ActionEvent event) {
+    private void guardarFiltros(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
+            Stage stage = new Stage();
+             Scene scene = new Scene (fxmlLoader.load());
+             MantenerFiltrosController.pasarStage(stage);
+         
+             stage.setScene(scene);
+             stage.setTitle("Trobify");
+             stage.show();
+             event.consume();
     }
 
     @FXML
@@ -112,18 +132,26 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void Inicio(ActionEvent event) throws IOException {
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("/trobify/views/Inicio.fxml"));
-        Parent root = loader.load();
-
-        Scene scene = new Scene(root);
-      //  scene.getStylesheets().add(this.getClass().getResource("/resources/anadir.css").toExternalForm());
-        Stage stage = new Stage();
-       
-
-        stage.setScene(scene);
-        stage.setTitle("Trobify");
-
-        stage.showAndWait();
+          FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
+            s.close();
+            Stage stage = new Stage();
+             Scene scene = new Scene (fxmlLoader.load());
+             BuscadorController.pasarStage(stage);
+             stage.setScene(scene);
+             stage.setTitle("Trobify");
+             stage.show();
+             event.consume();
     }
+   // metodo para conseguir que al pasar de unas ventanas a otras se cierre la anterior. 
+    // solo hay que añadir el metodo pasarStage y crear la variable private static Stage s en cada clase
+    // y cada vez que cambias de ventana añadir s.close(); y pasarle el stage al controler de la  ventana a la que vas
+    public static void pasarStage(Stage m){
+         s = m;
+     }
     
+     public static void pasarFiltrosInicio(String c, String t){
+         ciu = c;
+         tip = t;
+     }
 }

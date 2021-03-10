@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -37,6 +38,7 @@ public class FichaViviendaController implements Initializable {
     @FXML
     private VBox recomendados;
 
+    private static Stage s;
     /**
      * Initializes the controller class.
      */
@@ -91,4 +93,7 @@ public class FichaViviendaController implements Initializable {
         return fotoGaleria;
     
     }
+     public static void pasarStage(Stage m){
+         s = m;
+     }
 }

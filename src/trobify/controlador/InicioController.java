@@ -47,6 +47,7 @@ public class InicioController implements Initializable {
     @FXML
     private ComboBox<String> tipo;
 
+    private static Stage s;
     /**
      * Initializes the controller class.
      */
@@ -54,8 +55,10 @@ public class InicioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
        //tipos de viviendas gabri
      ArrayList <String> tiposViviendas = new ArrayList <String> ();
+     tiposViviendas.add("Indiferente");
      tiposViviendas.add("Piso");
      tiposViviendas.add("Casa");
+   
     ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
     tipo.setItems(viviendas);
     
@@ -81,23 +84,36 @@ public class InicioController implements Initializable {
         
       
     @FXML
-    private void inicia(ActionEvent event) {
+    private void inicia(ActionEvent event) throws IOException {
+         FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
+          s.close();
+            Stage stage = new Stage();
+             Scene scene = new Scene (fxmlLoader.load());
+             BuscadorController.pasarStage(stage);
+             stage.setScene(scene);
+             stage.setTitle("Trobify");
+             stage.show();
+             event.consume();
     }
 
+   
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/trobify/views/Buscador.fxml"));
-        Parent root = loader.load();
-
-        Scene scene = new Scene(root);
-      //  scene.getStylesheets().add(this.getClass().getResource("/resources/anadir.css").toExternalForm());
-        Stage stage = new Stage();
-       
-
-        stage.setScene(scene);
-        stage.setTitle("Buscar vivienda");
-
-        stage.showAndWait();
+         FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+         BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue());
+         s.close();
+            Stage stage = new Stage();
+             Scene scene = new Scene (fxmlLoader.load());
+             BuscadorController.pasarStage(stage);
+             stage.setScene(scene);
+             stage.setTitle("Buscar vivienda");
+             stage.show();
+             event.consume();
     }
     
+    public static void pasarStage(Stage m){
+         s = m;
+     }
 }
