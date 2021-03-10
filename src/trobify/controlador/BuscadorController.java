@@ -68,13 +68,33 @@ public class BuscadorController implements Initializable {
     tipoVivienda.setItems(viviendas);
     
     //ordenar por
-      ArrayList <String> orden = new ArrayList <String> ();
+     ArrayList <String> orden = new ArrayList <String> ();
      orden.add("Relevancia");
      orden.add("Precio más bajo");
      orden.add("Precio más alto");
-    ObservableList<String> ordenar = FXCollections.observableList(orden);
-    ordenarPor.setItems(ordenar);
-    ordenarPor.getSelectionModel().selectFirst();
+     ObservableList<String> ordenar = FXCollections.observableList(orden);
+     ordenarPor.setItems(ordenar);
+     ordenarPor.getSelectionModel().selectFirst();
+    
+    // variación filtros
+    ArrayList <String> varia = new ArrayList <String> ();
+     varia.add("0%");
+     varia.add("10%");
+     varia.add("30%");
+     varia.add("50%");
+     ObservableList<String> variaFiltros = FXCollections.observableList(varia);
+     variacionFiltros.setItems(variaFiltros);
+     variacionFiltros.getSelectionModel().selectFirst();
+    
+     // variación fecha
+      ArrayList <String> varf = new ArrayList <String> ();
+     varf.add("Fechas exactas");
+     varf.add("± 1 dia");
+     varf.add("± 3 dias");
+     varf.add("± 7 dias");
+     ObservableList<String> variaFecha = FXCollections.observableList(varf);
+     variacionFecha.setItems(variaFecha);
+     variacionFecha.getSelectionModel().selectFirst();
     }    
     
     
