@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trobify.views;
+package trobify.controlador;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
@@ -33,6 +34,8 @@ public class FichaViviendaController implements Initializable {
     private ListView<?> serviciosCerca;
     @FXML
     private HBox imageList;
+    @FXML
+    private VBox recomendados;
 
     /**
      * Initializes the controller class.
@@ -41,10 +44,10 @@ public class FichaViviendaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {     
         
-        // Boton de volver atras        
+        //Boton de volver atras        
             //volver.setOnAction(e -> scenePropia.setScene(scenaPrevia));
         
-        // Descripcion de la vivienda
+        //Descripcion de la vivienda
         descripcion.setText("Redpiso Primado Reig les ofrece esta vivienda en alquiler, "
                 + "DISPONIBLE A PARTIR DE MARZO. La vivienda se encuentra en una primera planta "
                 + "sin ascensor y consta de 3 habitaciones, dos de ellas dobles, salón comedor, cocina "
@@ -54,7 +57,7 @@ public class FichaViviendaController implements Initializable {
                 + "metros del PARQUE DE VIVEROS y muy próxima al Real Club de Tenis Valencia y La Hípica. Ven a visitar esta vivienda, "
                 + "¡estaremos encantados de conocerte!");
         
-        // Servicios cerca de la vivienda        
+        //Servicios cerca de la vivienda        
         ArrayList serviciosCerca = new ArrayList();
         serviciosCerca.add("Supermercado");
         serviciosCerca.add("Transporte publico");
@@ -65,20 +68,27 @@ public class FichaViviendaController implements Initializable {
         ObservableList servicios = FXCollections.observableList(serviciosCerca);     
         this.serviciosCerca.setItems(servicios);
         
-        // Imagenes mostradas de la vivienda
-        Image image1 = new Image("/trobify/views/_FI.jpg");
-        javafx.scene.image.ImageView foto1 = new javafx.scene.image.ImageView(image1);
-        foto1.setFitWidth(200);
-        foto1.setFitHeight(150);
-        Image image2 = new Image("/trobify/views/_FI.jpg");
-        javafx.scene.image.ImageView foto2 = new javafx.scene.image.ImageView(image2);
-        foto2.setFitWidth(200);
-        foto2.setFitHeight(150);
-        Image image3 = new Image("/trobify/views/_FI.jpg");
-        javafx.scene.image.ImageView foto3 = new javafx.scene.image.ImageView(image3);
-        foto3.setFitWidth(200);
-        foto3.setFitHeight(150);
+        //Imagenes mostradas de la vivienda        
+        for (int i = 0; i < 3; i++){            
+            imageList.getChildren().add(galeria("/trobify/views/_FI.jpg"));        
+        }
         
-        imageList.getChildren().addAll(foto1, foto2, foto3);
+        //Viviendas recomendadas
+        for (int i = 0; i < 3; i++){
+            recomendados.getChildren().add(galeria("/trobify/views/_FI.jpg"));        
+        }
+        
     }    
+    
+    //Generador de la galeria de fotos
+    private javafx.scene.image.ImageView galeria(String source){
+                
+        Image image = new Image(source);
+        javafx.scene.image.ImageView fotoGaleria = new javafx.scene.image.ImageView(image);
+        fotoGaleria.setFitWidth(200);
+        fotoGaleria.setFitHeight(150);
+        
+        return fotoGaleria;
+    
+    }
 }
