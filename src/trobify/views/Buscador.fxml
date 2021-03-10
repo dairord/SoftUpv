@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,13 +15,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<AnchorPane id="AnchorPane" prefHeight="631.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="577.0" prefWidth="617.0">
+      <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="617.0">
          <children>
-            <VBox prefHeight="117.0" prefWidth="617.0">
+            <HBox prefHeight="100.0" prefWidth="627.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="617.0">
+                  <ToolBar prefHeight="39.0" prefWidth="615.0">
+                    <items>
+                      <Button mnemonicParsing="false" onAction="#Inicio" text="Inicio" />
+                    </items>
+                  </ToolBar>
+               </children>
+            </HBox>
+            <VBox prefHeight="117.0" prefWidth="617.0" spacing="10.0">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="617.0">
                      <children>
                         <Button mnemonicParsing="false" text="fav">
                            <HBox.margin>
@@ -28,11 +38,6 @@
                            </HBox.margin>
                         </Button>
                         <Button mnemonicParsing="false" text="mens">
-                           <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" text="home">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
@@ -88,7 +93,10 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="589.0">
                      <children>
-                        <TextField fx:id="ciudad" />
+                        <TextField fx:id="ciudad">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin></TextField>
                         <ComboBox fx:id="variacionFecha" prefHeight="27.0" prefWidth="138.0" promptText="fechas excatas">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -96,7 +104,7 @@
                         </ComboBox>
                         <Button mnemonicParsing="false" onAction="#guardarFiltros" text="Guardar Filtros">
                            <HBox.margin>
-                              <Insets left="80.0" />
+                              <Insets left="60.0" />
                            </HBox.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#notificar" text="Notificarme">
@@ -107,14 +115,17 @@
                      </children>
                   </HBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
             </VBox>
-            <HBox prefHeight="463.0" prefWidth="617.0">
+            <HBox prefHeight="495.0" prefWidth="617.0">
                <children>
                   <VBox minHeight="-Infinity" prefHeight="462.0" prefWidth="246.0" spacing="5.0">
                      <children>
                         <ImageView fitHeight="157.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../Captura%20de%20pantalla%202021-03-10%20a%20las%2010.20.36.png" />
+                              <Image url="@../images/Captura%20de%20pantalla%202021-03-10%20a%20las%2010.20.36.png" />
                            </image>
                         </ImageView>
                         <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="189.0">
@@ -180,7 +191,7 @@
                   </VBox>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="446.0">
                      <content>
-                        <AnchorPane prefHeight="581.0" prefWidth="408.0" />
+                        <AnchorPane prefHeight="581.0" prefWidth="418.0" />
                      </content>
                   </ScrollPane>
                </children>
