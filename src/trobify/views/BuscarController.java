@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trobify.controlador;
+package trobify.views;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +20,7 @@ import javafx.scene.control.TextField;
  *
  * @author gabrielacorbalan
  */
-public class BuscadorController implements Initializable {
+public class BuscarController implements Initializable {
 
     @FXML
     private Label nombreUsuario;
@@ -32,37 +29,32 @@ public class BuscadorController implements Initializable {
     @FXML
     private DatePicker fechaSalida;
     @FXML
-    private ComboBox<String> ordenarPor;
+    private ComboBox<?> ordenarPor;
     @FXML
     private TextField ciudad;
     @FXML
-    private ComboBox<String> variacionFecha;
+    private ComboBox<?> variacionFecha;
     @FXML
-    private ComboBox<String> tipoVivienda;
+    private ComboBox<?> tipoVivienda;
     @FXML
-    private TextField precioMin;
+    private ComboBox<?> precioMin;
     @FXML
-    private TextField precioMax;
+    private ComboBox<?> precioMax;
     @FXML
-    private TextField numBaños;
+    private ComboBox<?> numHabitacoines;
     @FXML
-    private ComboBox<String> variacionFiltros;
+    private ComboBox<?> numBaños;
     @FXML
-    private TextField numHabitaciones;
+    private ComboBox<?> variacionFiltros;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       //Tipo Vivienda
-        ArrayList <String> tiposViviendas = new ArrayList <String> ();
-     tiposViviendas.add("Piso");
-     tiposViviendas.add("Casa");
-    ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
-    tipoVivienda.setItems(viviendas);
+        // TODO
     }    
-    //
+
     @FXML
     private void guardarFiltros(ActionEvent event) {
     }

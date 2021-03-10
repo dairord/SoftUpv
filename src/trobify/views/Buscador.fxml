@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="trobify.controlador.BuscadorController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="577.0" prefWidth="617.0">
          <children>
@@ -63,18 +62,18 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="107.0" prefWidth="602.0">
                      <children>
-                        <Label text="Fecha entrada: ">
+                        <Label text="Entrada:">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <DatePicker fx:id="fechaEntrada" prefHeight="27.0" prefWidth="89.0" />
-                        <Label text="Fecha salida:">
+                        <DatePicker fx:id="fechaEntrada" prefHeight="27.0" prefWidth="122.0" />
+                        <Label text="Salida:">
                            <HBox.margin>
                               <Insets left="10.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <DatePicker fx:id="fechaSalida" prefHeight="27.0" prefWidth="91.0" />
+                        <DatePicker fx:id="fechaSalida" prefHeight="27.0" prefWidth="122.0" />
                         <Label text="Ordenar:">
                            <HBox.margin>
                               <Insets left="25.0" />
@@ -118,45 +117,45 @@
                               <Image url="@../../../../../Captura%20de%20pantalla%202021-03-10%20a%20las%2010.20.36.png" />
                            </image>
                         </ImageView>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="171.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="189.0">
                            <children>
                               <Label alignment="CENTER" text="Tipo de vivienda" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="37.0" prefWidth="199.0">
                            <children>
-                              <ComboBox fx:id="tipoVivienda" prefHeight="27.0" prefWidth="172.0" />
+                              <ComboBox fx:id="tipoVivienda" prefHeight="27.0" prefWidth="188.0" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="189.0">
                            <children>
                               <Label text="Precio" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <ComboBox fx:id="precioMin" prefHeight="27.0" prefWidth="109.0" promptText="Min" />
-                              <ComboBox fx:id="precioMax" prefHeight="27.0" prefWidth="117.0" promptText="Max">
+                              <TextField fx:id="precioMin" promptText="Min">
                                  <HBox.margin>
-                                    <Insets left="40.0" />
+                                    <Insets right="10.0" />
                                  </HBox.margin>
-                              </ComboBox>
+                              </TextField>
+                              <TextField fx:id="precioMax" promptText="Max">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </TextField>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="93.0" text="Habitaciones" />
-                              <ComboBox fx:id="numHabitacoines" prefHeight="27.0" prefWidth="79.0">
-                                 <HBox.margin>
-                                    <Insets left="19.0" />
-                                 </HBox.margin>
-                              </ComboBox>
+                              <Label prefHeight="17.0" prefWidth="104.0" text="Habitaciones" />
+                              <TextField fx:id="numHabitaciones" prefHeight="27.0" prefWidth="85.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="27.0" prefWidth="114.0" text="Baños" />
-                              <ComboBox fx:id="numBaños" prefHeight="27.0" prefWidth="82.0" />
+                              <Label prefHeight="27.0" prefWidth="177.0" text="Baños" />
+                              <TextField fx:id="numBaños" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="198.0">
@@ -166,7 +165,7 @@
                                     <Insets right="30.0" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox fx:id="variacionFiltros" prefHeight="27.0" prefWidth="93.0" />
+                              <ComboBox fx:id="variacionFiltros" prefHeight="27.0" prefWidth="111.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

@@ -5,6 +5,7 @@
  */
 package trobify.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -14,12 +15,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -80,7 +85,19 @@ public class InicioController implements Initializable {
     }
 
     @FXML
-    private void buscar(ActionEvent event) {
+    private void buscar(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/trobify/views/Buscador.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+      //  scene.getStylesheets().add(this.getClass().getResource("/resources/anadir.css").toExternalForm());
+        Stage stage = new Stage();
+       
+
+        stage.setScene(scene);
+        stage.setTitle("Buscar vivienda");
+
+        stage.showAndWait();
     }
     
 }
