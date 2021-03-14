@@ -5,11 +5,13 @@
  */
 package trobify.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -83,16 +85,37 @@ public class FichaViviendaController implements Initializable {
     }    
     
     //Generador de la galeria de fotos
-    private javafx.scene.image.ImageView galeria(String source){
-                
+    private javafx.scene.image.ImageView galeria(String source){                
         Image image = new Image(source);
         javafx.scene.image.ImageView fotoGaleria = new javafx.scene.image.ImageView(image);
         fotoGaleria.setFitWidth(200);
         fotoGaleria.setFitHeight(150);
         
         return fotoGaleria;
+    }
+    
+    private Boolean estaEnBD(String id) {
+    
+        Boolean comparacion = false;
+        /*
+        while(La tabla de favoritos tenga elementos) {
+            if(this.id == id de la vivienda de la BD que se esta comprobando) return true;
+            else pasamos a siguiente elemento de la lista;
+        }
+        */
+        return comparacion;
     
     }
+
+    @FXML
+    private void addFav(ActionEvent event) throws IOException {
+        /*
+        if(!estaEnBD(viviendaID)) {
+            añadimos la vivienda a la lista tabla de favoritos del usuario y lanza un mensaje diciendo que se ha añadido
+        } else lanza un mensaje diciendo que ya esta en favoritos
+        */
+    }
+    
      public static void pasarStage(Stage m){
          s = m;
      }
