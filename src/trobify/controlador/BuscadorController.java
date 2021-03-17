@@ -7,6 +7,9 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -22,6 +25,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import trobify.Conectar;
 
 /**
  * FXML Controller class
@@ -58,6 +62,13 @@ public class BuscadorController implements Initializable {
     private static Stage s;
     private static String ciu;
     private static String tip;
+    
+    //base de datos
+    private static Connection conn;
+    private static final String driver = "com.mysql.jdbc.Driver";
+    private static final String user = "root";
+    private static final String password = "";
+    private static final String url = "jdbc:mysql://localhost3306/soft_db";
     /**
      * Initializes the controller class.
      */
@@ -102,11 +113,22 @@ public class BuscadorController implements Initializable {
      
      //poner directamente el nombre de la ciudad buscada y tipo vivienda
      ciudad.setText(ciu);
-     System.out.print(ciu);
      tipoVivienda.getSelectionModel().select(tip);
      
-    }    
+    conectar();
     
+    }    
+   
+    //conectarse a la base de datos
+    private void conectar(){ conn = null;
+        try {
+        Class.forName(driver);
+        conn = DriverManager.getConnection(url, user, password);
+        if(conn != null) {System.out.println("Conexion establecida!");}
+        }catch(ClassNotFoundException|SQLException e){
+        System.out.println("No se pudo conectar!");
+        }
+    }
     
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
