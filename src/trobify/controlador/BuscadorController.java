@@ -115,20 +115,9 @@ public class BuscadorController implements Initializable {
      ciudad.setText(ciu);
      tipoVivienda.getSelectionModel().select(tip);
      
-    conectar();
+    Conectar con = new Conectar();
     
     }    
-   
-    //conectarse a la base de datos
-    private void conectar(){ conn = null;
-        try {
-        Class.forName(driver);
-        conn = DriverManager.getConnection(url, user, password);
-        if(conn != null) {System.out.println("Conexion establecida!");}
-        }catch(ClassNotFoundException|SQLException e){
-        System.out.println("No se pudo conectar!");
-        }
-    }
     
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
