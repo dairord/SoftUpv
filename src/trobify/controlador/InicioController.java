@@ -30,6 +30,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -57,9 +58,14 @@ public class InicioController implements Initializable {
     private ComboBox<String> tipo;
 
     private static Stage s;
+   
     
     //base de datos
-
+    Conectar con;
+    ResultSet rs;
+    
+    @FXML
+    private Label mensajeError;
     /**
      * Initializes the controller class.
      */
@@ -79,7 +85,6 @@ public class InicioController implements Initializable {
      ArrayList <String> queHacer = new ArrayList <String> ();
      queHacer.add("Comprar");
      queHacer.add("Alquilar");
-     queHacer.add("Compartir");
    
     ObservableList<String> caoc = FXCollections.observableList(queHacer);
     queBuscas.setItems(caoc);
@@ -91,7 +96,7 @@ public class InicioController implements Initializable {
                .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()))
                 ;
           buscarBoton.disableProperty().bind(sePuedeBuscar);
-
+          
           /* Este es el codigo que hay que copiar para las consultas
        //base de datos
     Conectar con = new Conectar();
@@ -111,6 +116,7 @@ public class InicioController implements Initializable {
         }
        
         */
+     
     }
         
       
@@ -131,7 +137,8 @@ public class InicioController implements Initializable {
    
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
+     if(consultaCiudad()){
+        FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
          BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue());
          s.close();
@@ -142,11 +149,74 @@ public class InicioController implements Initializable {
              stage.setTitle("Buscar vivienda");
              stage.show();
              event.consume();
+         }
+     else mensajeError.setText("No existe ninguna vivienda con esas características");
     }
     
     public static void pasarStage(Stage m){
          s = m;
      }
     
+  public boolean consultaCiudad(){
+     String ciu = ciudadText.getText();
+      Conectar con = new Conectar();
+      Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select ciudad from vivienda where ciudad like '"+ ciu +"'");
+            
+             if ( !rs.first()) { 
+                 return false;}
+            
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return consultaTipo();
+        
+  }
   
+  public boolean consultaTipo(){
+    String ciu = ciudadText.getText();
+      int tip;
+      if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tip = 1;
+      else if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tip = 2;
+      else tip = 3;
+      if(tip != 3){
+      Conectar con = new Conectar();
+      Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo =  1");
+            if ( !rs.first()) return false;
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+       return consultaAlqOVend();
+  }
+  
+ public boolean consultaAlqOVend(){
+    int tip;
+    String ciu = ciudadText.getText();
+      if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) tip = 1;
+      else tip = 2;
+     Conectar con = new Conectar();
+      Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo =  1");
+            if ( !rs.first()) return false;
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return true;
+ }
+ 
+ 
+
+ 
 }

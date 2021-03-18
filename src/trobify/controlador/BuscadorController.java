@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,6 +69,8 @@ public class BuscadorController implements Initializable {
     private static String ciu;
     private static String tip;
     
+    //conexion
+    Conectar con;
     
     /**
      * Initializes the controller class.
@@ -113,6 +117,10 @@ public class BuscadorController implements Initializable {
      //poner directamente el nombre de la ciudad buscada y tipo vivienda
      ciudad.setText(ciu);
      tipoVivienda.getSelectionModel().select(tip);
+    
+    //base de datos
+    Conectar con = new Conectar();
+    //consulta();
     
     
     }    
@@ -166,5 +174,19 @@ public class BuscadorController implements Initializable {
          tip = t;
      }
     
-
+ public void consulta(){
+     Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select usuario from usuario");
+             while (rs.next())
+        {
+                   System.out.println (rs.getString("usuario"));
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
+ }
 }
