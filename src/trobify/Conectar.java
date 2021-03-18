@@ -26,7 +26,7 @@ public class Conectar {
         conn = DriverManager.getConnection(url, user, password);
         if(conn != null) {System.out.println("Conexion establecida!");}
         }catch(ClassNotFoundException|SQLException e){
-        System.out.println("No se pudo conectar!");
+        System.out.println(e);
         }
     }
 
