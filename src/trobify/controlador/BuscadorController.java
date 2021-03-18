@@ -177,7 +177,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-        
+        ResultSet rs = buscarConsulta();
     }
 
     @FXML
@@ -227,8 +227,159 @@ public class BuscadorController implements Initializable {
       } //fin if tip!=3
        return null;
  }
- public ResultSet buscarConsulta(){
-  return null;
- }
  
-}
+ 
+ public ResultSet buscarConsulta(){
+     
+     ResultSet rs2;
+     int tipo;
+    if(tip.equals("Piso")) tipo = 1;
+      else if(tip.equals("Casa")) tipo = 2;
+      else tipo = 3;
+       Conectar con = new Conectar();
+       Statement s;
+    if(tipo != 3){
+    try {
+            s = con.getConnection().createStatement();
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
+                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
+                     + Integer.valueOf(numBaños.getText()) 
+                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                             ); //fin consulta
+           if (rs2.first())   {
+               System.out.println (rs2.getString("id"));
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }//fin catch
+ 
+ } //fin if tipo!=3
+    else{ //misma consulta pero sin mirar el tipo
+    try {
+            s = con.getConnection().createStatement();
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen +
+                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
+                     + Integer.valueOf(numBaños.getText()) 
+                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                             ); //fin consulta
+           if (rs2.first())   {
+               System.out.println (rs2.getString("id"));
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }//fin catch
+    }
+  
+      return null;
+} //fin buscarConsulta
+
+    @FXML
+    private void ordenar(ActionEvent event) {
+     ResultSet viviendasOrdenadas;
+        if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
+               || numBaños.getText().equals("")) 
+            viviendasOrdenadas = ordenSinFinltrosConsulta();
+       else
+        viviendasOrdenadas = ordenarConsulta();
+    }
+    
+    private ResultSet ordenarConsulta(){
+       String comoOrdenar;
+        if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
+        else 
+            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio DESC";
+            else comoOrdenar = "precio ASC";
+         
+     ResultSet rs2;
+     int tipo;
+    if(tip.equals("Piso")) tipo = 1;
+      else if(tip.equals("Casa")) tipo = 2;
+      else tipo = 3;
+       Conectar con = new Conectar();
+       Statement s;
+    if(tipo != 3){
+    try {
+            s = con.getConnection().createStatement();
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
+                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
+                     + Integer.valueOf(numBaños.getText()) 
+                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                     + " order by " + comoOrdenar   ); //fin consulta
+           if (rs2.first())   {
+               System.out.println (rs2.getString("id"));
+               return rs2;
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }//fin catch
+ 
+ } //fin if tipo!=3
+    else{ //misma consulta pero sin mirar el tipo
+    try {
+            s = con.getConnection().createStatement();
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen +
+                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
+                     + Integer.valueOf(numBaños.getText()) 
+                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                     + " order by " + comoOrdenar 
+                             ); //fin consulta
+           if (rs2.first())   {
+               System.out.println (rs2.getString("id"));
+               return rs2;
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }//fin catch
+    }
+  
+      return null;
+    } 
+    
+    private ResultSet ordenSinFinltrosConsulta(){
+      String comoOrdenar;
+        if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
+        else 
+            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio DESC";
+            else comoOrdenar = "precio ASC";
+         
+      ResultSet rs3;
+     int tipo;
+    if(tip.equals("Piso")) tipo = 1;
+      else if(tip.equals("Casa")) tipo = 2;
+      else tipo = 3;
+       Conectar con = new Conectar();
+      Statement s;
+         if(tipo != 3){
+    
+        try {
+           
+            s = con.getConnection().createStatement();
+            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen 
+                + " order by " + comoOrdenar );
+            if (rs3.first()) {
+                    return rs3;}
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      } //fin if tip!=3
+         else{
+             try {
+            s = con.getConnection().createStatement();
+            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen
+                + " order by " + comoOrdenar);
+            if (rs3.first()) {
+                    return rs3;}
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+   
+       return null;
+    }
+}// fin clase
