@@ -137,7 +137,7 @@ public class InicioController implements Initializable {
    
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-     if(consultaCiudad()){
+     if(consultaAlqOVent()){
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
          BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue());
@@ -156,63 +156,30 @@ public class InicioController implements Initializable {
     public static void pasarStage(Stage m){
          s = m;
      }
-    
-  public boolean consultaCiudad(){
-     String ciu = ciudadText.getText();
-      Conectar con = new Conectar();
-      Statement s;
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select ciudad from vivienda where ciudad like '"+ ciu +"'");
-            
-             if ( !rs.first()) { 
-                 return false;}
-            
-          
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        return consultaTipo();
-        
-  }
-  
-  public boolean consultaTipo(){
+ 
+ public boolean consultaAlqOVent(){
+    int alqOVen;
     String ciu = ciudadText.getText();
-      int tip;
+    int tip;
       if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tip = 1;
       else if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tip = 2;
       else tip = 3;
+      
+      if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
+      else alqOVen = 2;
+      System.out.println(alqOVen);
       if(tip != 3){
-      Conectar con = new Conectar();
-      Statement s;
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo =  1");
-            if ( !rs.first()) return false;
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }
-       return consultaAlqOVend();
-  }
-  
- public boolean consultaAlqOVend(){
-    int tip;
-    String ciu = ciudadText.getText();
-      if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) tip = 1;
-      else tip = 2;
      Conectar con = new Conectar();
       Statement s;
         try {
             s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo =  1");
+             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tip +" and ventaAlquiler = " + alqOVen );
             if ( !rs.first()) return false;
            
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
+      } //fin if tip!=3
        return true;
  }
  
