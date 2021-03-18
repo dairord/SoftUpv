@@ -18,7 +18,7 @@ public class Conectar {
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
     private static final String password = "";
-    private static final String url = "jdbc:mysql://localhost3306/soft_db";
+    private static final String url = "jdbc:mysql://localhost:3306/soft_db";
     public Conectar() {
         conn = null;
         try {

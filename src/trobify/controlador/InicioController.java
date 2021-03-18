@@ -7,8 +7,16 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
@@ -25,6 +33,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import trobify.Conectar;
 
 /**
  * FXML Controller class
@@ -48,6 +57,9 @@ public class InicioController implements Initializable {
     private ComboBox<String> tipo;
 
     private static Stage s;
+    
+    //base de datos
+
     /**
      * Initializes the controller class.
      */
@@ -80,21 +92,40 @@ public class InicioController implements Initializable {
                 ;
           buscarBoton.disableProperty().bind(sePuedeBuscar);
 
+          /* Este es el codigo que hay que copiar para las consultas
+       //base de datos
+    Conectar con = new Conectar();
+      
+      //CODIGO PARA LAS CONSULTAs  
+       Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select usuario from usuario");
+             while (rs.next())
+        {
+                   System.out.println (rs.getString("usuario"));
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        */
     }
         
       
     @FXML
     private void inicia(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
-          s.close();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
             Stage stage = new Stage();
-             Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage);
-             stage.setScene(scene);
-             stage.setTitle("Trobify");
-             stage.show();
-             event.consume();
+            Scene scene = new Scene (fxmlLoader.load());
+             
+            IniciarSesionController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
     }
 
    
@@ -116,4 +147,7 @@ public class InicioController implements Initializable {
     public static void pasarStage(Stage m){
          s = m;
      }
+    
+    //bsae de datos 
+     
 }

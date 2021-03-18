@@ -52,7 +52,7 @@ public class MantenerFiltrosController implements Initializable {
     @FXML
     private void noBoton(ActionEvent event) throws IOException {
           s.close();
-           
+          
     }
      public static void pasarStage(Stage m){
          s = m;

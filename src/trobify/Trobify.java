@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import trobify.controlador.InicioController;
 
+
+
 /**
  *
  * @author dairo
@@ -32,8 +34,10 @@ public class Trobify extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args){
         launch(args);
+        
+     
     }
-    
+   
 }
