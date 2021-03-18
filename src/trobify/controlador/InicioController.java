@@ -58,6 +58,7 @@ public class InicioController implements Initializable {
     private ComboBox<String> tipo;
 
     private static Stage s;
+    private static int alqOVen;
    
     
     //base de datos
@@ -137,10 +138,10 @@ public class InicioController implements Initializable {
    
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-     if(consultaAlqOVent()){
+     if(consulta()){
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
-         BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue());
+         BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue(), alqOVen);
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
@@ -157,8 +158,7 @@ public class InicioController implements Initializable {
          s = m;
      }
  
- public boolean consultaAlqOVent(){
-    int alqOVen;
+ public boolean consulta(){
     String ciu = ciudadText.getText();
     int tip;
       if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tip = 1;
@@ -181,9 +181,7 @@ public class InicioController implements Initializable {
         }
       } //fin if tip!=3
        return true;
+      
  }
- 
- 
-
  
 }

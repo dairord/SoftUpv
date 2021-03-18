@@ -13,10 +13,13 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -68,20 +72,48 @@ public class BuscadorController implements Initializable {
     private static Stage s;
     private static String ciu;
     private static String tip;
+    private static int alqOVen;
     
     //conexion
     Conectar con;
+    @FXML
+    private Label entradaText;
+    @FXML
+    private Label salidaText;
+    @FXML
+    private Button buscarBoton;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       //Tipo Vivienda
-        ArrayList <String> tiposViviendas = new ArrayList <String> ();
-     tiposViviendas.add("Piso");
-     tiposViviendas.add("Casa");
-     tiposViviendas.add("Indiferente");
+    
+     //boton buscar desactivado si no están todos los filtros
+     final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
+               .or(Bindings.isEmpty(precioMax.textProperty()))
+               .or(Bindings.isEmpty(ciudad.textProperty()))
+               .or(Bindings.isEmpty(numBaños.textProperty()))
+               .or(Bindings.isEmpty(numHabitaciones.textProperty()))
+              // .or(Bindings.)
+              ;
+          
+     buscarBoton.disableProperty().bind(sePuedeBuscar);
+     
+   
+     
+    //si es comprar no salen las fechas
+     if(alqOVen == 1){
+         entradaText.setVisible(false);
+         salidaText.setVisible(false);
+         fechaEntrada.setVisible(false);
+         fechaSalida.setVisible(false);
+     }
+    //Tipo Vivienda
+    ArrayList <String> tiposViviendas = new ArrayList <String> ();
+    tiposViviendas.add("Piso");
+    tiposViviendas.add("Casa");
+    tiposViviendas.add("Indiferente");
     ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
     tipoVivienda.setItems(viviendas);
     
@@ -120,12 +152,10 @@ public class BuscadorController implements Initializable {
     
     //base de datos
     Conectar con = new Conectar();
-    //consulta();
-    
-    
-    }    
-   
-   
+    //este metodo devuelve la lista con las viviendas que cumplen los primeros filtros
+    ResultSet viv = primeraConsulta();
+  
+    }
     
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
@@ -147,6 +177,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
+        
     }
 
     @FXML
@@ -169,24 +200,35 @@ public class BuscadorController implements Initializable {
          s = m;
      }
     
-     public static void pasarFiltrosInicio(String c, String t){
+     public static void pasarFiltrosInicio(String c, String t, int queBuscas){
          ciu = c;
          tip = t;
+         alqOVen = queBuscas;
      }
     
- public void consulta(){
-     Statement s;
+ public ResultSet primeraConsulta(){
+    ResultSet rs;
+     int tipo;
+    if(tip.equals("Piso")) tipo = 1;
+      else if(tip.equals("Casa")) tipo = 2;
+      else tipo = 3;
+      if(tipo != 3){
+     Conectar con = new Conectar();
+      Statement s;
         try {
             s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select usuario from usuario");
-             while (rs.next())
-        {
-                   System.out.println (rs.getString("usuario"));
-        }
-            
+            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen );
+            if (rs.first()) {
+                    return rs;}
+
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
+      } //fin if tip!=3
+       return null;
  }
+ public ResultSet buscarConsulta(){
+  return null;
+ }
+ 
 }
