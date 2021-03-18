@@ -148,6 +148,5 @@ public class InicioController implements Initializable {
          s = m;
      }
     
-    //bsae de datos 
-     
+  
 }
