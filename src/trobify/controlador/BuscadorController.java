@@ -73,6 +73,7 @@ public class BuscadorController implements Initializable {
     private static String ciu;
     private static String tip;
     private static int alqOVen;
+    private static ResultSet viviendas;
     
     //conexion
     Conectar con;
@@ -114,8 +115,8 @@ public class BuscadorController implements Initializable {
     tiposViviendas.add("Piso");
     tiposViviendas.add("Casa");
     tiposViviendas.add("Indiferente");
-    ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
-    tipoVivienda.setItems(viviendas);
+    ObservableList<String> viv = FXCollections.observableList(tiposViviendas);
+    tipoVivienda.setItems(viv);
     
     //ordenar por
      ArrayList <String> orden = new ArrayList <String> ();
@@ -153,7 +154,7 @@ public class BuscadorController implements Initializable {
     //base de datos
     Conectar con = new Conectar();
     //este metodo devuelve la lista con las viviendas que cumplen los primeros filtros
-    ResultSet viv = primeraConsulta();
+    BuscadorController.viviendas = buscarOrdenadas();
   
     }
     
@@ -177,7 +178,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-        ResultSet rs = buscarConsulta();
+         viviendas = buscarOrdenadas();
     }
 
     @FXML
@@ -196,96 +197,40 @@ public class BuscadorController implements Initializable {
    // metodo para conseguir que al pasar de unas ventanas a otras se cierre la anterior. 
     // solo hay que añadir el metodo pasarStage y crear la variable private static Stage s en cada clase
     // y cada vez que cambias de ventana añadir s.close(); y pasarle el stage al controler de la  ventana a la que vas
-    public static void pasarStage(Stage m){
+public static void pasarStage(Stage m){
          s = m;
      }
     
-     public static void pasarFiltrosInicio(String c, String t, int queBuscas){
+public static void pasarFiltrosInicio(String c, String t, int queBuscas){
          ciu = c;
          tip = t;
          alqOVen = queBuscas;
      }
     
- public ResultSet primeraConsulta(){
-    ResultSet rs;
-     int tipo;
-    if(tip.equals("Piso")) tipo = 1;
-      else if(tip.equals("Casa")) tipo = 2;
-      else tipo = 3;
-      if(tipo != 3){
-     Conectar con = new Conectar();
-      Statement s;
-        try {
-            s = con.getConnection().createStatement();
-            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen );
-            if (rs.first()) {
-                    return rs;}
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      } //fin if tip!=3
-       return null;
- }
  
- 
- public ResultSet buscarConsulta(){
-     
-     ResultSet rs2;
-     int tipo;
-    if(tip.equals("Piso")) tipo = 1;
-      else if(tip.equals("Casa")) tipo = 2;
-      else tipo = 3;
-       Conectar con = new Conectar();
-       Statement s;
-    if(tipo != 3){
-    try {
-            s = con.getConnection().createStatement();
-            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
-                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
-                     + Integer.valueOf(numBaños.getText()) 
-                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
-                             ); //fin consulta
-           if (rs2.first())   {
-               System.out.println (rs2.getString("id"));
-        }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch
- 
- } //fin if tipo!=3
-    else{ //misma consulta pero sin mirar el tipo
-    try {
-            s = con.getConnection().createStatement();
-            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen +
-                     " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
-                     + Integer.valueOf(numBaños.getText()) 
-                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
-                             ); //fin consulta
-           if (rs2.first())   {
-               System.out.println (rs2.getString("id"));
-        }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch
-    }
-  
-      return null;
-} //fin buscarConsulta
-
-    @FXML
-    private void ordenar(ActionEvent event) {
+private ResultSet buscarOrdenadas() {
      ResultSet viviendasOrdenadas;
         if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
                || numBaños.getText().equals("")) 
             viviendasOrdenadas = ordenSinFinltrosConsulta();
        else
         viviendasOrdenadas = ordenarConsulta();
+        return viviendasOrdenadas;
+    }
+     
+     
+    @FXML
+private ResultSet ordenar(ActionEvent event) {
+     ResultSet viviendasOrdenadas;
+        if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
+               || numBaños.getText().equals("")) 
+            viviendasOrdenadas = ordenSinFinltrosConsulta();
+       else
+        viviendasOrdenadas = ordenarConsulta();
+        return viviendasOrdenadas;
     }
     
-    private ResultSet ordenarConsulta(){
+private ResultSet ordenarConsulta(){
        String comoOrdenar;
         if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
         else 
@@ -339,7 +284,7 @@ public class BuscadorController implements Initializable {
       return null;
     } 
     
-    private ResultSet ordenSinFinltrosConsulta(){
+private ResultSet ordenSinFinltrosConsulta(){
       String comoOrdenar;
         if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
         else 
@@ -382,4 +327,6 @@ public class BuscadorController implements Initializable {
    
        return null;
     }
+    
+ 
 }// fin clase
