@@ -83,6 +83,8 @@ public class BuscadorController implements Initializable {
     private Label salidaText;
     @FXML
     private Button buscarBoton;
+    @FXML
+    private Button botonGuardarFiltros;
     
     /**
      * Initializes the controller class.
@@ -100,6 +102,7 @@ public class BuscadorController implements Initializable {
               ;
           
      buscarBoton.disableProperty().bind(sePuedeBuscar);
+     botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
      
    
      
@@ -162,6 +165,8 @@ public class BuscadorController implements Initializable {
     private void guardarFiltros(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
+         MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
+                precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue());
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
              MantenerFiltrosController.pasarStage(stage);
