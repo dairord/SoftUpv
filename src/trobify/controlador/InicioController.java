@@ -72,7 +72,9 @@ public class InicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       //tipos de viviendas gabri
+      
+    
+   //tipos de viviendas gabri
      ArrayList <String> tiposViviendas = new ArrayList <String> ();
      tiposViviendas.add("Indiferente");
      tiposViviendas.add("Piso");
