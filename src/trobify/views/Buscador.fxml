@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="631.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<AnchorPane id="AnchorPane" prefHeight="631.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="617.0">
          <children>
@@ -102,7 +102,7 @@
                               <Insets left="20.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Button mnemonicParsing="false" onAction="#guardarFiltros" text="Guardar Filtros">
+                        <Button fx:id="botonGuardarFiltros" mnemonicParsing="false" onAction="#guardarFiltros" text="Guardar Filtros">
                            <HBox.margin>
                               <Insets left="60.0" />
                            </HBox.margin>
