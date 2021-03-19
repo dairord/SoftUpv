@@ -41,7 +41,7 @@ public class IniciarSesionController implements Initializable {
     private Button aceptarBoton;
 
     Conectar con;
-    private static Stage s;
+    private static Stage st;
     private String[] usuarios;
     private String nom;
     private String pas;
@@ -60,7 +60,7 @@ public class IniciarSesionController implements Initializable {
 
     @FXML
     private void atras(ActionEvent event) {
-        s.close();
+        st.close();
     }
 
     @FXML
@@ -71,31 +71,26 @@ public class IniciarSesionController implements Initializable {
     }
    
     public static void pasarStage(Stage m){
-         s = m;
+         st = m;
      }
     
     public void consulta(){
     
          nom = nombre.getText();
          pas = contraseña.getText();
+         Conectar con = new Conectar();
+      
        Statement s;
         try {
             s = con.getConnection().createStatement();
-             ResultSet rs1 = s.executeQuery ("select usuario from usuario");
-             
-             while (rs1.next() && !rs1.getString("usuario").equals(nom))
-        
-           if(rs1.toString() == null ){mensajeError.setText("Nombre de usuario o contraseña incorrecto.");} 
-           else{ 
-             ResultSet rs2 = s.executeQuery ("select password from usuario where usuario like 'nom'");
-                if(rs2.getString("password").equals(nombre)){
-                  System.out.println (rs2.getString("password"));
-                }
-              else mensajeError.setText("Nombre de usuario o contraseña incorrecto.");
-           } //fin else
+             ResultSet rs = s.executeQuery ("select usuario from usuario where usuario = '"
+             + nom + " ' and password = '" + pas + " '");
+            if (rs.first())   {
+                st.close(); 
+                System.out.println (rs.getString("usuario"));
+            } else mensajeError.setText("Nombre de usuario o contraseña incorrecto");
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 }

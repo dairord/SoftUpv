@@ -255,7 +255,7 @@ private ResultSet ordenarConsulta(){
             rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
                      " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
                      + Integer.valueOf(numBaños.getText()) 
-                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                     + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
                      + " order by " + comoOrdenar   ); //fin consulta
            if (rs2.first())   {
                System.out.println (rs2.getString("id"));
@@ -273,7 +273,7 @@ private ResultSet ordenarConsulta(){
             rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen +
                      " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
                      + Integer.valueOf(numBaños.getText()) 
-                     //+ "and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
+                     + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
                      + " order by " + comoOrdenar 
                              ); //fin consulta
            if (rs2.first())   {
