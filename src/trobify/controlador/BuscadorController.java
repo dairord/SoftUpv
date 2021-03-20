@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -20,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +33,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -64,8 +68,7 @@ public class BuscadorController implements Initializable {
     private TextField precioMax;
     @FXML
     private TextField numBaños;
-    @FXML
-    private ComboBox<String> variacionFiltros;
+   
     @FXML
     private TextField numHabitaciones;
     
@@ -85,6 +88,8 @@ public class BuscadorController implements Initializable {
     private Button buscarBoton;
     @FXML
     private Button botonGuardarFiltros;
+    @FXML
+    private Label errorText;
     
     /**
      * Initializes the controller class.
@@ -104,14 +109,42 @@ public class BuscadorController implements Initializable {
      buscarBoton.disableProperty().bind(sePuedeBuscar);
      botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
      
-   
+   //no poder seleccionar fechas anteriores a hoy
+  fechaEntrada.setDayCellFactory((DatePicker picker) -> {
+            return new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate today = LocalDate.now();
+                    setDisable(empty || date.compareTo(today) < 0 );
+                }             
+            };         
+        });
+  
+  
+  fechaSalida.setDayCellFactory((DatePicker picker) -> {
+            return new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    LocalDate today = fechaEntrada.getValue();
+                    setDisable(empty || date.compareTo(today) < 0 );
+                }             
+            };         
+        });
+
+     //no se puede introducir fecha de salida hasta que no esté la de entrada
+      final BooleanBinding sePuedePonerFecha = Bindings.isNull(fechaEntrada.valueProperty());   
+       fechaSalida.disableProperty().bind(sePuedePonerFecha);
      
+      
     //si es comprar no salen las fechas
      if(alqOVen == 1){
          entradaText.setVisible(false);
          salidaText.setVisible(false);
          fechaEntrada.setVisible(false);
          fechaSalida.setVisible(false);
+         variacionFecha.setVisible(false);
      }
     //Tipo Vivienda
     ArrayList <String> tiposViviendas = new ArrayList <String> ();
@@ -131,17 +164,18 @@ public class BuscadorController implements Initializable {
      ordenarPor.getSelectionModel().selectFirst();
     
     // variación filtros
-    ArrayList <String> varia = new ArrayList <String> ();
+ /*  ArrayList <String> varia = new ArrayList <String> ();
      varia.add("0%");
      varia.add("10%");
      varia.add("30%");
      varia.add("50%");
      ObservableList<String> variaFiltros = FXCollections.observableList(varia);
      variacionFiltros.setItems(variaFiltros);
-     variacionFiltros.getSelectionModel().selectFirst();
+     variacionFiltros.getSelectionModel().selectFirst();*/
     
      // variación fecha
-      ArrayList <String> varf = new ArrayList <String> ();
+    if(alqOVen != 1){
+     ArrayList <String> varf = new ArrayList <String> ();
      varf.add("Fechas exactas");
      varf.add("± 1 dia");
      varf.add("± 3 dias");
@@ -149,7 +183,7 @@ public class BuscadorController implements Initializable {
      ObservableList<String> variaFecha = FXCollections.observableList(varf);
      variacionFecha.setItems(variaFecha);
      variacionFecha.getSelectionModel().selectFirst();
-     
+    } 
      //poner directamente el nombre de la ciudad buscada y tipo vivienda
      ciudad.setText(ciu);
      tipoVivienda.getSelectionModel().select(tip);
@@ -163,6 +197,8 @@ public class BuscadorController implements Initializable {
     
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
+       if(comprobarNumeros()){
+           errorText.setText("");
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
          MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
@@ -174,7 +210,8 @@ public class BuscadorController implements Initializable {
              stage.setScene(scene);
              stage.setTitle("Trobify");
              stage.show();
-             event.consume();
+             event.consume();}
+       else errorText.setText("Debes introducir números validos");
     }
 
     @FXML
@@ -183,7 +220,10 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-         viviendas = buscarOrdenadas();
+       if(comprobarNumeros()){
+           errorText.setText("");
+        viviendas = buscarOrdenadas();}
+       else errorText.setText("Debes introducir números validos");
     }
 
     @FXML
@@ -226,14 +266,20 @@ private ResultSet buscarOrdenadas() {
      
     @FXML
 private ResultSet ordenar(ActionEvent event) {
-     ResultSet viviendasOrdenadas;
+     if(comprobarNumeros()){
+         errorText.setText("");
+         ResultSet viviendasOrdenadas;
         if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
                || numBaños.getText().equals("")) 
             viviendasOrdenadas = ordenSinFinltrosConsulta();
        else
         viviendasOrdenadas = ordenarConsulta();
         return viviendasOrdenadas;
-    }
+    } else{
+         errorText.setText("Debes introducir números validos");
+         return null;
+     } 
+}
     
 private ResultSet ordenarConsulta(){
        String comoOrdenar;
@@ -333,5 +379,20 @@ private ResultSet ordenSinFinltrosConsulta(){
        return null;
     }
     
+ private boolean comprobarNumeros(){
+     if(isNumeric(precioMin.getText())
+             && isNumeric(precioMax.getText())
+             && isNumeric(numBaños.getText())
+             && isNumeric(numHabitaciones.getText())) return true;
+     else return false;
+ }
  
+ private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}
 }// fin clase
