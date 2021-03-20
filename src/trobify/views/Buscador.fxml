@@ -182,7 +182,7 @@
                   </VBox>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="446.0">
                      <content>
-                        <AnchorPane prefHeight="581.0" prefWidth="418.0" />
+                        <VBox fx:id="listaViviendas" prefHeight="618.0" prefWidth="392.0" />
                      </content>
                   </ScrollPane>
                </children>

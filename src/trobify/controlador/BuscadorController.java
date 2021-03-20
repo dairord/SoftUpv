@@ -5,6 +5,8 @@
  */
 package trobify.controlador;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -29,6 +31,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,6 +40,12 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import trobify.Conectar;
 
@@ -77,7 +86,7 @@ public class BuscadorController implements Initializable {
     private static String tip;
     private static int alqOVen;
     private static ResultSet viviendas;
-    
+     ArrayList<String> viviendasList;
     //conexion
     Conectar con;
     @FXML
@@ -90,13 +99,17 @@ public class BuscadorController implements Initializable {
     private Button botonGuardarFiltros;
     @FXML
     private Label errorText;
+    @FXML
+    private VBox listaViviendas;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
+   
+    //Crear una conexion
+     con = new Conectar();   
      //boton buscar desactivado si no están todos los filtros
      final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
                .or(Bindings.isEmpty(precioMax.textProperty()))
@@ -188,15 +201,13 @@ public class BuscadorController implements Initializable {
      ciudad.setText(ciu);
      tipoVivienda.getSelectionModel().select(tip);
     
-    //base de datos
-    Conectar con = new Conectar();
-    //este metodo devuelve la lista con las viviendas que cumplen los primeros filtros
-    BuscadorController.viviendas = buscarOrdenadas();
-  
-    }
+     viviendasList = new ArrayList();       
+     buscarOrdenadas();
+     ordenarLista();
+    } //fin initialice
     
     @FXML
-    private void guardarFiltros(ActionEvent event) throws IOException {
+private void guardarFiltros(ActionEvent event) throws IOException {
        if(comprobarNumeros()){
            errorText.setText("");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -215,19 +226,21 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void notificar(ActionEvent event) {
+private void notificar(ActionEvent event) {
     }
 
     @FXML
-    private void buscar(ActionEvent event) {
+private void buscar(ActionEvent event) {
        if(comprobarNumeros()){
            errorText.setText("");
-        viviendas = buscarOrdenadas();}
+           buscarOrdenadas();
+          listaViviendas.getChildren().clear();
+           ordenarLista();}
        else errorText.setText("Debes introducir números validos");
     }
 
     @FXML
-    private void Inicio(ActionEvent event) throws IOException {
+private void Inicio(ActionEvent event) throws IOException {
           FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
             s.close();
@@ -239,9 +252,7 @@ public class BuscadorController implements Initializable {
              stage.show();
              event.consume();
     }
-   // metodo para conseguir que al pasar de unas ventanas a otras se cierre la anterior. 
-    // solo hay que añadir el metodo pasarStage y crear la variable private static Stage s en cada clase
-    // y cada vez que cambias de ventana añadir s.close(); y pasarle el stage al controler de la  ventana a la que vas
+   
 public static void pasarStage(Stage m){
          s = m;
      }
@@ -253,47 +264,52 @@ public static void pasarFiltrosInicio(String c, String t, int queBuscas){
      }
     
  
-private ResultSet buscarOrdenadas() {
-     ResultSet viviendasOrdenadas;
-        if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
+private void buscarOrdenadas() {
+   if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
                || numBaños.getText().equals("")) 
-            viviendasOrdenadas = ordenSinFinltrosConsulta();
-       else
-        viviendasOrdenadas = ordenarConsulta();
-        return viviendasOrdenadas;
+           ordenSinFinltrosConsulta();
+    else
+       ordenarConsulta();
+       
     }
      
      
     @FXML
-private ResultSet ordenar(ActionEvent event) {
-     if(comprobarNumeros()){
-         errorText.setText("");
-         ResultSet viviendasOrdenadas;
+private void ordenar(ActionEvent event) {
+   
         if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
-               || numBaños.getText().equals("")) 
-            viviendasOrdenadas = ordenSinFinltrosConsulta();
-       else
-        viviendasOrdenadas = ordenarConsulta();
-        return viviendasOrdenadas;
-    } else{
+               || numBaños.getText().equals("")) {
+            ordenSinFinltrosConsulta();
+             listaViviendas.getChildren().clear();
+            ordenarLista();
+        }
+        else{
+            if(comprobarNumeros()){
+         errorText.setText("");
+        ordenarConsulta();
+         listaViviendas.getChildren().clear();
+        ordenarLista();
+            }  else{
          errorText.setText("Debes introducir números validos");
-         return null;
+        
      } 
+    } 
 }
     
-private ResultSet ordenarConsulta(){
-       String comoOrdenar;
+private void ordenarConsulta(){
+    viviendasList.clear();
+    String comoOrdenar;
         if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
         else 
-            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio DESC";
-            else comoOrdenar = "precio ASC";
+            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio ASC";
+            else comoOrdenar = "precio DESC";
          
      ResultSet rs2;
      int tipo;
     if(tip.equals("Piso")) tipo = 1;
       else if(tip.equals("Casa")) tipo = 2;
       else tipo = 3;
-       Conectar con = new Conectar();
+    
        Statement s;
     if(tipo != 3){
     try {
@@ -305,7 +321,12 @@ private ResultSet ordenarConsulta(){
                      + " order by " + comoOrdenar   ); //fin consulta
            if (rs2.first())   {
                System.out.println (rs2.getString("id"));
-               return rs2;
+               rs2.beforeFirst();
+                while (rs2.next()) {
+                    viviendasList.add(rs2.getString("id"));
+                }
+               /* listaViviendas.getChildren().clear();
+                ordenarLista();*/
         }
             
         } catch (SQLException ex) {
@@ -324,30 +345,34 @@ private ResultSet ordenarConsulta(){
                              ); //fin consulta
            if (rs2.first())   {
                System.out.println (rs2.getString("id"));
-               return rs2;
+               rs2.beforeFirst();
+                while (rs2.next()) {
+                    viviendasList.add(rs2.getString("id"));
+                }
+               /* listaViviendas.getChildren().clear();
+                ordenarLista();*/
         }
             
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }//fin catch
-    }
-  
-      return null;
+      }
     } 
     
-private ResultSet ordenSinFinltrosConsulta(){
-      String comoOrdenar;
+private void ordenSinFinltrosConsulta(){
+    viviendasList.clear();
+    String comoOrdenar;
         if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) comoOrdenar= "id";
         else 
-            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio DESC";
-            else comoOrdenar = "precio ASC";
+            if(ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) comoOrdenar= "precio ASC";
+            else comoOrdenar = "precio DESC";
          
       ResultSet rs3;
      int tipo;
     if(tip.equals("Piso")) tipo = 1;
       else if(tip.equals("Casa")) tipo = 2;
       else tipo = 3;
-       Conectar con = new Conectar();
+       
       Statement s;
          if(tipo != 3){
     
@@ -357,7 +382,14 @@ private ResultSet ordenSinFinltrosConsulta(){
             rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen 
                 + " order by " + comoOrdenar );
             if (rs3.first()) {
-                    return rs3;}
+               rs3.beforeFirst();
+                while (rs3.next()) {
+                    viviendasList.add(rs3.getString("id"));
+                    
+                }System.out.println(viviendasList.get(0));
+               /* listaViviendas.getChildren().clear();
+                ordenarLista();*/
+                    }
 
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -369,17 +401,23 @@ private ResultSet ordenSinFinltrosConsulta(){
             rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen
                 + " order by " + comoOrdenar);
             if (rs3.first()) {
-                    return rs3;}
+                    rs3.beforeFirst();
+                while (rs3.next()) {
+                    viviendasList.add(rs3.getString("id"));
+                    
+                }System.out.println(viviendasList.get(0));
+               /* listaViviendas.getChildren().clear();
+                ordenarLista();*/
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
-   
-       return null;
+
     }
-    
- private boolean comprobarNumeros(){
+
+private boolean comprobarNumeros(){
      if(isNumeric(precioMin.getText())
              && isNumeric(precioMax.getText())
              && isNumeric(numBaños.getText())
@@ -387,7 +425,7 @@ private ResultSet ordenSinFinltrosConsulta(){
      else return false;
  }
  
- private static boolean isNumeric(String cadena){
+private static boolean isNumeric(String cadena){
 	try {
 		Integer.parseInt(cadena);
 		return true;
@@ -395,4 +433,93 @@ private ResultSet ordenSinFinltrosConsulta(){
 		return false;
 	}
 }
+ 
+
+ //generador de miniaturas
+  private javafx.scene.layout.HBox crearMiniatura(String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException{
+        
+        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();
+        
+        miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+        
+        Image image1 = new Image(new FileInputStream(rutaFoto));
+        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
+        foto.setFitWidth(200);
+        foto.setFitHeight(150);
+                
+        javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
+        datos.setPadding(new Insets(20,30,30,15));
+        
+        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+       
+       
+        
+        datos.getChildren().addAll(calle,precio);
+        
+        miniatura.getChildren().addAll(foto, datos);        
+        return miniatura;
+    }
+    
+    //Consultar la primera foto de la vivienda pasando como atributo un id
+public String consultarFoto(String id){
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
+            if (rsl.first()) return rsl.getNString(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "C:\\Users\\migue\\Desktop\\softupv\\SoftUpv\\src\\trobify\\images\\noImage.jpeg";
+        //"F:\\PSW\\SoftUpv\\src\\trobify\\images\\foto0.jpg"
+    }
+    
+    //Consultar la direccion de la vivienda pasando como atributo un id    
+public String consultarDireccion(String id){
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT direccion FROM vivienda WHERE id = '" + id + "'");
+            if (rsl.first()) return rsl.getNString(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "No disponible";
+    }
+ 
+     //Consultar el precio de la vivienda pasando como atributo un id    
+public int consultarPrecio(String id){
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT precio FROM vivienda WHERE id = '" + id + "'");
+            if (rsl.first()) return rsl.getInt(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+ 
+    
+ //Lista de viviendas
+  private void ordenarLista(){
+        for (int i = 0; i < viviendasList.size(); ++i) {
+            
+            try {
+                String foto = consultarFoto(viviendasList.get(i));
+                String calle = consultarDireccion(viviendasList.get(i));
+                int precio = consultarPrecio(viviendasList.get(i));
+                this.listaViviendas.getChildren().add(crearMiniatura(foto, calle, precio));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+     }
+
+
+        
 }// fin clase
