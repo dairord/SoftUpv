@@ -11,14 +11,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.FichaViviendaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="856.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.FichaViviendaController">
    <children>
       <HBox prefHeight="553.0" prefWidth="795.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="685.0" prefWidth="572.0" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="558.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="969.0" prefWidth="558.0">
                      <children>
                         <ToolBar prefHeight="40.0" prefWidth="608.0" VBox.vgrow="ALWAYS">
                            <items>
@@ -27,6 +28,26 @@
                                     <Insets />
                                  </opaqueInsets>
                               </Button>
+                              <HBox prefHeight="0.0" prefWidth="34.0" />
+                              <HBox alignment="CENTER" prefHeight="16.0" prefWidth="448.0" spacing="10.0">
+                                 <children>
+                                    <Button fx:id="addFavoritos" mnemonicParsing="false" onAction="#addFav" text="Añadir a favoritos">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <HBox fx:id="valoracionGrupo" alignment="CENTER" prefHeight="30.0" prefWidth="218.0" spacing="10.0">
+                                       <children>
+                                          <Text fx:id="textoValoracion" strokeType="OUTSIDE" strokeWidth="0.0" text="Valoración:" />
+                                          <TextField fx:id="valorValoracion" prefHeight="26.0" prefWidth="75.0" promptText="De 0 a 10" />
+                                          <Button fx:id="editarValoracion" mnemonicParsing="false" onAction="#editarValoracion" text="Editar" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </HBox>
+                                 </children>
+                              </HBox>
                            </items>
                            <padding>
                               <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
@@ -58,28 +79,11 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" />
                            </VBox.margin>
                         </ListView>
-                        <HBox alignment="CENTER" prefHeight="34.0" prefWidth="570.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Button fx:id="addFavoritos" mnemonicParsing="false" onAction="#addFav" text="Añadir a favoritos">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <HBox fx:id="valoracionGrupo" alignment="CENTER" prefHeight="34.0" prefWidth="322.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Text fx:id="textoValoracion" strokeType="OUTSIDE" strokeWidth="0.0" text="Valoración:" />
-                                    <TextField fx:id="valorValoracion" prefHeight="26.0" prefWidth="75.0" promptText="De 0 a 10" />
-                                    <Button fx:id="editarValoracion" mnemonicParsing="false" onAction="#editarValoracion" text="Editar" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </HBox>
-                           </children>
+                        <WebView prefHeight="390.0" prefWidth="558.0">
                            <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
-                        </HBox>
+                        </WebView>
                      </children>
                   </VBox>
                </content>
@@ -88,6 +92,9 @@
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Viviendas similares" />
+               </children>
             </VBox>
          </children>
       </HBox>

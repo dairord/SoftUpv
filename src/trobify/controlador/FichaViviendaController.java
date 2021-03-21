@@ -86,7 +86,7 @@ public class FichaViviendaController implements Initializable {
         
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
-        this.id = "vivienda2";
+        this.id = "vivienda3";
         
         //Mostrar botones de valoraciones de favortitos o no
         this.estaEnFav = estaEnFavoritos(this.id);
@@ -322,7 +322,7 @@ public class FichaViviendaController implements Initializable {
 
     @FXML
     private void editarValoracion(ActionEvent event) {     
-        if(this.valoracion == -1/*AÑADIR*/){
+        if(this.valoracion == -1 || this.valoracion == 0/*AÑADIR*/){
             this.valoracion = Integer.parseInt(valorValoracion.getText());
             try {
                 Statement stm = con.getConnection().createStatement();
