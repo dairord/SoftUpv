@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="679.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="617.0">
          <children>
@@ -24,6 +25,16 @@
                   <ToolBar prefHeight="39.0" prefWidth="615.0">
                     <items>
                       <Button mnemonicParsing="false" onAction="#Inicio" text="Inicio" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="549.0">
+                           <children>
+                              <Button fx:id="IniciarSesionBoton" mnemonicParsing="false" onAction="#IniciarSesion" text="Iniciar sesión" />
+                              <Hyperlink fx:id="RegistrarseBoton" onAction="#Registrarse" text="Registrarse" underline="true">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Hyperlink>
+                           </children>
+                        </HBox>
                     </items>
                   </ToolBar>
                </children>
@@ -44,10 +55,10 @@
                         </Button>
                         <Button mnemonicParsing="false" text="notif">
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets right="35.0" />
                            </HBox.margin>
                         </Button>
-                        <Label prefHeight="31.0" prefWidth="107.0" text="Bienvenido">
+                        <Label prefHeight="28.0" prefWidth="98.0" text="Bienvenido">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
@@ -58,60 +69,79 @@
                               <Insets right="5.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="nombreUsuario" prefHeight="40.0" prefWidth="128.0">
+                        <Label fx:id="nombreUsuario" prefHeight="28.0" prefWidth="128.0">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="107.0" prefWidth="602.0">
+                  <HBox alignment="TOP_RIGHT" prefHeight="107.0" prefWidth="602.0">
                      <children>
-                        <Label fx:id="entradaText" text="Entrada:">
-                           <HBox.margin>
-                              <Insets right="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <DatePicker fx:id="fechaEntrada" prefHeight="27.0" prefWidth="122.0" />
-                        <Label fx:id="salidaText" text="Salida:">
-                           <HBox.margin>
-                              <Insets left="10.0" right="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <DatePicker fx:id="fechaSalida" prefHeight="27.0" prefWidth="122.0" />
-                        <Label text="Ordenar:">
-                           <HBox.margin>
-                              <Insets left="25.0" />
-                           </HBox.margin>
-                        </Label>
-                        <ComboBox fx:id="ordenarPor" onAction="#ordenar" prefHeight="27.0" prefWidth="162.0">
-                           <HBox.margin>
-                              <Insets left="5.0" right="10.0" />
-                           </HBox.margin>
-                        </ComboBox>
+                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="45.0">
+                           <children>
+                              <Label fx:id="entradaText" prefHeight="17.0" prefWidth="51.0" text="Entrada:" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="123.0">
+                           <children>
+                              <DatePicker fx:id="fechaEntrada" prefHeight="25.0" prefWidth="129.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="13.0" />
+                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="38.0">
+                           <children>
+                              <Label fx:id="salidaText" prefHeight="17.0" prefWidth="45.0" text="Salida:" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="118.0">
+                           <children>
+                              <DatePicker fx:id="fechaSalida" prefHeight="25.0" prefWidth="129.0" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets right="20.0" />
+                           </opaqueInsets>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="55.0" />
+                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="53.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="51.0" text="Ordenar:" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="157.0">
+                           <children>
+                              <ComboBox fx:id="ordenarPor" onAction="#ordenar" prefHeight="25.0" prefWidth="171.0" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="589.0">
                      <children>
-                        <TextField fx:id="ciudad">
+                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="175.0">
+                           <children>
+                              <TextField fx:id="ciudad" prefHeight="25.0" prefWidth="161.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="50.0" />
+                        <VBox prefHeight="25.0" prefWidth="118.0">
+                           <children>
+                              <ComboBox fx:id="variacionFecha" prefHeight="25.0" prefWidth="128.0" promptText="fechas excatas" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="25.0" prefWidth="51.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="botonGuardarFiltros" mnemonicParsing="false" onAction="#guardarFiltros" prefHeight="25.0" prefWidth="104.0" text="Guardar Filtros" />
+                           </children>
                            <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin></TextField>
-                        <ComboBox fx:id="variacionFecha" prefHeight="31.0" prefWidth="153.0" promptText="fechas excatas">
-                           <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets right="25.0" />
                            </HBox.margin>
-                        </ComboBox>
-                        <Button fx:id="botonGuardarFiltros" mnemonicParsing="false" onAction="#guardarFiltros" prefHeight="31.0" prefWidth="127.0" text="Guardar Filtros">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#notificar" prefHeight="31.0" prefWidth="103.0" text="Notificarme">
-                           <HBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </HBox.margin>
-                        </Button>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="88.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#notificar" prefHeight="25.0" prefWidth="110.0" text="Notificarme" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                </children>
@@ -123,7 +153,7 @@
                <children>
                   <VBox minHeight="-Infinity" prefHeight="462.0" prefWidth="246.0" spacing="5.0">
                      <children>
-                        <ImageView fitHeight="157.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="155.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Captura%20de%20pantalla%202021-03-10%20a%20las%2010.20.36.png" />
                            </image>
@@ -143,30 +173,80 @@
                               <Label text="Precio" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
-                              <TextField fx:id="precioMin" promptText="Min">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <TextField fx:id="precioMin" prefHeight="27.0" prefWidth="79.0" promptText="Min">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
                                  <HBox.margin>
-                                    <Insets right="10.0" />
+                                    <Insets />
                                  </HBox.margin>
-                              </TextField>
-                              <TextField fx:id="precioMax" promptText="Max">
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="47.0" prefWidth="102.0">
+                                 <children>
+                                    <TextField fx:id="precioMax" prefHeight="27.0" prefWidth="103.0" promptText="Max">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets right="5.0" />
                                  </HBox.margin>
-                              </TextField>
+                              </VBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="104.0" text="Habitaciones" />
-                              <TextField fx:id="numHabitaciones" prefHeight="27.0" prefWidth="85.0" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="83.0" text="Habitaciones" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="47.0" prefWidth="91.0" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="numHabitaciones" prefHeight="27.0" prefWidth="75.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </VBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Label prefHeight="27.0" prefWidth="177.0" text="Baños" />
-                              <TextField fx:id="numBaños" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label prefHeight="27.0" prefWidth="40.0" text="Baños" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <TextField fx:id="numBaños" prefHeight="27.0" prefWidth="75.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </VBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="198.0" />
@@ -189,9 +269,9 @@
             </HBox>
          </children>
       </VBox>
-      <HBox layoutY="652.0" prefHeight="31.0" prefWidth="637.0">
+      <HBox layoutY="628.0" prefHeight="28.0" prefWidth="637.0">
          <children>
-            <Label fx:id="errorText" prefHeight="32.0" prefWidth="638.0" textFill="#ff0101" />
+            <Label fx:id="errorText" prefHeight="65.0" prefWidth="627.0" textFill="#ff0101" />
          </children>
          <padding>
             <Insets left="10.0" />

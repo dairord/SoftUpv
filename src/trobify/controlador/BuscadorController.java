@@ -38,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -101,6 +102,10 @@ public class BuscadorController implements Initializable {
     private Label errorText;
     @FXML
     private VBox listaViviendas;
+    @FXML
+    private Button IniciarSesionBoton;
+    @FXML
+    private Hyperlink RegistrarseBoton;
     
     /**
      * Initializes the controller class.
@@ -108,6 +113,8 @@ public class BuscadorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
    
+    //si no ha iniciado sesión
+    nombreUsuario.setText("usuario");
     //Crear una conexion
      con = new Conectar();   
      //boton buscar desactivado si no están todos los filtros
@@ -306,15 +313,15 @@ private void ordenarConsulta(){
          
      ResultSet rs2;
      int tipo;
-    if(tip.equals("Piso")) tipo = 1;
-      else if(tip.equals("Casa")) tipo = 2;
+    if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipo = 1;
+      else if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipo = 2;
       else tipo = 3;
     
        Statement s;
     if(tipo != 3){
     try {
             s = con.getConnection().createStatement();
-            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen +
                      " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
                      + Integer.valueOf(numBaños.getText()) 
                      + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
@@ -337,7 +344,7 @@ private void ordenarConsulta(){
     else{ //misma consulta pero sin mirar el tipo
     try {
             s = con.getConnection().createStatement();
-            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen +
+            rs2 = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() + "' and ventaAlquiler = " + alqOVen +
                      " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = " 
                      + Integer.valueOf(numBaños.getText()) 
                      + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
@@ -369,8 +376,8 @@ private void ordenSinFinltrosConsulta(){
          
       ResultSet rs3;
      int tipo;
-    if(tip.equals("Piso")) tipo = 1;
-      else if(tip.equals("Casa")) tipo = 2;
+    if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipo = 1;
+      else if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipo = 2;
       else tipo = 3;
        
       Statement s;
@@ -379,7 +386,7 @@ private void ordenSinFinltrosConsulta(){
         try {
            
             s = con.getConnection().createStatement();
-            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen 
+            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() + "' and tipo = "+ tipo +" and ventaAlquiler = " + alqOVen 
                 + " order by " + comoOrdenar );
             if (rs3.first()) {
                rs3.beforeFirst();
@@ -398,7 +405,7 @@ private void ordenSinFinltrosConsulta(){
          else{
              try {
             s = con.getConnection().createStatement();
-            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen
+            rs3 = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() + "' and ventaAlquiler = " + alqOVen
                 + " order by " + comoOrdenar);
             if (rs3.first()) {
                     rs3.beforeFirst();
@@ -519,6 +526,14 @@ public int consultarPrecio(String id){
             }
         }
      }
+
+    @FXML
+    private void IniciarSesion(ActionEvent event) {
+    }
+
+    @FXML
+    private void Registrarse(ActionEvent event) {
+    }
 
 
         

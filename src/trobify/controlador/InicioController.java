@@ -170,10 +170,11 @@ public class InicioController implements Initializable {
       if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
       else alqOVen = 2;
       System.out.println(alqOVen);
+      Conectar con = new Conectar();
+      Statement s;  
+    
       if(tip != 3){
-     Conectar con = new Conectar();
-      Statement s;
-        try {
+     try {
             s = con.getConnection().createStatement();
              ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tip +" and ventaAlquiler = " + alqOVen );
             if ( !rs.first()) return false;
@@ -182,6 +183,18 @@ public class InicioController implements Initializable {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
       } //fin if tip!=3
+      else{
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen );
+            if ( !rs.first()) return false;
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }//fin else
+          
+     
        return true;
       
  }
