@@ -140,7 +140,7 @@ public class InicioController implements Initializable {
             stage.setTitle("Trobify");
             stage.show();
             event.consume();
-            bienvenido();
+            
     }
 
    
