@@ -61,6 +61,7 @@ public class FavoritosController implements Initializable {
     ArrayList<String> favList;
     
     
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -317,7 +318,8 @@ public class FavoritosController implements Initializable {
     private void InicioBoton(ActionEvent event) throws IOException {
          FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
-        s.close();
+        //esto lo descomentamos cuando alguna clase vaya a esta.
+        //s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);
@@ -326,4 +328,8 @@ public class FavoritosController implements Initializable {
         stage.show();
         event.consume();
     }
+   
+    public static void pasarStage(Stage m){
+         s = m;
+     }
 }

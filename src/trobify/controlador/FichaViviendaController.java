@@ -374,7 +374,8 @@ public class FichaViviendaController implements Initializable {
     private void atrasBoton(ActionEvent event) throws IOException {
          FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
-        s.close();
+    //descomentamos esto cuando alguna clse vaya a esta    
+    //s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);
