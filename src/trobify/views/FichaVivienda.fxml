@@ -23,7 +23,7 @@
                      <children>
                         <ToolBar prefHeight="40.0" prefWidth="608.0" VBox.vgrow="ALWAYS">
                            <items>
-                              <Button fx:id="volver" mnemonicParsing="false" text="Atrás">
+                              <Button fx:id="volver" mnemonicParsing="false" onAction="#atrasBoton" text="Atrás">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
