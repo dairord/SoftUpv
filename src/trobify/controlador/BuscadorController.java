@@ -215,7 +215,6 @@ public class BuscadorController implements Initializable {
         viviendasList = new ArrayList();
         comprobaciones();
        
-
         //Inicialización del WebView para que se muestre GoogleMaps
         System.setProperty("java.net.useSystemProxies", "true");
         final URL googleMaps = getClass().getResource("GeoPrueba.html");
@@ -293,7 +292,6 @@ public class BuscadorController implements Initializable {
         //comprobación precio minimo
        if(!precioMin.getText().equals("")) pMin = " and precio > " + Integer.valueOf(precioMin.getText());
        else pMin = "";
-       
        //cpmprobacion precio maximo
        if(!precioMax.getText().equals("")) pMax = " and precio < " + Integer.valueOf(precioMax.getText());
        else pMax = "";
