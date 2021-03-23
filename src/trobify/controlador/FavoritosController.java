@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -109,14 +110,14 @@ public class FavoritosController implements Initializable {
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int valoracionVivienda) throws FileNotFoundException{
         
-        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();
+        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();  
         
         miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         
         Button botonRedireccion = new Button();
         botonRedireccion.setPadding(new Insets(0,0,0,0));
         botonRedireccion.setId(id);
-        
+                
         Image image1 = new Image(new FileInputStream(rutaFoto));
         javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
         foto.setFitWidth(200);
@@ -125,6 +126,7 @@ public class FavoritosController implements Initializable {
         botonRedireccion.setGraphic(foto);
                 
         javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
+        datos.setAlignment(Pos.CENTER_LEFT);
         datos.setPadding(new Insets(20,30,30,15));
         
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
@@ -135,9 +137,26 @@ public class FavoritosController implements Initializable {
         datos.getChildren().addAll(calle,precio,valoracion);
         
         javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
-        datos.setPadding(new Insets(20,30,30,15));
+        eliminarFav.setAlignment(Pos.CENTER);
+        eliminarFav.setPadding(new Insets(20,20,20,25));
         
+        Button botonEliminar = new Button();
+        botonEliminar.setText("Eliminar de favoritos");
+        botonEliminar.setId(id);
+        botonEliminar.setOnAction(e -> {
+            
+            //Falta avisar que vas a eliminar
+            try {
+                Statement stm = con.getConnection().createStatement();
+                stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + botonEliminar.getId() + "'");
+                ordenCambiado(null);
+            } catch (SQLException ex) {
+                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        );
         
+        eliminarFav.getChildren().add(botonEliminar);
         
         miniatura.getChildren().addAll(botonRedireccion, datos, eliminarFav);        
         return miniatura;
@@ -277,6 +296,7 @@ public class FavoritosController implements Initializable {
                 int precio = consultarPrecio(favList.get(i));
                 int valoracion = consultarValoracion(favList.get(i));
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, valoracion));
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }
