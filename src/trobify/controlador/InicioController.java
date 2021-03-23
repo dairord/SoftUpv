@@ -154,7 +154,7 @@ public class InicioController implements Initializable {
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage);
+             BuscadorController.pasarStage(stage, username);
              stage.setScene(scene);
              stage.setTitle("Buscar vivienda");
              stage.show();

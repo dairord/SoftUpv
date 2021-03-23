@@ -267,8 +267,9 @@ public class BuscadorController implements Initializable {
         username = usuario;
      }
      
-    public static void pasarStage(Stage m) {
+    public static void pasarStage(Stage m, String us) {
         s = m;
+        usuario = us;
     }
 
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {

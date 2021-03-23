@@ -169,12 +169,13 @@ public class MantenerFiltrosController implements Initializable {
      }
      
      private String obtenerId(String us, Conectar con) {
+         System.out.println(us);
          String res = "";
          ResultSet r;
          Statement st;
           try{st = con.getConnection().createStatement();
             r = st.executeQuery("SELECT id FROM usuario WHERE usuario = '"+ username +"'");
-            res = r.getNString(1);
+            if(r.first()) {res = r.getNString(1);}
         }catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }//fin catch 
