@@ -321,7 +321,7 @@ public class FavoritosController implements Initializable {
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        BuscadorController.pasarStage(stage);
+        InicioController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
