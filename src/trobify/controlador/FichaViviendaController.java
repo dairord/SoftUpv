@@ -76,7 +76,11 @@ public class FichaViviendaController implements Initializable {
     Boolean estaEnFav;
     ArrayList<String> listaFotos;
     ArrayList<String> listaRecomendados;
+    ArrayList<String> listaServicios;
     int valoracion;
+    int precioBase;
+    @FXML
+    private Text precioVivienda;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,6 +91,7 @@ public class FichaViviendaController implements Initializable {
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
         this.id = "vivienda3";
+        this.precioBase = consultarPrecio(id);
         
         //Mostrar botones de valoraciones de favortitos o no
         this.estaEnFav = estaEnFavoritos(this.id);
@@ -101,17 +106,8 @@ public class FichaViviendaController implements Initializable {
         this.listaRecomendados = new ArrayList();
         crearListaRecomendados(this.id);
                        
-        //Servicios cerca de la vivienda        
-        ArrayList serviciosCerca = new ArrayList();
-        serviciosCerca.add("Supermercado");
-        serviciosCerca.add("Transporte publico");
-        serviciosCerca.add("Farmacia");
-        serviciosCerca.add("Estanco");
-        serviciosCerca.add("Gimnasio");
-        
-        ObservableList servicios = FXCollections.observableList(serviciosCerca);     
-        this.serviciosCerca.setItems(servicios);       
-        
+        //Mostrar el precio de la vivienda    
+        precioVivienda.setText("Precio: " +this.precioBase + "€");
         //Boton de volver atras        
             //volver.setOnAction(e -> scenePropia.setScene(scenaPrevia));      
                 
@@ -126,6 +122,10 @@ public class FichaViviendaController implements Initializable {
         
         //Mostrar la descripcion de la vivienda
         this.descripcion.setText(consultarDescripcion(this.id));
+        
+        //Servicios cerca de la vivienda
+        this.listaServicios = new ArrayList();
+        consultarServicios(id);
         
         //Viviendas recomendadas        
         for (int i = 0; i < listaRecomendados.size(); i++){
@@ -172,11 +172,10 @@ public class FichaViviendaController implements Initializable {
     }
 
     //Generador de listaFotos
-    private void crearListaRecomendados(String id){
+    private void crearListaRecomendados(String id){        
         
-        int precioBase = consultarPrecio(id);
-        int precioAlto = precioBase + 150;
-        int precioBajo = precioBase - 150;
+        int precioAlto = this.precioBase + 150;
+        int precioBajo = this.precioBase - 150;
         int i = 0;
         try {
             Statement stm = con.getConnection().createStatement();
@@ -230,6 +229,28 @@ public class FichaViviendaController implements Initializable {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return texto;
+    }
+    
+        //Metodo para obtener la descripcion de la vivienda
+    public void consultarServicios(String id){
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT supermercado, transporteP, banco, estanco, centroC, gimnasio, farmacia FROM servicios WHERE id = '" + this.id + "'");
+            rsl.first();
+            for(int i = 0; i < 8 ; i++){
+                try{
+                    if(rsl.getObject(i) != null) this.listaServicios.add(rsl.getString(i));
+                } catch (SQLException ex) {}                
+            }                
+                        
+            ObservableList servicios = FXCollections.observableList(listaServicios);     
+            this.serviciosCerca.setItems(servicios);       
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     //Comprobar si esta en favoritos
