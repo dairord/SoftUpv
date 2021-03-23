@@ -445,7 +445,7 @@ public class BuscadorController implements Initializable {
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        FavoritosController.pasarStage(stage);
+        FavoritosController.pasarStage(stage, usuario);
         stage.setScene(scene);
         stage.setTitle("Favoritos");
         stage.show();
