@@ -580,6 +580,19 @@ public class BuscadorController implements Initializable {
        
     }
 
+    @FXML
+    private void favBoton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        BuscadorController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Favoritos");
+        stage.show();
+        event.consume();
+    }
 
         
 }// fin clase

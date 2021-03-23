@@ -318,8 +318,7 @@ public class FavoritosController implements Initializable {
     private void InicioBoton(ActionEvent event) throws IOException {
          FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
-        //esto lo descomentamos cuando alguna clase vaya a esta.
-        //s.close();
+        s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);

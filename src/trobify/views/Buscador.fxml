@@ -48,7 +48,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="617.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" text="fav">
+                        <Button mnemonicParsing="false" onAction="#favBoton" text="fav">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
