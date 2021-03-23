@@ -563,4 +563,18 @@ public class BuscadorController implements Initializable {
     private void Registrarse(ActionEvent event) {
     }
 
+    @FXML
+    private void tipoViviendaAccion(ActionEvent event) {
+        if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
+               || numBaños.getText().equals("")) {
+           ordenSinFinltrosConsulta();
+        listaViviendas.getChildren().clear();
+                ordenarLista();}
+    else
+       ordenarConsulta();
+       
+    }
+
+
+        
 }// fin clase

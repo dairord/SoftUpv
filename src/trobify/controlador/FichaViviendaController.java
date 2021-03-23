@@ -35,6 +35,8 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import trobify.Conectar;
 
@@ -81,6 +83,8 @@ public class FichaViviendaController implements Initializable {
     int precioBase;
     @FXML
     private Text precioVivienda;
+    @FXML
+    private WebView mapa;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -152,6 +156,12 @@ public class FichaViviendaController implements Initializable {
                 }
             }
         });
+        
+        //Inicialización del WebView para que se muestre GoogleMaps
+        System.setProperty("java.net.useSystemProxies", "true");
+        final URL googleMaps = getClass().getResource("GeoPrueba.html");
+        final WebEngine engine = mapa.getEngine();
+        engine.load(googleMaps.toExternalForm());
         
     }    
     

@@ -22,7 +22,7 @@ public class Trobify extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/trobify/views/Inicio.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/trobify/views/Favoritos.fxml"));
         
         Scene scene = new Scene(root);
         

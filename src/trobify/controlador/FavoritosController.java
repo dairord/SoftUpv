@@ -130,7 +130,12 @@ public class FavoritosController implements Initializable {
         
         datos.getChildren().addAll(calle,precio,valoracion);
         
-        miniatura.getChildren().addAll(botonRedireccion, datos);        
+        javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
+        datos.setPadding(new Insets(20,30,30,15));
+        
+        
+        
+        miniatura.getChildren().addAll(botonRedireccion, datos, eliminarFav);        
         return miniatura;
     }
     
@@ -260,7 +265,7 @@ public class FavoritosController implements Initializable {
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
             
-            String idBoton = "idBoton" +i;
+            String idBoton = favList.get(i);
             
             try {
                 String foto = consultarFoto(favList.get(i));
