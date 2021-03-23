@@ -468,9 +468,13 @@ public class BuscadorController implements Initializable {
     }
 
     //generador de miniaturas
-    private javafx.scene.layout.HBox crearMiniatura(String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException {
+    private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException {
 
         javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();
+        
+        Button botonRedireccion = new Button();
+        botonRedireccion.setPadding(new Insets(0,0,0,0));
+        botonRedireccion.setId(id);
 
         miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -545,10 +549,11 @@ public class BuscadorController implements Initializable {
         for (int i = 0; i < viviendasList.size(); ++i) {
 
             try {
+                String id = viviendasList.get(i);
                 String foto = consultarFoto(viviendasList.get(i));
                 String calle = consultarDireccion(viviendasList.get(i));
                 int precio = consultarPrecio(viviendasList.get(i));
-                this.listaViviendas.getChildren().add(crearMiniatura(foto, calle, precio));
+                this.listaViviendas.getChildren().add(crearMiniatura(id, foto, calle, precio));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }
