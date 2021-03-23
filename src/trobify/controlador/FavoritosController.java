@@ -53,12 +53,14 @@ public class FavoritosController implements Initializable {
     @FXML
     private ComboBox<String> elegirOrdenPor;
     private static Stage s;
+    private static String username;
     /**
      * Initializes the controller class.
      */
     
     Conectar con;
     ArrayList<String> favList;
+    
     
     
     
@@ -321,7 +323,7 @@ public class FavoritosController implements Initializable {
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage);
+        InicioController.pasarStage(stage, username);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
