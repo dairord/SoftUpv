@@ -125,7 +125,7 @@
                         </HBox>
                         <HBox prefHeight="37.0" prefWidth="199.0">
                            <children>
-                              <ComboBox fx:id="tipoVivienda" onAction="#tipoViviendaAccion" prefHeight="27.0" prefWidth="188.0" />
+                              <ComboBox fx:id="tipoVivienda" prefHeight="27.0" prefWidth="188.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="189.0">

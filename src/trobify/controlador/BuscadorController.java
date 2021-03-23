@@ -111,6 +111,14 @@ public class BuscadorController implements Initializable {
     @FXML
     private WebView mapa;
 
+    //para la consulta
+    private String tipo;
+    private String habita;
+    private String baños;
+    private String pMin;
+    private String pMax;
+    private String comoOrdenar;
+           
     /**
      * Initializes the controller class.
      */
@@ -121,6 +129,7 @@ public class BuscadorController implements Initializable {
         nombreUsuario.setText("usuario");
         //Crear una conexion
         con = new Conectar();
+       
         //boton buscar desactivado si no están todos los filtros
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
                 .or(Bindings.isEmpty(precioMax.textProperty()))
@@ -128,9 +137,7 @@ public class BuscadorController implements Initializable {
                 .or(Bindings.isEmpty(numBaños.textProperty()))
                 .or(Bindings.isEmpty(numHabitaciones.textProperty())) // .or(Bindings.)
                 ;
-
-        buscarBoton.disableProperty().bind(sePuedeBuscar);
-        botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
+         botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
 
         //no poder seleccionar fechas anteriores a hoy
         fechaEntrada.setDayCellFactory((DatePicker picker) -> {
@@ -183,17 +190,7 @@ public class BuscadorController implements Initializable {
         ObservableList<String> ordenar = FXCollections.observableList(orden);
         ordenarPor.setItems(ordenar);
         ordenarPor.getSelectionModel().selectFirst();
-
-        // variación filtros
-        /*  ArrayList <String> varia = new ArrayList <String> ();
-     varia.add("0%");
-     varia.add("10%");
-     varia.add("30%");
-     varia.add("50%");
-     ObservableList<String> variaFiltros = FXCollections.observableList(varia);
-     variacionFiltros.setItems(variaFiltros);
-     variacionFiltros.getSelectionModel().selectFirst();*/
-        // variación fecha
+ 
         if (alqOVen != 1) {
             ArrayList<String> varf = new ArrayList<String>();
             varf.add("Fechas exactas");
@@ -209,7 +206,7 @@ public class BuscadorController implements Initializable {
         tipoVivienda.getSelectionModel().select(tip);
 
         viviendasList = new ArrayList();
-        buscarOrdenadas();
+        comprobaciones();
         ordenarLista();
 
         //Inicialización del WebView para que se muestre GoogleMaps
@@ -221,9 +218,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
-        if (comprobarNumeros()) {
-            errorText.setText("");
-            FXMLLoader fxmlLoader = new FXMLLoader();
+       FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
             MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
                     precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), usuario);
@@ -235,9 +230,6 @@ public class BuscadorController implements Initializable {
             stage.setTitle("Trobify");
             stage.show();
             event.consume();
-        } else {
-            errorText.setText("Debes introducir números validos");
-        }
     }
 
     @FXML
@@ -246,14 +238,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-        if (comprobarNumeros()) {
-            errorText.setText("");
-            buscarOrdenadas();
-            listaViviendas.getChildren().clear();
-            ordenarLista();
-        } else {
-            errorText.setText("Debes introducir números validos");
-        }
+       comprobaciones();
     }
 
     @FXML
@@ -281,194 +266,75 @@ public class BuscadorController implements Initializable {
         alqOVen = queBuscas;
     }
 
-    private void buscarOrdenadas() {
-        if (precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
-                || numBaños.getText().equals("")) {
-            ordenSinFinltrosConsulta();
-        } else {
-            ordenarConsulta();
-        }
-
-    }
-
     @FXML
     private void ordenar(ActionEvent event) {
+        comprobaciones();
+    }
 
-        if (precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
-                || numBaños.getText().equals("")) {
-            ordenSinFinltrosConsulta();
-            listaViviendas.getChildren().clear();
-            ordenarLista();
-        } else {
-            if (comprobarNumeros()) {
-                errorText.setText("");
-                ordenarConsulta();
-                listaViviendas.getChildren().clear();
+    private void comprobaciones(){
+       viviendasList.clear();
+       listaViviendas.getChildren().clear();
+        //comprobación tipos
+        if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipo = " and tipo = 1";
+        else if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipo = " and tipo = 2";
+        else tipo = "";
+        System.out.println(tipo + "kk");
+        //comprobación precio minimo
+       if(!precioMin.getText().equals("")) pMin = " and precio > " + Integer.valueOf(precioMin.getText());
+       else pMin = "";
+        //cpmprobacion precio maximo
+       if(!precioMax.getText().equals("")) pMax = " and precio < " + Integer.valueOf(precioMax.getText());
+       else pMax = "";
+       
+       //comprobacion numero baños
+       if(!numBaños.getText().equals("")) baños = " and baños = " + Integer.valueOf(numBaños.getText());
+       else baños = "";
+       
+       //compprobacion numero de habitaciones
+       if(!numHabitaciones.getText().equals("")) habita = " and habitaciones = " + Integer.valueOf(numHabitaciones.getText());
+       else habita = "";
+       
+       //comprobar orden
+       if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) {
+            comoOrdenar = "id";
+       } else if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) {
+            comoOrdenar = "precio ASC";
+       } else {
+            comoOrdenar = "precio DESC";
+       }
+       consulta();
+    }//fin comprobaciones
+    
+    //metodo nuevo de sql
+    private void consulta(){
+        
+        ResultSet rs;
+        Statement s;
+        
+         try {
+            s = con.getConnection().createStatement();
+            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() 
+                    + "' and ventaAlquiler = " + alqOVen + tipo + pMin + pMax + baños + habita 
+                    + " order by " + comoOrdenar);
+            
+            if (rs.first()) {
+                    System.out.println(rs.getString("id"));
+                    rs.beforeFirst();
+                    while (rs.next()) {
+                        viviendasList.add(rs.getString("id"));
+                    }
+                     listaViviendas.getChildren().clear();
                 ordenarLista();
-            } else {
-                errorText.setText("Debes introducir números validos");
-
-            }
+            } //fin if
+            else listaViviendas.getChildren().clear();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void ordenarConsulta() {
-        viviendasList.clear();
-        String comoOrdenar;
-        if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) {
-            comoOrdenar = "id";
-        } else if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) {
-            comoOrdenar = "precio ASC";
-        } else {
-            comoOrdenar = "precio DESC";
-        }
-
-        ResultSet rs2;
-        int tipo;
-        if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) {
-            tipo = 1;
-        } else if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {
-            tipo = 2;
-        } else {
-            tipo = 3;
-        }
-
-        Statement s;
-        if (tipo != 3) {
-            try {
-                s = con.getConnection().createStatement();
-                rs2 = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText() + "' and tipo = " + tipo + " and ventaAlquiler = " + alqOVen
-                        + " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = "
-                        + Integer.valueOf(numBaños.getText())
-                        + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
-                        + " order by " + comoOrdenar); //fin consulta
-                if (rs2.first()) {
-                    System.out.println(rs2.getString("id"));
-                    rs2.beforeFirst();
-                    while (rs2.next()) {
-                        viviendasList.add(rs2.getString("id"));
-                    }
-                    /* listaViviendas.getChildren().clear();
-                ordenarLista();*/
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }//fin catch
-
-        } //fin if tipo!=3
-        else { //misma consulta pero sin mirar el tipo
-            try {
-                s = con.getConnection().createStatement();
-                rs2 = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText() + "' and ventaAlquiler = " + alqOVen
-                        + " and precio > " + Integer.valueOf(precioMin.getText()) + " and precio < " + Integer.valueOf(precioMax.getText()) + " and baños = "
-                        + Integer.valueOf(numBaños.getText())
-                        + " and habitaciones = " + Integer.valueOf(numHabitaciones.getText())
-                        + " order by " + comoOrdenar
-                ); //fin consulta
-                if (rs2.first()) {
-                    System.out.println(rs2.getString("id"));
-                    rs2.beforeFirst();
-                    while (rs2.next()) {
-                        viviendasList.add(rs2.getString("id"));
-                    }
-                    /* listaViviendas.getChildren().clear();
-                ordenarLista();*/
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }//fin catch
-        }
-    }
-
-    private void ordenSinFinltrosConsulta() {
-        viviendasList.clear();
-        String comoOrdenar;
-        if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) {
-            comoOrdenar = "id";
-        } else if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) {
-            comoOrdenar = "precio ASC";
-        } else {
-            comoOrdenar = "precio DESC";
-        }
-
-        ResultSet rs3;
-        int tipo;
-        if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) {
-            tipo = 1;
-        } else if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {
-            tipo = 2;
-        } else {
-            tipo = 3;
-        }
-
-        Statement s;
-        if (tipo != 3) {
-
-            try {
-
-                s = con.getConnection().createStatement();
-                rs3 = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText() + "' and tipo = " + tipo + " and ventaAlquiler = " + alqOVen
-                        + " order by " + comoOrdenar);
-                if (rs3.first()) {
-                    rs3.beforeFirst();
-                    while (rs3.next()) {
-                        viviendasList.add(rs3.getString("id"));
-
-                    }
-                    System.out.println(viviendasList.get(0));
-                    /* listaViviendas.getChildren().clear();
-                ordenarLista();*/
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } //fin if tip!=3
-        else {
-            try {
-                s = con.getConnection().createStatement();
-                rs3 = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText() + "' and ventaAlquiler = " + alqOVen
-                        + " order by " + comoOrdenar);
-                if (rs3.first()) {
-                    rs3.beforeFirst();
-                    while (rs3.next()) {
-                        viviendasList.add(rs3.getString("id"));
-
-                    }
-                    System.out.println(viviendasList.get(0));
-                    /* listaViviendas.getChildren().clear();
-                ordenarLista();*/
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-    }
-
-    private boolean comprobarNumeros() {
-        if (isNumeric(precioMin.getText())
-                && isNumeric(precioMax.getText())
-                && isNumeric(numBaños.getText())
-                && isNumeric(numHabitaciones.getText())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private static boolean isNumeric(String cadena) {
-        try {
-            Integer.parseInt(cadena);
-            return true;
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-    }
-
+       
+     
+    }//fin consulta
+  
     //generador de miniaturas
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException {
 
@@ -570,17 +436,7 @@ public class BuscadorController implements Initializable {
     private void Registrarse(ActionEvent event) {
     }
 
-    @FXML
-    private void tipoViviendaAccion(ActionEvent event) {
-        if(precioMin.getText().equals("") || precioMax.getText().equals("") || numHabitaciones.getText().equals("")
-               || numBaños.getText().equals("")) {
-           ordenSinFinltrosConsulta();
-        listaViviendas.getChildren().clear();
-                ordenarLista();}
-    else
-       ordenarConsulta();
-       
-    }
+   
 
     @FXML
     private void favBoton(ActionEvent event) throws IOException {
