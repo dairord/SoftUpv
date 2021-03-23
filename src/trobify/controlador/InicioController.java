@@ -59,7 +59,8 @@ public class InicioController implements Initializable {
 
     private static Stage s;
     private static int alqOVen;
-   
+    private static boolean estaIniciado;
+    private static String username;
     
     //base de datos
     Conectar con;
@@ -67,13 +68,18 @@ public class InicioController implements Initializable {
     
     @FXML
     private Label mensajeError;
+    @FXML
+    private Label nombreUsuario;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       
-    
+    //si está iniciado sesión
+    if(estaIniciado){
+        nombreUsuario.setText("Bienvenido "+ username);
+    }
    //tipos de viviendas gabri
      ArrayList <String> tiposViviendas = new ArrayList <String> ();
      tiposViviendas.add("Indiferente");
@@ -129,12 +135,12 @@ public class InicioController implements Initializable {
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene (fxmlLoader.load());
-             
             IniciarSesionController.pasarStage(stage);
             stage.setScene(scene);
             stage.setTitle("Trobify");
             stage.show();
             event.consume();
+            bienvenido();
     }
 
    
@@ -198,5 +204,14 @@ public class InicioController implements Initializable {
        return true;
       
  }
- 
+ public void pasarUsuario(boolean iniciado, String usuario){
+     estaIniciado = iniciado;
+     username = usuario;
+        
+    }
+ private void bienvenido(){
+     if(estaIniciado){
+        nombreUsuario.setText("Bienvenido "+ username);
+    }
+ }
 }

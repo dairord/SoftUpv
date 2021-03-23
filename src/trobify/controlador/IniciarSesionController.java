@@ -45,6 +45,7 @@ public class IniciarSesionController implements Initializable {
     private String[] usuarios;
     private String nom;
     private String pas;
+    
     /**
      * Initializes the controller class.
      */
@@ -65,16 +66,14 @@ public class IniciarSesionController implements Initializable {
 
     @FXML
     private void aceptar(ActionEvent event) {
-      consulta();
-       
-      
+      if(consulta()){InicioController.pasarUsuario(true, nom);}
     }
    
     public static void pasarStage(Stage m){
          st = m;
      }
     
-    public void consulta(){
+    public boolean consulta(){
     
          nom = nombre.getText();
          pas = contraseña.getText();
@@ -88,9 +87,16 @@ public class IniciarSesionController implements Initializable {
             if (rs.first())   {
                 st.close(); 
                 System.out.println (rs.getString("usuario"));
-            } else mensajeError.setText("Nombre de usuario o contraseña incorrecto");
+                return true;
+            } else{ 
+                mensajeError.setText("Nombre de usuario o contraseña incorrecto");
+                return false;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
+    
+    
 }
