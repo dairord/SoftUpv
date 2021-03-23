@@ -204,7 +204,7 @@ public class InicioController implements Initializable {
        return true;
       
  }
- public void pasarUsuario(boolean iniciado, String usuario){
+ public static void pasarUsuario(boolean iniciado, String usuario){
      estaIniciado = iniciado;
      username = usuario;
         
@@ -212,6 +212,8 @@ public class InicioController implements Initializable {
  private void bienvenido(){
      if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
+        iniciaBoton.setVisible(false);
+        registrarse.setVisible(false);
     }
  }
 }
