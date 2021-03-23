@@ -62,6 +62,8 @@ public class InicioController implements Initializable {
     private static boolean estaIniciado;
     private static String username;
     
+    //para la busqueda
+    private String tipvivi;
     //base de datos
     Conectar con;
     ResultSet rs;
@@ -146,7 +148,7 @@ public class InicioController implements Initializable {
    
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-     if(consulta()){
+     if(comprobaciones()){
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
          BuscadorController.pasarUsuario(estaIniciado, username);
@@ -167,45 +169,35 @@ public class InicioController implements Initializable {
          s = m;
          username = us;
      }
- 
- public boolean consulta(){
-    String ciu = ciudadText.getText();
-    int tip;
-      if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tip = 1;
-      else if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tip = 2;
-      else tip = 3;
-      
-      if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
-      else alqOVen = 2;
-      System.out.println(alqOVen);
-      Conectar con = new Conectar();
-      Statement s;  
     
-      if(tip != 3){
-     try {
+    private boolean comprobaciones(){
+   //tipp
+        if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipvivi = " and tipo = 1";
+        else if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipvivi = " and tipo = 2";
+        else tipvivi = "";
+        System.out.println(tipvivi + "kk");
+        //alquilar o vender
+       if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
+      else alqOVen = 2;
+       return consulta();
+    }
+    
+    public boolean consulta(){
+    String ciu = ciudadText.getText();
+    Conectar con = new Conectar();
+    Statement s; 
+    ResultSet rs;
+    try {
             s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and tipo = "+ tip +" and ventaAlquiler = " + alqOVen );
+            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "'" + tipvivi +" and ventaAlquiler = " + alqOVen );
             if ( !rs.first()) return false;
            
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-      } //fin if tip!=3
-      else{
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "' and ventaAlquiler = " + alqOVen );
-            if ( !rs.first()) return false;
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }//fin else
-          
-     
-       return true;
       
- }
+       return true;
+ }//fin consulta
  public static void pasarUsuario(boolean iniciado, String usuario){
      estaIniciado = iniciado;
      username = usuario;
