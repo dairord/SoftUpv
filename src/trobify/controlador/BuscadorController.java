@@ -89,6 +89,7 @@ public class BuscadorController implements Initializable {
     private static int alqOVen;
     private static ResultSet viviendas;
     ArrayList<String> viviendasList;
+    private static String usuario;
     //conexion
     Conectar con;
     @FXML
@@ -225,7 +226,7 @@ public class BuscadorController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
             MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
-                    precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue());
+                    precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), usuario);
             Stage stage = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
             MantenerFiltrosController.pasarStage(stage);
@@ -262,15 +263,16 @@ public class BuscadorController implements Initializable {
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        BuscadorController.pasarStage(stage);
+        InicioController.pasarStage(stage, usuario);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
         event.consume();
     }
 
-    public static void pasarStage(Stage m) {
+    public static void pasarStage(Stage m, String us) {
         s = m;
+        usuario = us;
     }
 
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {

@@ -61,6 +61,7 @@ public class FichaViviendaController implements Initializable {
     private VBox recomendados;
 
     private static Stage s;
+    private static String username;
     @FXML
     private Button addFavoritos;
     @FXML
@@ -83,6 +84,7 @@ public class FichaViviendaController implements Initializable {
     ArrayList<String> listaServicios;
     int valoracion;
     int precioBase;
+    
     @FXML
     private Text precioVivienda;
     @FXML
@@ -378,7 +380,7 @@ public class FichaViviendaController implements Initializable {
     //s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage);
+        InicioController.pasarStage(stage, username);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

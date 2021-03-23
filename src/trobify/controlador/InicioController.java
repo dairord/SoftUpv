@@ -153,7 +153,7 @@ public class InicioController implements Initializable {
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage);
+             BuscadorController.pasarStage(stage, username);
              stage.setScene(scene);
              stage.setTitle("Buscar vivienda");
              stage.show();
@@ -162,8 +162,9 @@ public class InicioController implements Initializable {
      else mensajeError.setText("No existe ninguna vivienda con esas características");
     }
     
-    public static void pasarStage(Stage m){
+    public static void pasarStage(Stage m, String us){
          s = m;
+         username = us;
      }
  
  public boolean consulta(){

@@ -45,6 +45,7 @@ public class MantenerFiltrosController implements Initializable {
     private static LocalDate fechaEntrada;
     private static LocalDate fechaSalida;
     private static Boolean hayFechas;
+    private static String username;
  
     /**
      * Initializes the controller class.
@@ -92,7 +93,7 @@ public class MantenerFiltrosController implements Initializable {
      }
      
      //Para obtener los filtros desde la pantalla de buscar
-     public static void pasarFiltrosBuscar(String c, String t, int queBuscas, String p_Min, String p_Max, String b, String habi, LocalDate f_entr, LocalDate f_sal){
+     public static void pasarFiltrosBuscar(String c, String t, int queBuscas, String p_Min, String p_Max, String b, String habi, LocalDate f_entr, LocalDate f_sal, String us){
          ciu = c;
          tip = t;
          alqOVen = queBuscas;
@@ -102,6 +103,7 @@ public class MantenerFiltrosController implements Initializable {
          habitaciones = habi;
          fechaEntrada = f_entr;
          fechaSalida = f_sal;
+         username = us;
          if(fechaEntrada == null || fechaSalida == null) {hayFechas = false;}
          else {hayFechas = true;}
      }
