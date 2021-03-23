@@ -28,7 +28,7 @@ public class Trobify extends Application {
         
         stage.setScene(scene);
         stage.show();
-        InicioController.pasarStage(stage);
+        InicioController.pasarStage(stage, "");
     }
 
     /**
