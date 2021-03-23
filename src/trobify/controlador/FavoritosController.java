@@ -350,7 +350,8 @@ public class FavoritosController implements Initializable {
         event.consume();
     }
    
-    public static void pasarStage(Stage m){
+    public static void pasarStage(Stage m, String us){
          s = m;
+         username = us;
      }
 }
