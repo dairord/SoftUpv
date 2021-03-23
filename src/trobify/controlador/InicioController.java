@@ -149,11 +149,12 @@ public class InicioController implements Initializable {
      if(consulta()){
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+         BuscadorController.pasarUsuario(estaIniciado, username);
          BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue(), alqOVen);
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage, username);
+             BuscadorController.pasarStage(stage);
              stage.setScene(scene);
              stage.setTitle("Buscar vivienda");
              stage.show();
