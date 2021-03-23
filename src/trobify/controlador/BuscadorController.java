@@ -214,7 +214,7 @@ public class BuscadorController implements Initializable {
 
         viviendasList = new ArrayList();
         comprobaciones();
-        ordenarLista();
+       
 
         //Inicialización del WebView para que se muestre GoogleMaps
         System.setProperty("java.net.useSystemProxies", "true");
@@ -289,11 +289,12 @@ public class BuscadorController implements Initializable {
         if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipo = " and tipo = 1";
         else if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipo = " and tipo = 2";
         else tipo = "";
-        System.out.println(tipo + "kk");
+       
         //comprobación precio minimo
        if(!precioMin.getText().equals("")) pMin = " and precio > " + Integer.valueOf(precioMin.getText());
        else pMin = "";
-        //cpmprobacion precio maximo
+       
+       //cpmprobacion precio maximo
        if(!precioMax.getText().equals("")) pMax = " and precio < " + Integer.valueOf(precioMax.getText());
        else pMax = "";
        
