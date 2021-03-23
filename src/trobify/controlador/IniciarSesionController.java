@@ -42,7 +42,6 @@ public class IniciarSesionController implements Initializable {
 
     Conectar con;
     private static Stage st;
-    private String[] usuarios;
     private String nom;
     private String pas;
     
@@ -77,8 +76,7 @@ public class IniciarSesionController implements Initializable {
     
          nom = nombre.getText();
          pas = contraseña.getText();
-         Conectar con = new Conectar();
-      
+        
        Statement s;
         try {
             s = con.getConnection().createStatement();

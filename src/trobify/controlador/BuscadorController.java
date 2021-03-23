@@ -87,7 +87,6 @@ public class BuscadorController implements Initializable {
     private static String ciu;
     private static String tip;
     private static int alqOVen;
-    private static ResultSet viviendas;
     ArrayList<String> viviendasList;
     private static String usuario;
     //conexion
@@ -118,15 +117,23 @@ public class BuscadorController implements Initializable {
     private String pMin;
     private String pMax;
     private String comoOrdenar;
-           
+    
+    //cosas del usuario
+    private static boolean estaIniciado;
+    private static String username;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        //si no ha iniciado sesión
-        nombreUsuario.setText("usuario");
+        System.out.println(username);
+        //compobar si ha iniciado sesión
+        if(estaIniciado){
+            nombreUsuario.setText(username);
+        IniciarSesionBoton.setVisible(false);
+        RegistrarseBoton.setVisible(false);
+        }
+        else nombreUsuario.setText("usuario");
         //Crear una conexion
         con = new Conectar();
        
@@ -255,9 +262,13 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
-    public static void pasarStage(Stage m, String us) {
+     public static void pasarUsuario(boolean iniciado, String usuario){
+        estaIniciado = iniciado;
+        username = usuario;
+     }
+     
+    public static void pasarStage(Stage m) {
         s = m;
-        usuario = us;
     }
 
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {
