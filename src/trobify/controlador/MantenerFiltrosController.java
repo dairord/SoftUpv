@@ -46,18 +46,20 @@ public class MantenerFiltrosController implements Initializable {
     private static LocalDate fechaSalida;
     private static Boolean hayFechas;
     private static String username;
- 
+    private static String id;
+    private static Conectar con;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        con = new Conectar();
+        id = obtenerId(username, con);       
     }    
 
     @FXML
     private void siBoton(ActionEvent event) throws IOException {
-        Conectar con = new Conectar();
+         
          if(alqOVen == 2 && hayFechas == true) {//Opción alquilar y los datepicker tienen fechas
             if (comprobarFiltros(con)) {
                 borrarFiltrosAnteriores(con);
@@ -134,7 +136,7 @@ public class MantenerFiltrosController implements Initializable {
         try{
             s1 = con.getConnection().createStatement();
             s1.executeUpdate("INSERT INTO filtros(id, fecha_entrada, fecha_salida, ciudad, tipo, p_min, p_max, habitaciones, baños, ventaAlquiler) "
-                    + "VALUES(1, '"+ fechaEntrada +"', '"+ fechaSalida +"', '"+ ciu +"', '"+ tipo +"', '"+ precioMin +"', '"+ precioMax +"', '"+ habitaciones +"',"
+                    + "VALUES('"+ id +"', '"+ fechaEntrada +"', '"+ fechaSalida +"', '"+ ciu +"', '"+ tipo +"', '"+ precioMin +"', '"+ precioMax +"', '"+ habitaciones +"',"
                     + " '"+ baños +"', '"+ alqOVen +"')");
             System.out.println("filtros guardados con exito");
         }catch (SQLException ex) {
@@ -146,7 +148,7 @@ public class MantenerFiltrosController implements Initializable {
         Statement s2;
         try{
             s2 = con.getConnection().createStatement();
-            s2.executeUpdate("DELETE from filtros WHERE id = 1");
+            s2.executeUpdate("DELETE from filtros WHERE id = '"+ id +"'");
             System.out.println("Los filtros anteriores se borraron correctamente");
         }catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,13 +159,26 @@ public class MantenerFiltrosController implements Initializable {
         ResultSet rs;
         Statement st;
         try{st = con.getConnection().createStatement();
-            rs = st.executeQuery("SELECT id FROM filtros WHERE id = 1");
+            rs = st.executeQuery("SELECT id FROM filtros WHERE id = '"+ id +"'");
             if(rs.first()) {return true;}
             else {return false;}
         }catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }//fin catch 
         return false;
+     }
+     
+     private String obtenerId(String us, Conectar con) {
+         String res = "";
+         ResultSet r;
+         Statement st;
+          try{st = con.getConnection().createStatement();
+            r = st.executeQuery("SELECT id FROM usuario WHERE usuario = '"+ username +"'");
+            res = r.getNString(1);
+        }catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }//fin catch 
+        return res;
      }
      
 }
