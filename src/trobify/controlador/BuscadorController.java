@@ -47,6 +47,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import trobify.Conectar;
 
@@ -106,6 +107,8 @@ public class BuscadorController implements Initializable {
     private Button IniciarSesionBoton;
     @FXML
     private Hyperlink RegistrarseBoton;
+    @FXML
+    private WebView mapa;
     
     /**
      * Initializes the controller class.

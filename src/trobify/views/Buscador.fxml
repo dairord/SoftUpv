@@ -9,20 +9,19 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="617.0">
+      <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="617.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="100.0" prefWidth="627.0">
                <children>
-                  <ToolBar prefHeight="39.0" prefWidth="615.0">
+                  <ToolBar prefHeight="39.0" prefWidth="615.0" HBox.hgrow="ALWAYS">
                     <items>
                       <Button mnemonicParsing="false" onAction="#Inicio" text="Inicio" />
                         <HBox alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="549.0">
@@ -36,12 +35,18 @@
                            </children>
                         </HBox>
                     </items>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
                   </ToolBar>
                </children>
             </HBox>
             <VBox prefHeight="117.0" prefWidth="617.0" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="617.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="617.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Button mnemonicParsing="false" text="fav">
                            <HBox.margin>
@@ -76,73 +81,32 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="TOP_RIGHT" prefHeight="107.0" prefWidth="602.0">
+                  <HBox alignment="CENTER" prefHeight="107.0" prefWidth="602.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="45.0">
-                           <children>
-                              <Label fx:id="entradaText" prefHeight="17.0" prefWidth="51.0" text="Entrada:" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="123.0">
-                           <children>
-                              <DatePicker fx:id="fechaEntrada" prefHeight="25.0" prefWidth="129.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="13.0" />
-                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="38.0">
-                           <children>
-                              <Label fx:id="salidaText" prefHeight="17.0" prefWidth="45.0" text="Salida:" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="118.0">
-                           <children>
-                              <DatePicker fx:id="fechaSalida" prefHeight="25.0" prefWidth="129.0" />
-                           </children>
-                           <opaqueInsets>
-                              <Insets right="20.0" />
-                           </opaqueInsets>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="55.0" />
-                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="53.0">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="51.0" text="Ordenar:" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="157.0">
-                           <children>
-                              <ComboBox fx:id="ordenarPor" onAction="#ordenar" prefHeight="25.0" prefWidth="171.0" />
-                           </children>
-                        </VBox>
+                        <Label fx:id="entradaText" prefHeight="17.0" prefWidth="51.0" text="Entrada:" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="fechaEntrada" prefHeight="25.0" prefWidth="129.0" />
+                        <Label fx:id="salidaText" prefHeight="17.0" prefWidth="45.0" text="Salida:" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="fechaSalida" prefHeight="25.0" prefWidth="129.0" />
+                        <Label prefHeight="17.0" prefWidth="51.0" text="Ordenar:" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="ordenarPor" onAction="#ordenar" prefHeight="26.0" prefWidth="136.0" />
                      </children>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="589.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="589.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="25.0" prefWidth="175.0">
-                           <children>
-                              <TextField fx:id="ciudad" prefHeight="25.0" prefWidth="161.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="50.0" />
-                        <VBox prefHeight="25.0" prefWidth="118.0">
-                           <children>
-                              <ComboBox fx:id="variacionFecha" prefHeight="25.0" prefWidth="128.0" promptText="fechas excatas" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="25.0" prefWidth="51.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Button fx:id="botonGuardarFiltros" mnemonicParsing="false" onAction="#guardarFiltros" prefHeight="25.0" prefWidth="104.0" text="Guardar Filtros" />
-                           </children>
+                        <TextField fx:id="ciudad" prefHeight="26.0" prefWidth="186.0">
                            <HBox.margin>
-                              <Insets right="25.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="88.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#notificar" prefHeight="25.0" prefWidth="110.0" text="Notificarme" />
-                           </children>
-                        </VBox>
+                              <Insets right="30.0" />
+                           </HBox.margin></TextField>
+                        <ComboBox fx:id="variacionFecha" prefHeight="25.0" prefWidth="128.0" promptText="fechas excatas" />
+                        <Button fx:id="botonGuardarFiltros" mnemonicParsing="false" onAction="#guardarFiltros" prefHeight="25.0" prefWidth="104.0" text="Guardar Filtros" />
+                        <Button mnemonicParsing="false" onAction="#notificar" prefHeight="25.0" prefWidth="110.0" text="Notificarme" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <VBox.margin>
@@ -153,11 +117,7 @@
                <children>
                   <VBox minHeight="-Infinity" prefHeight="462.0" prefWidth="246.0" spacing="5.0">
                      <children>
-                        <ImageView fitHeight="155.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/Captura%20de%20pantalla%202021-03-10%20a%20las%2010.20.36.png" />
-                           </image>
-                        </ImageView>
+                        <WebView fx:id="mapa" prefHeight="200.0" prefWidth="200.0" />
                         <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="189.0">
                            <children>
                               <Label alignment="CENTER" text="Tipo de vivienda" />
@@ -259,11 +219,17 @@
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
                   </VBox>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="446.0">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="446.0" HBox.hgrow="ALWAYS">
                      <content>
-                        <VBox fx:id="listaViviendas" prefHeight="618.0" prefWidth="392.0" />
+                        <VBox fx:id="listaViviendas" prefHeight="618.0" prefWidth="392.0" spacing="10.0" />
                      </content>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
                   </ScrollPane>
                </children>
             </HBox>
