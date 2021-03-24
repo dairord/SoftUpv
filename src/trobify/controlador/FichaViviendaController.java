@@ -417,7 +417,7 @@ public class FichaViviendaController implements Initializable {
     //s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage, username);
+        InicioController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

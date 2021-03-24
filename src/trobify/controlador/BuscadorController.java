@@ -263,10 +263,11 @@ public class BuscadorController implements Initializable {
     private void Inicio(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
+        InicioController.pasarUsuario(estaIniciado, username);
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage, usuario);
+        InicioController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
@@ -278,9 +279,9 @@ public class BuscadorController implements Initializable {
         username = usuario;
      }
      
-    public static void pasarStage(Stage m, String us) {
+    public static void pasarStage(Stage m) {
         s = m;
-        usuario = us;
+        
     }
 
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {
@@ -452,7 +453,19 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void IniciarSesion(ActionEvent event) {
+    private void IniciarSesion(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
+        IniciarSesionController.deDondeViene("buscador");
+           s.close(); 
+        Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            IniciarSesionController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
+            
     }
 
     @FXML
@@ -465,10 +478,11 @@ public class BuscadorController implements Initializable {
     private void favBoton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
+        FavoritosController.pasarUsuario(username);
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        FavoritosController.pasarStage(stage, usuario);
+        FavoritosController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Favoritos");
         stage.show();

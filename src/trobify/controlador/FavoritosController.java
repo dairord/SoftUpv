@@ -103,7 +103,7 @@ public class FavoritosController implements Initializable {
         }
                                
         //Mostrar nombre de usuario
-        nombreUsuario.setText("Patricio");
+        nombreUsuario.setText(username);
         
         ordenarLista();   
     }    
@@ -360,15 +360,17 @@ public class FavoritosController implements Initializable {
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage, username);
+        InicioController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
         event.consume();
     }
    
-    public static void pasarStage(Stage m, String us){
+    public static void pasarStage(Stage m){
          s = m;
-         username = us;
      }
+    public static void pasarUsuario(String usu){
+        username = usu;
+    }
 }

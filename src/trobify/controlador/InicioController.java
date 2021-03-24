@@ -81,6 +81,8 @@ public class InicioController implements Initializable {
     //si está iniciado sesión
     if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
+        iniciaBoton.setVisible(false);
+        registrarse.setVisible(false);
     }
    //tipos de viviendas gabri
      ArrayList <String> tiposViviendas = new ArrayList <String> ();
@@ -135,6 +137,8 @@ public class InicioController implements Initializable {
     private void inicia(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
+         IniciarSesionController.deDondeViene("inicio");
+         s.close();
             Stage stage = new Stage();
             Scene scene = new Scene (fxmlLoader.load());
             IniciarSesionController.pasarStage(stage);
@@ -156,7 +160,7 @@ public class InicioController implements Initializable {
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage, username);
+             BuscadorController.pasarStage(stage);
              stage.setScene(scene);
              stage.setTitle("Buscar vivienda");
              stage.show();
@@ -165,9 +169,8 @@ public class InicioController implements Initializable {
      else mensajeError.setText("No existe ninguna vivienda con esas características");
     }
     
-    public static void pasarStage(Stage m, String us){
+    public static void pasarStage(Stage m){
          s = m;
-         username = us;
      }
     
     private boolean comprobaciones(){

@@ -5,6 +5,7 @@
  */
 package trobify.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,9 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -44,6 +47,9 @@ public class IniciarSesionController implements Initializable {
     private static Stage st;
     private String nom;
     private String pas;
+    private static String vieneDe;
+    private String direccion;
+    private String dondeVa;
     
     /**
      * Initializes the controller class.
@@ -56,21 +62,55 @@ public class IniciarSesionController implements Initializable {
                 ;
           aceptarBoton.disableProperty().bind(sePuedeBuscar);
        con = new Conectar();
+       
+       if(vieneDe.equals("buscador")){ 
+           direccion = "/trobify/views/Buscador.fxml";
+            dondeVa = "BuscadorController";}
+       else {direccion = "/trobify/views/Inicio.fxml";
+            dondeVa = "InicioController";}
     }    
 
     @FXML
-    private void atras(ActionEvent event) {
+    private void atras(ActionEvent event) throws IOException {
+      
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(direccion));
         st.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        InicioController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 
     @FXML
-    private void aceptar(ActionEvent event) {
-      if(consulta()){InicioController.pasarUsuario(true, nom);}
+    private void aceptar(ActionEvent event) throws IOException {
+      if(consulta()){
+          InicioController.pasarUsuario(true, nom);
+          BuscadorController.pasarUsuario(true, nom);
+         FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(direccion));
+        st.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+      }
     }
    
     public static void pasarStage(Stage m){
          st = m;
+        
      }
+    public static void deDondeViene (String donde){
+         vieneDe = donde;
+    }
     
     public boolean consulta(){
     
