@@ -55,6 +55,7 @@ public class FavoritosController implements Initializable {
     private ComboBox<String> elegirOrdenPor;
     private static Stage s;
     private static String username;
+    
     /**
      * Initializes the controller class.
      */
@@ -104,8 +105,9 @@ public class FavoritosController implements Initializable {
                                
         //Mostrar nombre de usuario
         nombreUsuario.setText(username);
-        
+             
         ordenarLista();   
+        
     }    
     
     
@@ -121,15 +123,16 @@ public class FavoritosController implements Initializable {
         botonRedireccion.setId(id);
         botonRedireccion.setOnAction( e-> {
             FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
-            
+            FichaViviendaController.deDondeViene("favoritos");
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
             s.close();
             Stage stage = new Stage();
             Scene scene;
             try {
+               FichaViviendaController.pasarUsuario(username);
                 scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage, username);
+                FichaViviendaController.pasarStage(stage);
                 stage.setScene(scene);
                 stage.setTitle("Trobify");
                 stage.show();

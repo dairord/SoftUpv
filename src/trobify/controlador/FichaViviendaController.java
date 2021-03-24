@@ -84,6 +84,8 @@ public class FichaViviendaController implements Initializable {
     ArrayList<String> listaServicios;
     int valoracion;
     int precioBase;
+    private static String deDondeViene;
+    private static String aDondeVa;
     
     @FXML
     private Text precioVivienda;
@@ -168,6 +170,9 @@ public class FichaViviendaController implements Initializable {
         final WebEngine engine = mapa.getEngine();
         engine.load(googleMaps.toExternalForm());
         
+        //para saber de donde viene y volver atrás correctamente
+        if(deDondeViene.equals("favoritos")) aDondeVa = "/trobify/views/Favoritos.fxml";
+        else aDondeVa = "/trobify/views/Buscador.fxml";
     }    
     
     //Generador de listaFotos
@@ -232,8 +237,9 @@ public class FichaViviendaController implements Initializable {
             Stage stage = new Stage();
             Scene scene;
             try {
+               FavoritosController.pasarUsuario(username);
                 scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage, username);
+                FichaViviendaController.pasarStage(stage);
                 stage.setScene(scene);
                 stage.setTitle("Trobify");
                 stage.show();
@@ -412,12 +418,13 @@ public class FichaViviendaController implements Initializable {
     @FXML
     private void atrasBoton(ActionEvent event) throws IOException {
          FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
-    //descomentamos esto cuando alguna clse vaya a esta    
-    //s.close();
+        fxmlLoader.setLocation(getClass().getResource(aDondeVa));
+    
+        s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
+        FavoritosController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
@@ -428,8 +435,13 @@ public class FichaViviendaController implements Initializable {
         id = i;
     }
     
-    public static void pasarStage(Stage m, String us){
+    public static void pasarStage(Stage m){
          s = m;
-         username = us;
      }
+    public static void deDondeViene(String donde){
+    deDondeViene = donde;
+    }
+    public static void pasarUsuario(String us){
+        username = us;
+    }
 }
