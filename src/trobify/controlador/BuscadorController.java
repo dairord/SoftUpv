@@ -121,6 +121,12 @@ public class BuscadorController implements Initializable {
     //cosas del usuario
     private static boolean estaIniciado;
     private static String username;
+    @FXML
+    private Button favoritos;
+    @FXML
+    private Button mensajes;
+    @FXML
+    private Button notificaciones;
     /**
      * Initializes the controller class.
      */
@@ -133,7 +139,13 @@ public class BuscadorController implements Initializable {
         IniciarSesionBoton.setVisible(false);
         RegistrarseBoton.setVisible(false);
         }
-        else nombreUsuario.setText("usuario");
+        else{ 
+            nombreUsuario.setText("usuario");
+            favoritos.setVisible(false);
+            mensajes.setVisible(false);
+            notificaciones.setVisible(false);
+            botonGuardarFiltros.setVisible(false);
+        }
         //Crear una conexion
         con = new Conectar();
        
