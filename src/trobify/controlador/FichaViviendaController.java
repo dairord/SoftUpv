@@ -77,7 +77,7 @@ public class FichaViviendaController implements Initializable {
      */
     
     Conectar con;
-    String id;
+    private static String id;
     Boolean estaEnFav;
     ArrayList<String> listaFotos;
     ArrayList<String> listaRecomendados;
@@ -98,7 +98,6 @@ public class FichaViviendaController implements Initializable {
         
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
-        this.id = "vivienda3";
         this.precioBase = consultarPrecio(id);
         
         //Mostrar botones de valoraciones de favortitos o no
@@ -139,7 +138,9 @@ public class FichaViviendaController implements Initializable {
         for (int i = 0; i < listaRecomendados.size(); i++){
             Button botonRecomendacion = new Button();
             botonRecomendacion.setPadding(new Insets(0, 0, 0, 0));
-            botonRecomendacion.setId("botonRecomendacion" +i);
+            botonRecomendacion.setId(consultarIdVivienda(listaRecomendados.get(i)));
+            System.out.println(botonRecomendacion.getId() + "este quiero");
+            configurarBoton(botonRecomendacion);
             try{
                 ImageView fotoBoton = galeria(listaRecomendados.get(i)); 
                 botonRecomendacion.setGraphic(fotoBoton);
@@ -185,7 +186,7 @@ public class FichaViviendaController implements Initializable {
         }
     }
 
-    //Generador de listaFotos
+    //Generador de listaRecomendados
     private void crearListaRecomendados(String id){        
         
         int precioAlto = this.precioBase + 150;
@@ -193,7 +194,7 @@ public class FichaViviendaController implements Initializable {
         int i = 0;
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM fotografia f WHERE f.id_vivienda IN (SELECT v.id FROM vivienda v WHERE v.id NOT LIKE '" + this.id + "' AND v.precio BETWEEN '" + precioBajo + "' AND '" + precioAlto + "')");
+            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM fotografia f WHERE f.id_vivienda IN (SELECT v.id FROM vivienda v WHERE v.id NOT LIKE '" + id + "' AND v.precio BETWEEN '" + precioBajo + "' AND '" + precioAlto + "')");
             if(rsl.first()){
                 rsl.beforeFirst();
                 while(rsl.next() && i < 3){
@@ -204,7 +205,43 @@ public class FichaViviendaController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
+    
+    public String consultarIdVivienda(String direccionFoto){
+        String idVivienda = "";
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery ("SELECT id_vivienda FROM fotografia WHERE id = '" + direccionFoto + "'");
+            idVivienda = rsl.getNString(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return idVivienda;
+    }
+    
+    //Funcion para poder moverte entre casas relacionadas a traves de botones en recomendados
+    public void configurarBoton(Button boton){
+        boton.setOnAction(e -> {
+            FichaViviendaController.pasarIdVivienda(boton.getId());
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
+            s.close();
+            Stage stage = new Stage();
+            Scene scene;
+            try {
+                scene = new Scene(fxmlLoader.load());
+                FichaViviendaController.pasarStage(stage, username);
+                stage.setScene(scene);
+                stage.setTitle("Trobify");
+                stage.show();
+            } catch (IOException ex) {
+                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
 
     //Metodo para obtener y generar una foto a partir de una direccion
     private javafx.scene.image.ImageView galeria(String source) throws FileNotFoundException{  
@@ -386,4 +423,13 @@ public class FichaViviendaController implements Initializable {
         stage.show();
         event.consume();
     }
+    
+    public static void pasarIdVivienda(String i){
+        id = i;
+    }
+    
+    public static void pasarStage(Stage m, String us){
+         s = m;
+         username = us;
+     }
 }

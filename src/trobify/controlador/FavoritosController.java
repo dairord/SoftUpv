@@ -119,6 +119,24 @@ public class FavoritosController implements Initializable {
         Button botonRedireccion = new Button();
         botonRedireccion.setPadding(new Insets(0,0,0,0));
         botonRedireccion.setId(id);
+        botonRedireccion.setOnAction( e-> {
+            FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
+            
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
+            s.close();
+            Stage stage = new Stage();
+            Scene scene;
+            try {
+                scene = new Scene(fxmlLoader.load());
+                FichaViviendaController.pasarStage(stage, username);
+                stage.setScene(scene);
+                stage.setTitle("Trobify");
+                stage.show();
+            } catch (IOException ex) {
+                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        });
                 
         Image image1 = new Image(new FileInputStream(rutaFoto));
         javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
@@ -155,8 +173,7 @@ public class FavoritosController implements Initializable {
             } catch (SQLException ex) {
                 Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        );
+        });
         
         eliminarFav.getChildren().add(botonEliminar);
         
@@ -338,7 +355,7 @@ public class FavoritosController implements Initializable {
 
     @FXML
     private void InicioBoton(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
         s.close();
         Stage stage = new Stage();
