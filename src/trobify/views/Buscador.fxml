@@ -9,6 +9,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -48,20 +50,41 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="617.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button fx:id="favoritos" mnemonicParsing="false" onAction="#favBoton" text="fav">
+                        <Button fx:id="favoritos" mnemonicParsing="false" onAction="#favBoton">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/favo.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <Button fx:id="mensajes" mnemonicParsing="false" text="mens">
+                        <Button fx:id="mensajes" mnemonicParsing="false">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/mensaje.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <Button fx:id="notificaciones" mnemonicParsing="false" text="notif">
+                        <Button fx:id="notificaciones" mnemonicParsing="false" prefHeight="49.0" prefWidth="47.0">
                            <HBox.margin>
                               <Insets right="35.0" />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/notificacion.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
                         <Label prefHeight="28.0" prefWidth="98.0" text="Bienvenido">
                            <HBox.margin>
