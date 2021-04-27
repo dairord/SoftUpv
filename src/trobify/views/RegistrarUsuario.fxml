@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
          <items>
-            <Button mnemonicParsing="false" onAction="#stras" text="Atrás" />
+            <Button mnemonicParsing="false" onAction="#atras" text="Atrás" />
          </items>
       </ToolBar>
       <HBox prefHeight="523.0" prefWidth="600.0">
@@ -168,7 +168,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="245.0">
                            <children>
-                              <Button mnemonicParsing="false">
+                              <Button fx:id="tarjeta" mnemonicParsing="false">
                                  <graphic>
                                     <ImageView fitHeight="52.0" fitWidth="112.0" onDragDetected="#tarjeta" pickOnBounds="true" preserveRatio="true">
                                        <image>

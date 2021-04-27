@@ -33,7 +33,7 @@
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Hyperlink fx:id="registrarse" text="Registrate" underline="true">
+                  <Hyperlink fx:id="registrarse" onAction="#registrar" text="Registrate" underline="true">
                      <HBox.margin>
                         <Insets top="12.0" />
                      </HBox.margin>

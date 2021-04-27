@@ -201,16 +201,33 @@ public class InicioController implements Initializable {
       
        return true;
  }//fin consulta
- public static void pasarUsuario(boolean iniciado, String usuario){
+ 
+    public static void pasarUsuario(boolean iniciado, String usuario){
      estaIniciado = iniciado;
      username = usuario;
         
     }
- private void bienvenido(){
+ 
+     private void bienvenido(){
      if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
         iniciaBoton.setVisible(false);
         registrarse.setVisible(false);
     }
  }
+
+    @FXML
+    private void registrar(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarUsuario.fxml"));
+         RegistrarUsuarioController.deDondeViene("inicio");
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            RegistrarUsuarioController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
+    }
 }

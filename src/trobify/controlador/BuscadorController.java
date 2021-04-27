@@ -469,7 +469,18 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void Registrarse(ActionEvent event) {
+    private void Registrarse(ActionEvent event) throws IOException {
+         FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarUsuario.fxml"));
+        RegistrarUsuarioController.deDondeViene("buscador");
+           s.close(); 
+        Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            RegistrarUsuarioController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
     }
 
    
