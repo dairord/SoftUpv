@@ -4,12 +4,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
    <children>
@@ -24,7 +26,7 @@
                <children>
                   <HBox prefHeight="41.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="322.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="252.0">
                            <children>
                               <Label text="Nombre de usuario">
                                  <VBox.margin>
@@ -36,16 +38,25 @@
                               <Insets />
                            </opaqueInsets>
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="469.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="431.0">
                            <children>
-                              <TextField />
+                              <TextField fx:id="username" prefHeight="25.0" prefWidth="340.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="41.0" prefWidth="148.0">
+                           <children>
+                              <Label fx:id="usuIncorrecto" prefHeight="17.0" prefWidth="34.0" text="   " textFill="#ff0101">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="44.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="95.0" prefWidth="332.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="313.0">
                            <children>
                               <Label text="Contraseña">
                                  <VBox.margin>
@@ -54,16 +65,25 @@
                               </Label>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="480.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="491.0">
                            <children>
-                              <TextField />
+                              <PasswordField fx:id="contraseña" prefHeight="25.0" prefWidth="327.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="44.0" prefWidth="209.0">
+                           <children>
+                              <Label text="   " textFill="#fc0101">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="45.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="330.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="281.0">
                            <children>
                               <Label text="Repetir contraseña">
                                  <VBox.margin>
@@ -72,16 +92,25 @@
                               </Label>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="478.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="462.0">
                            <children>
-                              <TextField />
+                              <PasswordField fx:id="repetirContraseña" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="178.0">
+                           <children>
+                              <Label fx:id="contraIncorrecta" text="   " textFill="#f80505">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="45.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="327.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="293.0">
                            <children>
                               <Label text="Nombre">
                                  <VBox.margin>
@@ -92,14 +121,19 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="473.0">
                            <children>
-                              <TextField />
+                              <TextField fx:id="nombre" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="191.0">
+                           <children>
+                              <Label />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="46.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="333.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="300.0">
                            <children>
                               <Label text="Apellidos">
                                  <VBox.margin>
@@ -110,14 +144,19 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="480.0">
                            <children>
-                              <TextField />
+                              <TextField fx:id="apellidos" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="46.0" prefWidth="199.0">
+                           <children>
+                              <Label />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="45.0" prefWidth="471.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="328.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="294.0">
                            <children>
                               <Label text="DNI / NIF">
                                  <VBox.margin>
@@ -128,7 +167,12 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="474.0">
                            <children>
-                              <TextField />
+                              <TextField fx:id="dni" prefHeight="25.0" prefWidth="325.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="192.0">
+                           <children>
+                              <Label />
                            </children>
                         </VBox>
                      </children>
@@ -137,7 +181,7 @@
                      <children>
                         <HBox prefHeight="66.0" prefWidth="474.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="322.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="280.0">
                                  <children>
                                     <Label text="Teléfono">
                                        <VBox.margin>
@@ -148,11 +192,20 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="465.0">
                                  <children>
-                                    <TextField />
+                                    <TextField fx:id="telefono" prefHeight="25.0" prefWidth="370.0" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
+                        <VBox prefHeight="47.0" prefWidth="64.0">
+                           <children>
+                              <Label textFill="#fc0000">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="54.0" prefWidth="471.0">
@@ -194,9 +247,14 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="48.0" prefWidth="227.0">
                            <children>
-                              <Button fx:id="registrarmeButton" mnemonicParsing="false" onAction="#Registrarme" text="Registrarme" />
+                              <Button fx:id="registrarmeBoton" mnemonicParsing="false" onAction="#Registrarme" text="Registrarme" />
                            </children>
                         </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0">
+                     <children>
+                        <Label fx:id="errorText" text="                                                           " textFill="#f50303" />
                      </children>
                   </HBox>
                </children>
