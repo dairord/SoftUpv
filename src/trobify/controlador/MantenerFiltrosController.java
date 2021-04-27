@@ -69,7 +69,7 @@ public class MantenerFiltrosController implements Initializable {
         }
          else {//Opción comprar o alquilar sin fechas en los datepicker
              if (comprobarFiltros(con)) {
-                borrarFiltrosAnteriores(con);
+                 borrarFiltrosAnteriores(con);
                 insertarFiltrosSinFechas(con);
             }
             else {insertarFiltrosSinFechas(con);}
