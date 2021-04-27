@@ -8,20 +8,24 @@ package trobify.controlador;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Usuario
  */
-public class TarjetaDeCreditoController implements Initializable {
+public class TarjetaController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    private static Stage s; 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
     
+     public static void pasarStage(Stage m){
+         s = m;
+        
+     }
 }

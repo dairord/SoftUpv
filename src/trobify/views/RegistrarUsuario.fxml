@@ -168,9 +168,9 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="245.0">
                            <children>
-                              <Button fx:id="tarjeta" mnemonicParsing="false">
+                              <Button mnemonicParsing="false" onAction="#tajeta">
                                  <graphic>
-                                    <ImageView fitHeight="52.0" fitWidth="112.0" onDragDetected="#tarjeta" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="52.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/tarjetaDeCredito.png" />
                                        </image>

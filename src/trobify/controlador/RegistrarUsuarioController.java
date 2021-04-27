@@ -32,8 +32,6 @@ public class RegistrarUsuarioController implements Initializable {
     private Button registrarmeButton;
     @FXML
     private Button foto;
-    @FXML
-    private Button tarjeta;
 
     Conectar con;
     private static Stage s;
@@ -56,17 +54,14 @@ public class RegistrarUsuarioController implements Initializable {
     
     }    
 
-    @FXML
-    private void tarjeta(MouseEvent event) {
-    }
-
+   
     @FXML
     private void Registrarme(ActionEvent event) {
     }
 
     @FXML
     private void atras(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(direccion));
         s.close();
         Stage stage = new Stage();
@@ -84,5 +79,19 @@ public class RegistrarUsuarioController implements Initializable {
      }
     public static void deDondeViene (String donde){
          vieneDe = donde;
+    }
+
+    @FXML
+    private void tajeta(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Tarjeta.fxml"));
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        TarjetaController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 }
