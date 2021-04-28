@@ -7,7 +7,12 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
@@ -37,7 +42,7 @@ public class RegistrarUsuarioController implements Initializable {
     private Button foto;
 
     Conectar con;
-    private static Stage s;
+    private static Stage st;
     private String nom;
     private String pas;
     private static String vieneDe;
@@ -60,17 +65,19 @@ public class RegistrarUsuarioController implements Initializable {
     @FXML
     private TextField dni;
     @FXML
-    private TextField telefono;
-    @FXML
     private Button registrarmeBoton;
     @FXML
     private Label errorText;
+    @FXML
+    private TextField email;
+    
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+      con = new Conectar();
     //ruta para volver atras
         if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";
@@ -85,24 +92,77 @@ public class RegistrarUsuarioController implements Initializable {
                  .or(Bindings.isEmpty(nombre.textProperty()))
                  .or(Bindings.isEmpty(apellidos.textProperty()))
                  .or(Bindings.isEmpty(dni.textProperty()))
-                 .or(Bindings.isEmpty(telefono.textProperty()))
+                 .or(Bindings.isEmpty(email.textProperty()))
+                 
                  ;
-                
-          registrarmeBoton.disableProperty().bind(sePuedeBuscar);
-       con = new Conectar();
+         registrarmeBoton.disableProperty().bind(sePuedeBuscar);
+     
         
     }    
 
+   private boolean errorContraseña(){
+       if(!contraseña.getText().equals(repetirContraseña.getText())) {
+           repetirContraseña.setText("");
+           contraIncorrecta.setText(" *");
+           errorText.setText("Debes introducir la misma contraseña.");
+           return false;
+       }
+       return true;
+   }
    
+   private boolean usuarioNoRepetido(){
+       Statement s;
+        try {
+            s = con.getConnection().createStatement();
+             ResultSet rs = s.executeQuery ("select id from usuario where id = '"
+             + username.getText() + " '");
+            if (rs.first())   {
+                System.out.println (rs.getString("id"));
+                usuIncorrecto.setText(" *");
+                errorText.setText("Nombre de usuario ya en uso.");
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+   }
+    
     @FXML
-    private void Registrarme(ActionEvent event) {
+    private void Registrarme(ActionEvent event) throws IOException {
+       if(usuarioNoRepetido() && errorContraseña()){
+       try {
+         Statement stm = con.getConnection().createStatement();
+                stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
+                        + username.getText() + "','" + dni.getText() + "','" + contraseña.getText() + "','" + nombre.getText() + "','" + 
+                        apellidos.getText() + "','" + email.getText() + "')");   
+                estaRegistrado();
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }//fin if
+    } // fin metodo
+    
+    //volver al inicio o buscador con la sesion iniciada
+    private void estaRegistrado() throws IOException{
+        InicioController.pasarUsuario(true, username.getText());
+        BuscadorController.pasarUsuario(true, username.getText());
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(direccion));
+        st.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
     }
-
     @FXML
     private void atras(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(direccion));
-        s.close();
+        st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
@@ -113,7 +173,7 @@ public class RegistrarUsuarioController implements Initializable {
     }
     
      public static void pasarStage(Stage m){
-         s = m;
+         st = m;
         
      }
     public static void deDondeViene (String donde){
@@ -124,7 +184,7 @@ public class RegistrarUsuarioController implements Initializable {
     private void tajeta(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Tarjeta.fxml"));
-        s.close();
+        st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         TarjetaController.pasarStage(stage);

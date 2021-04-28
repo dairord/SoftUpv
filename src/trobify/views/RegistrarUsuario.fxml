@@ -183,7 +183,7 @@
                            <children>
                               <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="280.0">
                                  <children>
-                                    <Label text="Teléfono">
+                                    <Label text="email">
                                        <VBox.margin>
                                           <Insets left="15.0" />
                                        </VBox.margin>
@@ -192,7 +192,7 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="465.0">
                                  <children>
-                                    <TextField fx:id="telefono" prefHeight="25.0" prefWidth="370.0" />
+                                    <TextField fx:id="email" prefHeight="25.0" prefWidth="370.0" />
                                  </children>
                               </VBox>
                            </children>
