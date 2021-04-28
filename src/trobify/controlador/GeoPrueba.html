@@ -9,6 +9,20 @@
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE">
         </script>
         <script type="text/javascript">
+           function geocode(location){
+		   
+		   var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+			//var location = 'address=valencia';
+			var key = '&key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE';
+			
+			var res = url+location+key;
+			fetch(res)
+			.then(response => response.json())
+				.then(data => document.map.setCenter(data.results[0].geometry.location));
+		   
+		   }
+		   
+		   
             function initialize() {
             var latlng = new google.maps.LatLng(37.39822, -121.9643936);
             var myOptions = {
@@ -45,16 +59,6 @@
             }
             document.setMapTypeTerrain = function setMapTypeTerrain() {
             document.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
-            }
-
-            document.goToLocation = function goToLocation(searchString) {
-            document.geocoder.geocode( {'address': searchString}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-            document.map.setCenter(results[0].geometry.location);
-            } else {
-            alert("Geocode was not successful for the following reason: " + status);
-            }
-            });
             }
             }
         </script>

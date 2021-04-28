@@ -157,6 +157,7 @@ public class InicioController implements Initializable {
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
          BuscadorController.pasarUsuario(estaIniciado, username);
          BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue(), alqOVen);
+         BuscadorController.pasarLocalizacion(ciudadText.getText());
          s.close();
             Stage stage = new Stage();
              Scene scene = new Scene (fxmlLoader.load());
@@ -182,7 +183,7 @@ public class InicioController implements Initializable {
         //alquilar o vender
        if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
       else alqOVen = 2;
-       return consulta();
+       return true;
     }
     
     public boolean consulta(){

@@ -24,9 +24,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +53,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 import trobify.Conectar;
 
 /**
@@ -117,7 +121,7 @@ public class BuscadorController implements Initializable {
     private String pMin;
     private String pMax;
     private String comoOrdenar;
-    
+
     //cosas del usuario
     private static boolean estaIniciado;
     private static String username;
@@ -127,6 +131,7 @@ public class BuscadorController implements Initializable {
     private Button mensajes;
     @FXML
     private Button notificaciones;
+
     /**
      * Initializes the controller class.
      */
@@ -134,12 +139,11 @@ public class BuscadorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println(username);
         //compobar si ha iniciado sesión
-        if(estaIniciado){
+        if (estaIniciado) {
             nombreUsuario.setText(username);
-        IniciarSesionBoton.setVisible(false);
-        RegistrarseBoton.setVisible(false);
-        }
-        else{ 
+            IniciarSesionBoton.setVisible(false);
+            RegistrarseBoton.setVisible(false);
+        } else {
             nombreUsuario.setText("usuario");
             favoritos.setVisible(false);
             mensajes.setVisible(false);
@@ -148,7 +152,7 @@ public class BuscadorController implements Initializable {
         }
         //Crear una conexion
         con = new Conectar();
-       
+
         //boton buscar desactivado si no están todos los filtros
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
                 .or(Bindings.isEmpty(precioMax.textProperty()))
@@ -156,7 +160,7 @@ public class BuscadorController implements Initializable {
                 .or(Bindings.isEmpty(numBaños.textProperty()))
                 .or(Bindings.isEmpty(numHabitaciones.textProperty())) // .or(Bindings.)
                 ;
-         botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
+        botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
 
         //no poder seleccionar fechas anteriores a hoy
         fechaEntrada.setDayCellFactory((DatePicker picker) -> {
@@ -209,7 +213,7 @@ public class BuscadorController implements Initializable {
         ObservableList<String> ordenar = FXCollections.observableList(orden);
         ordenarPor.setItems(ordenar);
         ordenarPor.getSelectionModel().selectFirst();
- 
+
         if (alqOVen != 1) {
             ArrayList<String> varf = new ArrayList<String>();
             varf.add("Fechas exactas");
@@ -226,28 +230,48 @@ public class BuscadorController implements Initializable {
 
         viviendasList = new ArrayList();
         comprobaciones();
-       
+
         //Inicialización del WebView para que se muestre GoogleMaps
         System.setProperty("java.net.useSystemProxies", "true");
-        final URL googleMaps = getClass().getResource("GeoPrueba.html");
-        final WebEngine engine = mapa.getEngine();
+        googleMaps = getClass().getResource("GeoPrueba.html");
+        engine = mapa.getEngine();
         engine.load(googleMaps.toExternalForm());
-    } //fin initialice
+        engine.getLoadWorker().stateProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                System.out.println("oldValue: " + oldValue);
+                System.out.println("newValue: " + newValue);
 
+                if (newValue != Worker.State.SUCCEEDED) {
+                    return;
+                }
+                System.out.println("Succeeded!");
+                 
+                JSObject jsObject = (JSObject) engine.executeScript("window");
+                jsObject.call("geocode", location);
+                
+            }
+        }
+        );
+    } //fin initialice
+    private URL googleMaps;
+    private WebEngine engine;
+    public static String location;
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
-       FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
-            MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
-                    precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), usuario);
-            Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load());
-            MantenerFiltrosController.pasarStage(stage);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
+        MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
+                precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), usuario);
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        MantenerFiltrosController.pasarStage(stage);
 
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 
     @FXML
@@ -256,7 +280,10 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-       comprobaciones();
+        
+        comprobaciones();
+
+        
     }
 
     @FXML
@@ -274,14 +301,14 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
-     public static void pasarUsuario(boolean iniciado, String usuario){
+    public static void pasarUsuario(boolean iniciado, String usuario) {
         estaIniciado = iniciado;
         username = usuario;
-     }
-     
+    }
+
     public static void pasarStage(Stage m) {
         s = m;
-        
+
     }
 
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {
@@ -289,83 +316,104 @@ public class BuscadorController implements Initializable {
         tip = t;
         alqOVen = queBuscas;
     }
+    
+    public static void pasarLocalizacion(String local){
+        location = local;
+    }
 
     @FXML
     private void ordenar(ActionEvent event) {
         comprobaciones();
     }
 
-    private void comprobaciones(){
-       viviendasList.clear();
-       listaViviendas.getChildren().clear();
+    private void comprobaciones() {
+        viviendasList.clear();
+        listaViviendas.getChildren().clear();
         //comprobación tipos
-        if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipo = " and tipo = 1";
-        else if(tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipo = " and tipo = 2";
-        else tipo = "";
-       
+        if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) {
+            tipo = " and tipo = 1";
+        } else if (tipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {
+            tipo = " and tipo = 2";
+        } else {
+            tipo = "";
+        }
+
         //comprobación precio minimo
-       if(!precioMin.getText().equals("")) pMin = " and precio > " + Integer.valueOf(precioMin.getText());
-       else pMin = "";
-       //cpmprobacion precio maximo
-       if(!precioMax.getText().equals("")) pMax = " and precio < " + Integer.valueOf(precioMax.getText());
-       else pMax = "";
-       
-       //comprobacion numero baños
-       if(!numBaños.getText().equals("")) baños = " and baños = " + Integer.valueOf(numBaños.getText());
-       else baños = "";
-       
-       //compprobacion numero de habitaciones
-       if(!numHabitaciones.getText().equals("")) habita = " and habitaciones = " + Integer.valueOf(numHabitaciones.getText());
-       else habita = "";
-       
-       //comprobar orden
-       if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) {
+        if (!precioMin.getText().equals("")) {
+            pMin = " and precio > " + Integer.valueOf(precioMin.getText());
+        } else {
+            pMin = "";
+        }
+        //cpmprobacion precio maximo
+        if (!precioMax.getText().equals("")) {
+            pMax = " and precio < " + Integer.valueOf(precioMax.getText());
+        } else {
+            pMax = "";
+        }
+
+        //comprobacion numero baños
+        if (!numBaños.getText().equals("")) {
+            baños = " and baños = " + Integer.valueOf(numBaños.getText());
+        } else {
+            baños = "";
+        }
+
+        //compprobacion numero de habitaciones
+        if (!numHabitaciones.getText().equals("")) {
+            habita = " and habitaciones = " + Integer.valueOf(numHabitaciones.getText());
+        } else {
+            habita = "";
+        }
+
+        //comprobar orden
+        if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Relevancia")) {
             comoOrdenar = "id";
-       } else if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) {
+        } else if (ordenarPor.getSelectionModel().selectedItemProperty().getValue().equals("Precio más bajo")) {
             comoOrdenar = "precio ASC";
-       } else {
+        } else {
             comoOrdenar = "precio DESC";
-       }
-       consulta();
+        }
+        consulta();
     }//fin comprobaciones
-    
+
     //metodo nuevo de sql
-    private void consulta(){
-        
+    private void consulta() {
+
         ResultSet rs;
         Statement s;
-        
-         try {
+
+        try {
             s = con.getConnection().createStatement();
-            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciudad.getText() 
-                    + "' and ventaAlquiler = " + alqOVen + tipo + pMin + pMax + baños + habita 
+            rs = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText()
+                    + "' and ventaAlquiler = " + alqOVen + tipo + pMin + pMax + baños + habita
                     + " order by " + comoOrdenar);
-            
+
             if (rs.first()) {
-                    System.out.println(rs.getString("id"));
-                    rs.beforeFirst();
-                    while (rs.next()) {
-                        viviendasList.add(rs.getString("id"));
-                    }
-                     listaViviendas.getChildren().clear();
+                System.out.println(rs.getString("id"));
+                rs.beforeFirst();
+                while (rs.next()) {
+                    viviendasList.add(rs.getString("id"));
+                }
+                listaViviendas.getChildren().clear();
                 ordenarLista();
             } //fin if
-            else listaViviendas.getChildren().clear();
-            
+            else {
+                listaViviendas.getChildren().clear();
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-     
+
     }//fin consulta
-  
+
     //generador de miniaturas
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException {
 
         javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();
-        
+
         Button botonRedireccion = new Button();
-        botonRedireccion.setPadding(new Insets(0,0,0,0));
+        botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
 
         miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -457,33 +505,31 @@ public class BuscadorController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
         IniciarSesionController.deDondeViene("buscador");
-           s.close(); 
+        s.close();
         Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            IniciarSesionController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
-            
+        Scene scene = new Scene(fxmlLoader.load());
+        IniciarSesionController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+
     }
 
     @FXML
     private void Registrarse(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarUsuario.fxml"));
         RegistrarUsuarioController.deDondeViene("buscador");
-           s.close(); 
+        s.close();
         Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            RegistrarUsuarioController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
+        Scene scene = new Scene(fxmlLoader.load());
+        RegistrarUsuarioController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
-
-   
 
     @FXML
     private void favBoton(ActionEvent event) throws IOException {
@@ -500,5 +546,4 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
-        
 }// fin clase
