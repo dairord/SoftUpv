@@ -131,12 +131,17 @@ public class BuscadorController implements Initializable {
     private Button mensajes;
     @FXML
     private Button notificaciones;
+    @FXML
+    private Label agente;
+   
+   
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+      
         System.out.println(username);
         //compobar si ha iniciado sesión
         if (estaIniciado) {
@@ -546,4 +551,5 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
+    
 }// fin clase

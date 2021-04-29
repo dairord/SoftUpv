@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
       <HBox prefHeight="100.0" prefWidth="627.0">
          <children>
@@ -47,6 +47,11 @@
          <children>
             <HBox alignment="CENTER" prefHeight="41.0" prefWidth="617.0" VBox.vgrow="ALWAYS">
                <children>
+                  <Label fx:id="agente" prefHeight="30.0" prefWidth="97.0" textFill="#0a06f5">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
                   <Button fx:id="favoritos" mnemonicParsing="false" onAction="#favBoton">
                      <HBox.margin>
                         <Insets left="100.0" right="20.0" />
@@ -83,7 +88,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Label prefHeight="28.0" prefWidth="98.0" text="Bienvenido">
+                  <Label prefHeight="28.0" prefWidth="107.0" text="Bienvenido">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>

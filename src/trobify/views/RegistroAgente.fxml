@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistroAgenteController">
+   <children>
+      <HBox prefHeight="59.0" prefWidth="600.0" />
+      <HBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="usuario">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="64.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="194.0">
+               <children>
+                  <Label text="Código agencia" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="459.0">
+               <children>
+                  <TextField fx:id="codigo">
+                     <VBox.margin>
+                        <Insets right="30.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="60.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="60.0" prefWidth="198.0">
+               <children>
+                  <Label text="Contraseña" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="60.0" prefWidth="463.0">
+               <children>
+                  <PasswordField fx:id="contraseña">
+                     <VBox.margin>
+                        <Insets right="30.0" />
+                     </VBox.margin>
+                  </PasswordField>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="errorText" />
+         </children>
+      </HBox>
+      <HBox prefHeight="85.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="523.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="503.0">
+               <children>
+                  <Button fx:id="confirmarBoton" mnemonicParsing="false" onAction="#confirmar" text="Confirmar" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

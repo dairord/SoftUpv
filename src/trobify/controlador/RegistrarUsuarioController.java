@@ -136,11 +136,15 @@ public class RegistrarUsuarioController implements Initializable {
                 stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
                         + username.getText() + "','" + dni.getText() + "','" + contraseña.getText() + "','" + nombre.getText() + "','" + 
                         apellidos.getText() + "','" + email.getText() + "')");   
+               if(agenteCheck.isSelected()){
+                   esAgente();
+               }else
                 estaRegistrado();
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
      }//fin if
+       
     } // fin metodo
     
     //volver al inicio o buscador con la sesion iniciada
@@ -158,6 +162,20 @@ public class RegistrarUsuarioController implements Initializable {
         stage.setTitle("Trobify");
         stage.show();
     }
+    
+    //ir a la pagina para registrarse como agente
+    private void esAgente() throws IOException{
+        RegistroAgenteController.pasarDatos(true, username.getText(), direccion);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistroAgente.fxml"));
+        st.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        RegistroAgenteController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+    }
     @FXML
     private void atras(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -166,6 +184,7 @@ public class RegistrarUsuarioController implements Initializable {
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

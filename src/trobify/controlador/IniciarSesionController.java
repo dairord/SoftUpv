@@ -72,13 +72,13 @@ public class IniciarSesionController implements Initializable {
 
     @FXML
     private void atras(ActionEvent event) throws IOException {
-      
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(direccion));
         st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
@@ -88,9 +88,9 @@ public class IniciarSesionController implements Initializable {
     @FXML
     private void aceptar(ActionEvent event) throws IOException {
       if(consulta()){
-          InicioController.pasarUsuario(true, nom);
-          BuscadorController.pasarUsuario(true, nom);
-         FXMLLoader fxmlLoader = new FXMLLoader();
+         InicioController.pasarUsuario(true, nom);
+         BuscadorController.pasarUsuario(true, nom);
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(direccion));
         st.close();
         Stage stage = new Stage();
