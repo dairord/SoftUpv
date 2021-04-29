@@ -462,7 +462,7 @@ public class BuscadorController implements Initializable {
 
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT direccion FROM vivienda WHERE id = '" + id + "'");
+            ResultSet rsl = stm.executeQuery("SELECT calle FROM vivienda WHERE id = '" + id + "'");
             if (rsl.first()) {
                 return rsl.getNString(1);
             }
@@ -547,6 +547,19 @@ public class BuscadorController implements Initializable {
         FavoritosController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Favoritos");
+        stage.show();
+        event.consume();
+    }
+
+    @FXML
+    private void notifica(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        NotificacionesController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
         stage.show();
         event.consume();
     }

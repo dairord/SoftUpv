@@ -120,11 +120,11 @@ public class IniciarSesionController implements Initializable {
        Statement s;
         try {
             s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select usuario from usuario where usuario = '"
+             ResultSet rs = s.executeQuery ("select id from usuario where id = '"
              + nom + " ' and password = '" + pas + " '");
             if (rs.first())   {
                 st.close(); 
-                System.out.println (rs.getString("usuario"));
+                System.out.println (rs.getString("id"));
                 return true;
             } else{ 
                 mensajeError.setText("Nombre de usuario o contraseña incorrecto");

@@ -76,7 +76,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="notificaciones" mnemonicParsing="false" prefHeight="49.0" prefWidth="47.0">
+                  <Button fx:id="notificaciones" mnemonicParsing="false" onAction="#notifica" prefHeight="49.0" prefWidth="47.0">
                      <HBox.margin>
                         <Insets right="35.0" />
                      </HBox.margin>

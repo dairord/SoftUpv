@@ -43,11 +43,9 @@ public class RegistrarUsuarioController implements Initializable {
 
     Conectar con;
     private static Stage st;
-    private String nom;
-    private String pas;
     private static String vieneDe;
     private String direccion;
-    private String dondeVa;
+    
     @FXML
     private TextField username;
     @FXML
@@ -81,9 +79,9 @@ public class RegistrarUsuarioController implements Initializable {
     //ruta para volver atras
         if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";
-            dondeVa = "BuscadorController";}
+            }
        else {direccion = "/trobify/views/Inicio.fxml";
-            dondeVa = "InicioController";}
+           }
     
     //boton registrar desactivado hasta que haya datos
          final BooleanBinding sePuedeBuscar = Bindings.isEmpty(username.textProperty())
@@ -192,9 +190,9 @@ public class RegistrarUsuarioController implements Initializable {
     }
     
      public static void pasarStage(Stage m){
-         st = m;
-        
+         st = m;  
      }
+     
     public static void deDondeViene (String donde){
          vieneDe = donde;
     }

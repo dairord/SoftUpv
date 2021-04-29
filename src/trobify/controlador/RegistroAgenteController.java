@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +57,12 @@ public class RegistroAgenteController implements Initializable {
         
      //conexion bd
       con = new Conectar();
-        
+      
+      //boton desactivado
+       final BooleanBinding bb = Bindings.isEmpty(codigo.textProperty())
+               .or(Bindings.isEmpty(contraseña.textProperty()))  ;
+         confirmarBoton.disableProperty().bind(bb);
+       
     }    
     
      public static void pasarStage(Stage m){
