@@ -171,7 +171,8 @@ public class FavoritosController implements Initializable {
             //Falta avisar que vas a eliminar
             try {
                 Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + botonEliminar.getId() + "'");
+                stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + botonEliminar.getId() + "' and id_cliente = '"
+                + username +"'");
                 ordenCambiado(null);
             } catch (SQLException ex) {
                 Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,6 +191,7 @@ public class FavoritosController implements Initializable {
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
+            
             if (rsl.first()) return rsl.getNString(1);
             
         } catch (SQLException ex) {
@@ -204,7 +206,7 @@ public class FavoritosController implements Initializable {
         
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT direccion FROM vivienda WHERE id = '" + id + "'");
+            ResultSet rsl = stm.executeQuery("SELECT calle FROM vivienda WHERE id = '" + id + "'");
             if (rsl.first()) return rsl.getNString(1);
             
         } catch (SQLException ex) {
@@ -248,7 +250,7 @@ public class FavoritosController implements Initializable {
     private void ordenarPrecio(){
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT id FROM favoritos");
+            ResultSet rsl = stm.executeQuery ("SELECT id FROM favoritos WHERE id_cliente = '" + username + " '");
             if(rsl.first()){
                 rsl.beforeFirst();
                 while (rsl.next()) {
@@ -264,7 +266,7 @@ public class FavoritosController implements Initializable {
     private void ordenarPrecioBajo(){
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id ORDER BY precio ASC");
+            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY precio ASC");
             if(rsl.first()){
                 rsl.beforeFirst();
                 while (rsl.next()) {
@@ -279,7 +281,7 @@ public class FavoritosController implements Initializable {
     private void ordenarPrecioAlto(){
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id ORDER BY precio DESC");
+            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY precio DESC");
             if(rsl.first()){
                 rsl.beforeFirst();
                 while (rsl.next()) {
@@ -294,7 +296,7 @@ public class FavoritosController implements Initializable {
     private void ordenarValoracion(){
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id ORDER BY valoracion DESC");
+            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY valoracion DESC");
             if(rsl.first()){
                 rsl.beforeFirst();
                 while (rsl.next()) {
@@ -359,11 +361,11 @@ public class FavoritosController implements Initializable {
     @FXML
     private void InicioBoton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Inicio.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

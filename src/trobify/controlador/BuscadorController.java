@@ -553,6 +553,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void notifica(ActionEvent event) throws IOException {
+        NotificacionesController.pasarUsuario(username);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
         Stage stage = new Stage();
