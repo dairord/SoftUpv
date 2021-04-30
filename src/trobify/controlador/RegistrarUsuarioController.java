@@ -111,29 +111,22 @@ public class RegistrarUsuarioController implements Initializable {
    }
    
    private boolean usuarioNoRepetido(){
-       Statement s;
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select id from usuario where id = '"
-             + username.getText() + " '");
-            if (rs.first())   {
-                System.out.println (rs.getString("id"));
-                usuIncorrecto.setText(" *");
-                errorText.setText("Nombre de usuario ya en uso.");
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
+      if(!conectorUsuarioBD.usuarioRepetido(username.getText())){
+           usuIncorrecto.setText(" *");
+           errorText.setText("Nombre de usuario ya en uso.");
+           return false;
+       }
+      return true;
    }
     
     @FXML
-    private void Registrarme(ActionEvent event)  {
+    private void Registrarme(ActionEvent event) throws IOException  {
        if(usuarioNoRepetido() && errorContraseña()){
            Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
            conectorUsuarioBD.añadirUsuario(nuevo);
+           if(agenteCheck.isSelected()) esAgente();
+           else estaRegistrado();
      }//fin if
        
     } // fin metodo

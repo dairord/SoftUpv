@@ -26,6 +26,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.conectorUsuarioBD;
 
 /**
  * FXML Controller class
@@ -88,8 +89,8 @@ public class IniciarSesionController implements Initializable {
     @FXML
     private void aceptar(ActionEvent event) throws IOException {
       if(consulta()){
-         InicioController.pasarUsuario(true, nom);
-         BuscadorController.pasarUsuario(true, nom);
+        InicioController.pasarUsuario(true, nom);
+        BuscadorController.pasarUsuario(true, nom);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(direccion));
         st.close();
@@ -113,27 +114,15 @@ public class IniciarSesionController implements Initializable {
     }
     
     public boolean consulta(){
-    
          nom = nombre.getText();
          pas = contraseña.getText();
-        
        Statement s;
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select id from usuario where id = '"
-             + nom + " ' and password = '" + pas + " '");
-            if (rs.first())   {
-                st.close(); 
-                System.out.println (rs.getString("id"));
-                return true;
-            } else{ 
-                mensajeError.setText("Nombre de usuario o contraseña incorrecto");
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        if(conectorUsuarioBD.usuarioCorrecto(nom, pas)){
+            return true;
+        } else {
+            mensajeError.setText("Nombre de usuario o contraseña incorrecto");
+            return false;
         }
-        return false;
     }
     
     

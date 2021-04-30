@@ -5,6 +5,7 @@
  */
 package trobify.logica;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -17,8 +18,9 @@ import trobify.controlador.InicioController;
  * @author gabri
  */
 public class conectorUsuarioBD {
-    public static void añadirUsuario(Usuario u){
-        Conectar con = new Conectar();
+   private static Conectar con = new Conectar();
+    
+   public static void añadirUsuario(Usuario u){
         try {
          Statement stm = con.getConnection().createStatement();
                 stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
@@ -30,5 +32,33 @@ public class conectorUsuarioBD {
         }
     } //fin añadir usuario
     
+    public static boolean usuarioRepetido (String id){
+        try {
+            Statement stm = con.getConnection().createStatement();
+             ResultSet rs = stm.executeQuery ("select id from usuario where id = '"
+             + id + " '");
+            if (rs.first())   {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
     
+    public static boolean usuarioCorrecto (String id, String contra){
+         
+        try {
+           Statement stm = con.getConnection().createStatement();
+             ResultSet rs = stm.executeQuery ("select id from usuario where id = '"
+             + id + " ' and password = '" + contra + " '");
+            if (rs.first())   {
+                return true;
+            } 
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }
