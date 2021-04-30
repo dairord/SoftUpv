@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.Usuario;
+import trobify.logica.conectorBD;
 
 /**
  * FXML Controller class
@@ -127,20 +129,11 @@ public class RegistrarUsuarioController implements Initializable {
    }
     
     @FXML
-    private void Registrarme(ActionEvent event) throws IOException {
+    private void Registrarme(ActionEvent event)  {
        if(usuarioNoRepetido() && errorContraseña()){
-       try {
-         Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
-                        + username.getText() + "','" + dni.getText() + "','" + contraseña.getText() + "','" + nombre.getText() + "','" + 
-                        apellidos.getText() + "','" + email.getText() + "')");   
-               if(agenteCheck.isSelected()){
-                   esAgente();
-               }else
-                estaRegistrado();
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+           Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
+                nombre.getText(), apellidos.getText(), email.getText(), null);
+           conectorBD.añadirUsuario(nuevo);
      }//fin if
        
     } // fin metodo
