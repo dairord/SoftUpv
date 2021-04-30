@@ -29,7 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import trobify.Conectar;
 import trobify.logica.Usuario;
-import trobify.logica.conectorBD;
+import trobify.logica.conectorUsuarioBD;
 
 /**
  * FXML Controller class
@@ -133,7 +133,7 @@ public class RegistrarUsuarioController implements Initializable {
        if(usuarioNoRepetido() && errorContraseña()){
            Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
-           conectorBD.añadirUsuario(nuevo);
+           conectorUsuarioBD.añadirUsuario(nuevo);
      }//fin if
        
     } // fin metodo

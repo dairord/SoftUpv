@@ -16,7 +16,7 @@ import trobify.controlador.InicioController;
  *
  * @author gabri
  */
-public class conectorBD {
+public class conectorUsuarioBD {
     public static void añadirUsuario(Usuario u){
         Conectar con = new Conectar();
         try {
