@@ -35,7 +35,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -121,6 +120,11 @@ public class BuscadorController implements Initializable {
     private String pMin;
     private String pMax;
     private String comoOrdenar;
+    
+    //atributos geolocalización
+    private URL googleMaps;
+    private WebEngine engine;
+    public static String location;
 
     //cosas del usuario
     private static boolean estaIniciado;
@@ -141,8 +145,22 @@ public class BuscadorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-        System.out.println(username);
+        //Crear una conexion
+        con = new Conectar();
+        //lista con las viviendas a mostrar
+        viviendasList = new ArrayList();
+        
+        sesionIniciada();
+        botonDesactivado();
+        seleccionFechas();
+        rellenoComboBox();
+        autoRellenoFiltros();
+        comprobaciones();
+        geolocalizacion();
+    } //fin initialice
+    
+    private void sesionIniciada(){
+    System.out.println(username);
         //compobar si ha iniciado sesión
         if (estaIniciado) {
             nombreUsuario.setText(username);
@@ -155,9 +173,10 @@ public class BuscadorController implements Initializable {
             notificaciones.setVisible(false);
             botonGuardarFiltros.setVisible(false);
         }
-        //Crear una conexion
-        con = new Conectar();
-
+        
+    } //fin sesion iniciada
+   
+    private void botonDesactivado(){
         //boton buscar desactivado si no están todos los filtros
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
                 .or(Bindings.isEmpty(precioMax.textProperty()))
@@ -166,7 +185,9 @@ public class BuscadorController implements Initializable {
                 .or(Bindings.isEmpty(numHabitaciones.textProperty())) // .or(Bindings.)
                 ;
         botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
-
+    } //fin boton desactivado
+    
+    private void seleccionFechas(){
         //no poder seleccionar fechas anteriores a hoy
         fechaEntrada.setDayCellFactory((DatePicker picker) -> {
             return new DateCell() {
@@ -189,11 +210,11 @@ public class BuscadorController implements Initializable {
                 }
             };
         });
-
+        
         //no se puede introducir fecha de salida hasta que no esté la de entrada
         final BooleanBinding sePuedePonerFecha = Bindings.isNull(fechaEntrada.valueProperty());
         fechaSalida.disableProperty().bind(sePuedePonerFecha);
-
+        
         //si es comprar no salen las fechas
         if (alqOVen == 1) {
             entradaText.setVisible(false);
@@ -202,7 +223,10 @@ public class BuscadorController implements Initializable {
             fechaSalida.setVisible(false);
             variacionFecha.setVisible(false);
         }
-        //Tipo Vivienda
+    }//fin seleccion fechas
+   
+    private void rellenoComboBox(){
+     //Tipo Vivienda
         ArrayList<String> tiposViviendas = new ArrayList<String>();
         tiposViviendas.add("Piso");
         tiposViviendas.add("Casa");
@@ -219,6 +243,7 @@ public class BuscadorController implements Initializable {
         ordenarPor.setItems(ordenar);
         ordenarPor.getSelectionModel().selectFirst();
 
+        //variacion fechas
         if (alqOVen != 1) {
             ArrayList<String> varf = new ArrayList<String>();
             varf.add("Fechas exactas");
@@ -229,14 +254,17 @@ public class BuscadorController implements Initializable {
             variacionFecha.setItems(variaFecha);
             variacionFecha.getSelectionModel().selectFirst();
         }
+    } //fin rellenoComboBox
+  
+    private void autoRellenoFiltros(){
         //poner directamente el nombre de la ciudad buscada y tipo vivienda
         ciudad.setText(ciu);
         tipoVivienda.getSelectionModel().select(tip);
 
-        viviendasList = new ArrayList();
-        comprobaciones();
-
-        //Inicialización del WebView para que se muestre GoogleMaps
+    } //fin autocompletar filtros
+    
+    private void geolocalizacion(){
+         //Inicialización del WebView para que se muestre GoogleMaps
         System.setProperty("java.net.useSystemProxies", "true");
         googleMaps = getClass().getResource("GeoPrueba.html");
         engine = mapa.getEngine();
@@ -259,10 +287,8 @@ public class BuscadorController implements Initializable {
             }
         }
         );
-    } //fin initialice
-    private URL googleMaps;
-    private WebEngine engine;
-    public static String location;
+    } //fin geolocalizacion
+    
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -279,16 +305,14 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
+    
     @FXML
     private void notificar(ActionEvent event) {
     }
 
     @FXML
     private void buscar(ActionEvent event) {
-        
         comprobaciones();
-
-        
     }
 
     @FXML
