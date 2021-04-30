@@ -12,7 +12,7 @@
            function geocode(location){
 		   
 		   var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-			//var location = 'address=valencia';
+			
 			var key = '&key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE';
 			
 			var res = url+location+key;
@@ -22,7 +22,45 @@
 		   
 		   }
 		   
-		   
+		
+            function mark(calle, id, desc){
+            
+           
+            
+            var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+			
+			var key = '&key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE';
+			
+			var res = url+calle+key;
+			fetch(res)
+			.then(response => response.json())
+				.then(data => mark = data.results[0].geometry.location)
+					.then(mark => marker(mark,id,desc));         
+
+            
+            }
+			
+			function marker(mark,id,desc){
+			 const infoWindow = new google.maps.InfoWindow();
+			const marker = new google.maps.Marker({
+                position: mark,
+                map: document.map,
+				title: desc,
+				label: id,
+				optimized: false,
+                });
+				
+				marker.addListener("click", () => {
+				  infoWindow.close();
+				  infoWindow.setContent(marker.getTitle());
+				  infoWindow.open(marker.getMap(), marker);
+				});
+			  
+			}
+                   
+                   
+                   
+                   
             function initialize() {
             var latlng = new google.maps.LatLng(37.39822, -121.9643936);
             var myOptions = {
@@ -60,6 +98,8 @@
             document.setMapTypeTerrain = function setMapTypeTerrain() {
             document.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
             }
+			//geocode("Valencia");
+			//mark("Calle de Sorní");
             }
         </script>
     </head>

@@ -54,6 +54,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -120,7 +121,7 @@ public class BuscadorController implements Initializable {
     private String pMin;
     private String pMax;
     private String comoOrdenar;
-    
+
     //atributos geolocalización
     private URL googleMaps;
     private WebEngine engine;
@@ -137,8 +138,6 @@ public class BuscadorController implements Initializable {
     private Button notificaciones;
     @FXML
     private Label agente;
-   
-   
 
     /**
      * Initializes the controller class.
@@ -149,7 +148,7 @@ public class BuscadorController implements Initializable {
         con = new Conectar();
         //lista con las viviendas a mostrar
         viviendasList = new ArrayList();
-        
+
         sesionIniciada();
         botonDesactivado();
         seleccionFechas();
@@ -157,10 +156,11 @@ public class BuscadorController implements Initializable {
         autoRellenoFiltros();
         comprobaciones();
         geolocalizacion();
+        listarGeoPunto(null);
     } //fin initialice
-    
-    private void sesionIniciada(){
-    System.out.println(username);
+
+    private void sesionIniciada() {
+        System.out.println(username);
         //compobar si ha iniciado sesión
         if (estaIniciado) {
             nombreUsuario.setText(username);
@@ -173,10 +173,10 @@ public class BuscadorController implements Initializable {
             notificaciones.setVisible(false);
             botonGuardarFiltros.setVisible(false);
         }
-        
+
     } //fin sesion iniciada
-   
-    private void botonDesactivado(){
+
+    private void botonDesactivado() {
         //boton buscar desactivado si no están todos los filtros
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(precioMin.textProperty())
                 .or(Bindings.isEmpty(precioMax.textProperty()))
@@ -186,8 +186,8 @@ public class BuscadorController implements Initializable {
                 ;
         botonGuardarFiltros.disableProperty().bind(sePuedeBuscar);
     } //fin boton desactivado
-    
-    private void seleccionFechas(){
+
+    private void seleccionFechas() {
         //no poder seleccionar fechas anteriores a hoy
         fechaEntrada.setDayCellFactory((DatePicker picker) -> {
             return new DateCell() {
@@ -210,11 +210,11 @@ public class BuscadorController implements Initializable {
                 }
             };
         });
-        
+
         //no se puede introducir fecha de salida hasta que no esté la de entrada
         final BooleanBinding sePuedePonerFecha = Bindings.isNull(fechaEntrada.valueProperty());
         fechaSalida.disableProperty().bind(sePuedePonerFecha);
-        
+
         //si es comprar no salen las fechas
         if (alqOVen == 1) {
             entradaText.setVisible(false);
@@ -224,9 +224,9 @@ public class BuscadorController implements Initializable {
             variacionFecha.setVisible(false);
         }
     }//fin seleccion fechas
-   
-    private void rellenoComboBox(){
-     //Tipo Vivienda
+
+    private void rellenoComboBox() {
+        //Tipo Vivienda
         ArrayList<String> tiposViviendas = new ArrayList<String>();
         tiposViviendas.add("Piso");
         tiposViviendas.add("Casa");
@@ -255,16 +255,16 @@ public class BuscadorController implements Initializable {
             variacionFecha.getSelectionModel().selectFirst();
         }
     } //fin rellenoComboBox
-  
-    private void autoRellenoFiltros(){
+
+    private void autoRellenoFiltros() {
         //poner directamente el nombre de la ciudad buscada y tipo vivienda
         ciudad.setText(ciu);
         tipoVivienda.getSelectionModel().select(tip);
 
     } //fin autocompletar filtros
-    
-    private void geolocalizacion(){
-         //Inicialización del WebView para que se muestre GoogleMaps
+
+    private void geolocalizacion() {
+        //Inicialización del WebView para que se muestre GoogleMaps
         System.setProperty("java.net.useSystemProxies", "true");
         googleMaps = getClass().getResource("GeoPrueba.html");
         engine = mapa.getEngine();
@@ -280,15 +280,48 @@ public class BuscadorController implements Initializable {
                     return;
                 }
                 System.out.println("Succeeded!");
-                 
+
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("geocode", location);
-                
+
             }
-        }
-        );
+        });
     } //fin geolocalizacion
     
+    
+    //Pasándole una vivienda como parámetro es suficiente para listar el punto en el mapa, poner el número de su id (si fuese vivivienda1 pues 1), y mostrár la desc en el mapa
+    //La primera parte del código es provisional hasta que el resto funcione correctamente
+    private void listarGeoPunto(Vivienda res){
+        //Provisional
+        res = new Vivienda();
+        res.setCalle("Calle Arzobispo Mayoral");
+        res.setId("vivienda1");
+        res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
+        /////////////////////////////////////////////////////////////////////
+        
+        String punto = res.getCalle();
+        String id = res.getId().substring(8);
+        String desc = res.getDescripcion();
+        
+        engine.getLoadWorker().stateProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                System.out.println("oldValue: " + oldValue);
+                System.out.println("newValue: " + newValue);
+
+                if (newValue != Worker.State.SUCCEEDED) {
+                    return;
+                }
+                System.out.println("Succeeded!");
+
+                JSObject jsObject = (JSObject) engine.executeScript("window");
+                jsObject.call("mark", punto, id, desc);
+
+            }
+        });
+    }
+
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -305,7 +338,6 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
-    
     @FXML
     private void notificar(ActionEvent event) {
     }
@@ -345,8 +377,8 @@ public class BuscadorController implements Initializable {
         tip = t;
         alqOVen = queBuscas;
     }
-    
-    public static void pasarLocalizacion(String local){
+
+    public static void pasarLocalizacion(String local) {
         location = local;
     }
 
@@ -589,5 +621,4 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
-    
 }// fin clase
