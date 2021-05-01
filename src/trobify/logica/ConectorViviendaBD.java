@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import trobify.Conectar;
 import trobify.controlador.InicioController;
 
@@ -85,7 +87,7 @@ public class ConectorViviendaBD {
     }
     
    public static int consultarPrecio(String id) {
-       Vivienda vivi = vivienda(id);
+      Vivienda vivi = vivienda(id);
       return vivi.getPrecio();
      }
      
@@ -249,4 +251,19 @@ public class ConectorViviendaBD {
             }
    }
    
+   public static Servicios consultarServicios (String id){
+      try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT * FROM servicios WHERE id = '" + id + "'");
+            if(rsl.first()){
+                Servicios servi = new Servicios (id, rsl.getInt("supermercado"), rsl.getInt("transporte_publico"),
+                        rsl.getInt("banco"), rsl.getInt("estanco"), rsl.getInt("centro_comercial"), rsl.getInt("gimnasio"),
+                        rsl.getInt("farmacia"));
+                return servi;
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+   }
 } //fin clase

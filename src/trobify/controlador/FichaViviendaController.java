@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 import trobify.Conectar;
 import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Favoritos;
+import trobify.logica.Servicios;
 
 /**
  * FXML Controller class
@@ -136,7 +137,7 @@ public class FichaViviendaController implements Initializable {
         
         //Servicios cerca de la vivienda
         this.listaServicios = new ArrayList();
-       // consultarServicios(id);
+       consultarServicios(id);
         
         //Viviendas recomendadas        
         for (int i = 0; i < listaRecomendados.size(); i++){
@@ -211,26 +212,18 @@ public class FichaViviendaController implements Initializable {
         return fotoGaleria;
     }
     
- /*  public void consultarServicios(String id){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT supermercado, transporteP, banco, estanco, centroC, gimnasio, farmacia FROM servicios WHERE id = '" + this.id + "'");
-            rsl.first();
-            for(int i = 0; i < 8 ; i++){
-                try{
-                    if(rsl.getObject(i) != null) this.listaServicios.add(rsl.getString(i));
-                } catch (SQLException ex) {}                
-            }                
-                        
-            ObservableList servicios = FXCollections.observableList(listaServicios);     
-            this.serviciosCerca.setItems(servicios);       
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }*/
+  public void consultarServicios(String id){
+      Servicios servi = ConectorViviendaBD.consultarServicios(id);
+      if(servi.getBanco() ==1) listaServicios.add("Banco");
+      if(servi.getSupermercado() ==1) listaServicios.add("Supermercado");
+      if(servi.getTransporte_publico() ==1) listaServicios.add("Transporte publico");
+      if(servi.getGimnasio() ==1) listaServicios.add("Gimnasio");
+      if(servi.getEstanco() ==1) listaServicios.add("Estanco");
+      if(servi.getCentro_comercial() ==1) listaServicios.add("Centro comercial");
+      if(servi.getFarmacia() ==1) listaServicios.add("Farmacia");
+      ObservableList servicios = FXCollections.observableList(listaServicios);     
+      this.serviciosCerca.setItems(servicios);  
+    }
     
     //Muestra botones de favoritos
     public void mostrarBotones(){
