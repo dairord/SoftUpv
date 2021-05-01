@@ -35,6 +35,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorViviendaBD;
 
 /**
  * FXML Controller class
@@ -188,20 +189,8 @@ public class InicioController implements Initializable {
     
     public boolean consulta(){
     String ciu = ciudadText.getText();
-    Conectar con = new Conectar();
-    Statement s; 
-    ResultSet rs;
-    try {
-            s = con.getConnection().createStatement();
-            rs = s.executeQuery ("select * from vivienda where ciudad = '" + ciu + "'" + tipvivi +" and ventaAlquiler = " + alqOVen );
-            if ( !rs.first()) return false;
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-       return true;
- }//fin consulta
+    return ConectorViviendaBD.consultaInicial(ciu, tipvivi, alqOVen);
+    }//fin consulta
  
     public static void pasarUsuario(boolean iniciado, String usuario){
      estaIniciado = iniciado;

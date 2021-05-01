@@ -26,6 +26,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.Agente;
+import trobify.logica.ConectorAgenciaBD;
 
 /**
  * FXML Controller class
@@ -105,32 +107,14 @@ public class RegistroAgenteController implements Initializable {
     }
     
     private boolean contraseñaCorrecta(){
-      Statement s;
-        try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select codigo from agencia where codigo = '"
-             + codigo.getText() + " ' and contraseña = '" + contraseña.getText() + " '");
-            if (rs.first())   {
-                System.out.println("funciona");
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+        if(ConectorAgenciaBD.contraseñaCorrecta(codigo.getText(), contraseña.getText())) return true;
+        else return false;
     }
     
     private void guardarAgente(){
-       System.out.println(username);
-        try {
-         Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("INSERT INTO `agente`(`username`, `agencia`) VALUES ('"
-                        + username +"','" + codigo.getText() + "')");   
-         
-         } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     }//fin if
+       Agente nuevo = new Agente (username, codigo.getText());
+        ConectorAgenciaBD.guardarAgente(nuevo);
+     }//fin guardar agete
     
     private void volver() throws IOException{
         InicioController.pasarUsuario(true, username);

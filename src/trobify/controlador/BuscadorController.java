@@ -54,6 +54,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
+import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Vivienda;
 
 /**
@@ -154,7 +155,11 @@ public class BuscadorController implements Initializable {
         seleccionFechas();
         rellenoComboBox();
         autoRellenoFiltros();
-        comprobaciones();
+        try {
+            comprobaciones();
+        } catch (SQLException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         geolocalizacion();
         listarGeoPunto(null);
     } //fin initialice
@@ -343,7 +348,7 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void buscar(ActionEvent event) {
+    private void buscar(ActionEvent event) throws SQLException {
         comprobaciones();
     }
 
@@ -383,11 +388,11 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void ordenar(ActionEvent event) {
+    private void ordenar(ActionEvent event) throws SQLException {
         comprobaciones();
     }
 
-    private void comprobaciones() {
+    private void comprobaciones() throws SQLException {
         viviendasList.clear();
         listaViviendas.getChildren().clear();
         //comprobación tipos
@@ -435,37 +440,13 @@ public class BuscadorController implements Initializable {
             comoOrdenar = "precio DESC";
         }
         consulta();
+        
     }//fin comprobaciones
 
     //metodo nuevo de sql
-    private void consulta() {
-
-        ResultSet rs;
-        Statement s;
-
-        try {
-            s = con.getConnection().createStatement();
-            rs = s.executeQuery("select * from vivienda where ciudad = '" + ciudad.getText()
-                    + "' and ventaAlquiler = " + alqOVen + tipo + pMin + pMax + baños + habita
-                    + " order by " + comoOrdenar);
-
-            if (rs.first()) {
-                System.out.println(rs.getString("id"));
-                rs.beforeFirst();
-                while (rs.next()) {
-                    viviendasList.add(rs.getString("id"));
-                }
-                listaViviendas.getChildren().clear();
-                ordenarLista();
-            } //fin if
-            else {
-                listaViviendas.getChildren().clear();
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+    private void consulta() throws SQLException {
+        viviendasList = ConectorViviendaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
+        ordenarLista();
     }//fin consulta
 
     //generador de miniaturas
@@ -496,64 +477,14 @@ public class BuscadorController implements Initializable {
         return miniatura;
     }
 
-    //Consultar la primera foto de la vivienda pasando como atributo un id
-    public String consultarFoto(String id) {
-
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
-            if (rsl.first()) {
-                return rsl.getNString(1);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "C:\\Users\\migue\\Desktop\\softupv\\SoftUpv\\src\\trobify\\images\\noImage.jpeg";
-        //"F:\\PSW\\SoftUpv\\src\\trobify\\images\\foto0.jpg"
-    }
-
-    //Consultar la direccion de la vivienda pasando como atributo un id    
-    public String consultarDireccion(String id) {
-
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT calle FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) {
-                return rsl.getNString(1);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "No disponible";
-    }
-
-    //Consultar el precio de la vivienda pasando como atributo un id    
-    public int consultarPrecio(String id) {
-
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT precio FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) {
-                return rsl.getInt(1);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
-
     //Lista de viviendas
     private void ordenarLista() {
         for (int i = 0; i < viviendasList.size(); ++i) {
-
             try {
                 String id = viviendasList.get(i);
-                String foto = consultarFoto(viviendasList.get(i));
-                String calle = consultarDireccion(viviendasList.get(i));
-                int precio = consultarPrecio(viviendasList.get(i));
+                String foto = ConectorViviendaBD.consultarFoto(viviendasList.get(i));
+                String calle = ConectorViviendaBD.consultarDireccion(viviendasList.get(i));
+                int precio = ConectorViviendaBD.consultarPrecio(viviendasList.get(i));
                 this.listaViviendas.getChildren().add(crearMiniatura(id, foto, calle, precio));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);

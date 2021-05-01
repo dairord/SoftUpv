@@ -41,6 +41,8 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorViviendaBD;
+import trobify.logica.Favoritos;
 
 /**
  * FXML Controller class
@@ -86,7 +88,7 @@ public class FichaViviendaController implements Initializable {
     int precioBase;
     private static String deDondeViene;
     private static String aDondeVa;
-    
+   
     @FXML
     private Text precioVivienda;
     @FXML
@@ -100,25 +102,25 @@ public class FichaViviendaController implements Initializable {
         
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
-        this.precioBase = consultarPrecio(id);
-        
+        this.precioBase = ConectorViviendaBD.consultarPrecio(id);
+       
         //Mostrar botones de valoraciones de favortitos o no
-        this.estaEnFav = estaEnFavoritos(this.id);
-        estaValorado();
+        this.estaEnFav = ConectorViviendaBD.estaEnFavoritos(id, username);
+        if(estaEnFav) valoracion = ConectorViviendaBD.consultarValoracion(id, username);
         mostrarBotones(); 
         
         //Crear Array con la lista de fotos de la galeria
         this.listaFotos = new ArrayList();
-        crearListaFotos(this.id);
-        
+        listaFotos = ConectorViviendaBD.crearListaFotos(id);
+       
         //Crear Array con la lista de fotos de la galeria
         this.listaRecomendados = new ArrayList();
-        crearListaRecomendados(this.id);
-                       
+        listaRecomendados = ConectorViviendaBD.crearListaRecomendados(id, precioBase);
+        
         //Mostrar el precio de la vivienda    
         precioVivienda.setText("Precio: " +this.precioBase + "€");
         //Boton de volver atras        
-            //volver.setOnAction(e -> scenePropia.setScene(scenaPrevia));      
+        //volver.setOnAction(e -> scenePropia.setScene(scenaPrevia));      
                 
         //Generador de fotos de la galeria       
         for(int i = 0; i < listaFotos.size(); i++){
@@ -130,18 +132,18 @@ public class FichaViviendaController implements Initializable {
         }
         
         //Mostrar la descripcion de la vivienda
-        this.descripcion.setText(consultarDescripcion(this.id));
+        this.descripcion.setText(ConectorViviendaBD.consultarDescripcion(id));
         
         //Servicios cerca de la vivienda
         this.listaServicios = new ArrayList();
-        consultarServicios(id);
+       // consultarServicios(id);
         
         //Viviendas recomendadas        
         for (int i = 0; i < listaRecomendados.size(); i++){
             Button botonRecomendacion = new Button();
             botonRecomendacion.setPadding(new Insets(0, 0, 0, 0));
-            botonRecomendacion.setId(consultarIdVivienda(listaRecomendados.get(i)));
-            System.out.println(botonRecomendacion.getId() + "este quiero");
+            botonRecomendacion.setId(ConectorViviendaBD.consultarIdVivienda(listaRecomendados.get(i)));
+            System.out.println("gabriela" + listaRecomendados);
             configurarBoton(botonRecomendacion);
             try{
                 ImageView fotoBoton = galeria(listaRecomendados.get(i)); 
@@ -175,57 +177,7 @@ public class FichaViviendaController implements Initializable {
         else aDondeVa = "/trobify/views/Buscador.fxml";
     }    
     
-    //Generador de listaFotos
-    private void crearListaFotos(String id){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while (rsl.next()) {
-                    this.listaFotos.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    //Generador de listaRecomendados
-    private void crearListaRecomendados(String id){        
-        
-        int precioAlto = this.precioBase + 150;
-        int precioBajo = this.precioBase - 150;
-        int i = 0;
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM fotografia f WHERE f.id_vivienda IN (SELECT v.id FROM vivienda v WHERE v.id NOT LIKE '" + id + "' AND v.precio BETWEEN '" + precioBajo + "' AND '" + precioAlto + "')");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while(rsl.next() && i < 3){
-                    this.listaRecomendados.add(rsl.getString(1));
-                    i++;
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public String consultarIdVivienda(String direccionFoto){
-        String idVivienda = "";
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT id_vivienda FROM fotografia WHERE id = '" + direccionFoto + "'");
-            idVivienda = rsl.getNString(1);
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return idVivienda;
-    }
-    
+  
     //Funcion para poder moverte entre casas relacionadas a traves de botones en recomendados
     public void configurarBoton(Button boton){
         boton.setOnAction(e -> {
@@ -259,37 +211,7 @@ public class FichaViviendaController implements Initializable {
         return fotoGaleria;
     }
     
-    //Metodo para saber el precio de la vivienda
-    public int consultarPrecio(String id){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT precio FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) return rsl.getInt(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
-    
-    //Metodo para obtener la descripcion de la vivienda
-    public String consultarDescripcion(String id){
-        
-        String texto = "No lo dejes escapar.";
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT descripcion FROM vivienda WHERE id = '" + this.id + "'");
-            if (rsl.first() && rsl.getNString(1) != null) texto = rsl.getNString(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return texto;
-    }
-    
-        //Metodo para obtener la descripcion de la vivienda
-    public void consultarServicios(String id){
+ /*  public void consultarServicios(String id){
         
         try {
             Statement stm = con.getConnection().createStatement();
@@ -308,26 +230,7 @@ public class FichaViviendaController implements Initializable {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }
-    
-    //Comprobar si esta en favoritos
-    private Boolean estaEnFavoritos(String idVivienda) {
-        
-        this.estaEnFav = false;
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT id FROM favoritos WHERE id LIKE '" + this.id + "'");
-            if(rsl.first()){
-                this.estaEnFav = true;
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return this.estaEnFav;
-    }
+    }*/
     
     //Muestra botones de favoritos
     public void mostrarBotones(){
@@ -351,68 +254,40 @@ public class FichaViviendaController implements Initializable {
             editarValoracion.setText("Añadir");
         }
         else{
-            textoValoracion.setText("Valoracion: " + this.valoracion);
+            textoValoracion.setText("Valoracion: " + valoracion);
             valorValoracion.setVisible(false);
             editarValoracion.setText("Editar");
         }
     }
     
-    private int estaValorado(){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT valoracion FROM favoritos WHERE id = '" + this.id + "'");
-            if (rsl.first()) this.valoracion = rsl.getInt(1);
-            System.out.println(valoracion);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return this.valoracion;
-    }
-    
+   
     @FXML
     private void addFav(ActionEvent event) throws IOException {
-        
         if(!estaEnFav) {
-            try {
-                Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("INSERT INTO `favoritos`(`id`, `id_cliente`) VALUES ('" + this.id + "','" + 1 + "')");
-                this.estaEnFav = true;
-                mostrarBotones();
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+             Favoritos nuevo = new Favoritos(id, username, 1);
+             ConectorViviendaBD.añadirFavoritos(nuevo);
+             this.estaEnFav = true;
+               mostrarBotones();
         } else{
-            try {
-                Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + this.id + "'");
+            ConectorViviendaBD.eliminarDeFavoritos(id, username);
                 this.estaEnFav = false;
                 this.valoracion = -1;
                 mostrarBotones();
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+          
         }
         logicaBotonesValoracion();
     }
 
     @FXML
     private void editarValoracion(ActionEvent event) {     
-        if(this.valoracion == -1 || this.valoracion == 0/*AÑADIR*/){
+        if(this.valoracion == -1 || this.valoracion == 0){
             this.valoracion = Integer.parseInt(valorValoracion.getText());
-            try {
-                Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("UPDATE `favoritos` SET `valoracion`='" + this.valoracion + "' WHERE id = '" + this.id + "'");
-                
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           ConectorViviendaBD.editarValoracion(valoracion, id, username);
         } else{
             this.valoracion = -1;
         }
         logicaBotonesValoracion();
+    
     }
 
     @FXML

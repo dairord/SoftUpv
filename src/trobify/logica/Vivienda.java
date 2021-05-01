@@ -31,7 +31,7 @@ public class Vivienda {
         this.ventaAlquiler = ventaAlquiler;
     }
 
-    public void setId_agencia(int id_agencia) {
+    public void setId_agencia(String id_agencia) {
         this.id_agencia = id_agencia;
     }
 
@@ -39,7 +39,7 @@ public class Vivienda {
         this.precio = precio;
     }
 
-    public void setId_propietario(int id_propietario) {
+    public void setId_propietario(String id_propietario) {
         this.id_propietario = id_propietario;
     }
 
@@ -59,7 +59,7 @@ public class Vivienda {
         this.piso = piso;
     }
 
-    public void setPuerta(int puerta) {
+    public void setPuerta (String puerta) {
         this.puerta = puerta;
     }
 
@@ -91,7 +91,7 @@ public class Vivienda {
         return ventaAlquiler;
     }
 
-    public int getId_agencia() {
+    public String getId_agencia() {
         return id_agencia;
     }
 
@@ -99,7 +99,7 @@ public class Vivienda {
         return precio;
     }
 
-    public int getId_propietario() {
+    public String getId_propietario() {
         return id_propietario;
     }
 
@@ -119,7 +119,7 @@ public class Vivienda {
         return piso;
     }
 
-    public int getPuerta() {
+    public String getPuerta() {
         return puerta;
     }
 
@@ -131,11 +131,11 @@ public class Vivienda {
         return activo;
     }
 
-    private String id, calle, ciudad, descripcion;
-    private int ventaAlquiler, id_agencia, precio, id_propietario, tipo, baños,
-            habitaciones, piso, puerta, codigo_postal, activo;
+    private String id, calle, ciudad, descripcion, id_agencia, id_propietario, puerta;
+    private int ventaAlquiler, precio, tipo, baños,
+            habitaciones, piso, codigo_postal, activo;
 
-    public Vivienda(String id, String calle, String ciudad, String descripcion, int ventaAlquiler, int id_agencia, int precio, int id_propietario, int tipo, int baños, int habitaciones, int piso, int puerta, int codigo_postal, int activo) {
+    public Vivienda(String id, String calle, String ciudad, int ventaAlquiler, String id_agencia, int precio, String id_propietario, int tipo, int baños, int habitaciones, String descripcion, int piso, String puerta, int codigo_postal, int activo) {
         this.id = id;
         this.calle = calle;
         this.ciudad = ciudad;

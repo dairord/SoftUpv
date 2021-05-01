@@ -39,6 +39,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorViviendaBD;
 
 /**
  * FXML Controller class
@@ -86,27 +87,11 @@ public class FavoritosController implements Initializable {
         
         //Crear Array con la lista de favoritos, por defecto seleccionara LA PRIMERA opcion
         favList = new ArrayList();       
-        switch (elegirOrdenPor.getSelectionModel().selectedItemProperty().getValue()) {
-            case "Relevancia":
-                ordenarPrecio();
-                break;
-            case "Precio más bajo":
-                ordenarPrecioBajo();
-                break;
-            case "Precio más alto":
-                ordenarPrecioAlto();
-                break;
-            case "Valoracion":
-                ordenarValoracion();
-                break;
-            default:
-                break;
-        }
+        orden();
                                
         //Mostrar nombre de usuario
         nombreUsuario.setText(username);
              
-        ordenarLista();   
         
     }    
     
@@ -167,16 +152,9 @@ public class FavoritosController implements Initializable {
         botonEliminar.setText("Eliminar de favoritos");
         botonEliminar.setId(id);
         botonEliminar.setOnAction(e -> {
-            
-            //Falta avisar que vas a eliminar
-            try {
-                Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + botonEliminar.getId() + "' and id_cliente = '"
-                + username +"'");
-                ordenCambiado(null);
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         
+            ConectorViviendaBD.eliminarDeFavoritos(botonEliminar.getId(), username);
+            ordenCambiado(null);
         });
         
         eliminarFav.getChildren().add(botonEliminar);
@@ -185,129 +163,6 @@ public class FavoritosController implements Initializable {
         return miniatura;
     }
     
-    //Consultar la primera foto de la vivienda pasando como atributo un id
-    public String consultarFoto(String id){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
-            
-            if (rsl.first()) return rsl.getNString(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "F:\\PSW\\SoftUpv\\src\\trobify\\images\\foto0.jpg";
-        //"F:\\PSW\\SoftUpv\\src\\trobify\\images\\foto0.jpg"
-    }
-    
-    //Consultar la direccion de la vivienda pasando como atributo un id    
-    public String consultarDireccion(String id){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT calle FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) return rsl.getNString(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "No disponible";
-    }
-    
-    //Consultar el precio de la vivienda pasando como atributo un id    
-    public int consultarPrecio(String id){
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT precio FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) return rsl.getInt(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
-    
-    //Consultar la valoracion fijada a la vivienda
-    public int consultarValoracion(String id){
-        
-        int aux = -1;
-        
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT valoracion FROM favoritos WHERE id LIKE '" + id + "'");
-            if (rsl.first()) aux = rsl.getInt(1);
-            if(aux == 0) return -1;
-            else return aux;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return aux;
-    }
-     
-    private void ordenarPrecio(){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT id FROM favoritos WHERE id_cliente = '" + username + " '");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while (rsl.next()) {
-                    favList.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     
-    }
-     
-    private void ordenarPrecioBajo(){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY precio ASC");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while (rsl.next()) {
-                    favList.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-     
-    private void ordenarPrecioAlto(){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY precio DESC");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while (rsl.next()) {
-                    favList.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void ordenarValoracion(){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + " ' ORDER BY valoracion DESC");
-            if(rsl.first()){
-                rsl.beforeFirst();
-                while (rsl.next()) {
-                    favList.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-     
     //Lista de viviendas
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
@@ -315,10 +170,10 @@ public class FavoritosController implements Initializable {
             String idBoton = favList.get(i);
             
             try {
-                String foto = consultarFoto(favList.get(i));
-                String calle = consultarDireccion(favList.get(i));
-                int precio = consultarPrecio(favList.get(i));
-                int valoracion = consultarValoracion(favList.get(i));
+                String foto = ConectorViviendaBD.consultarFoto(favList.get(i));
+                String calle = ConectorViviendaBD.consultarDireccion(favList.get(i));
+                int precio = ConectorViviendaBD.consultarPrecio(favList.get(i));
+                int valoracion = ConectorViviendaBD.consultarValoracion(favList.get(i), username);
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, valoracion));
                 
             } catch (FileNotFoundException ex) {
@@ -329,35 +184,42 @@ public class FavoritosController implements Initializable {
 
     @FXML
     private void ordenCambiado(ActionEvent event) {
-        
-        favList.clear();
-        
+        orden();
+    }
+   
+    private void orden(){
+    favList.clear();
+        String orden = "";
         switch (elegirOrdenPor.getSelectionModel().selectedItemProperty().getValue()) {
             case "Relevancia":                
                 listaViviendas.getChildren().clear();
-                ordenarPrecio();
+                orden = "";
+                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
                 ordenarLista();
                 break;
             case "Precio más bajo":
                 listaViviendas.getChildren().clear();
-                ordenarPrecioBajo();
+                orden = "ORDER BY precio ASC";
+                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
                 ordenarLista();
                 break;
             case "Precio más alto":
                 listaViviendas.getChildren().clear();
-                ordenarPrecioAlto();
+                orden = "ORDER BY precio DESC";
+                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
                 ordenarLista();
                 break;
             case "Valoracion":
                 listaViviendas.getChildren().clear();
-                ordenarValoracion();
+                orden = "ORDER BY valoracion DESC";
+                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
                 ordenarLista();
                 break;
             default:
                 break;
         }
     }
-
+    
     @FXML
     private void InicioBoton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
