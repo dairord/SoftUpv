@@ -30,7 +30,7 @@ public class ConectorUsuarioDB {
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } //fin añadir usuario
+    } //fin añadir usuario. 
     
     public static boolean usuarioRepetido (String id){
         try {
