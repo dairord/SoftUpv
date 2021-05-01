@@ -25,6 +25,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorFiltrosBD;
+import trobify.logica.Filtros;
 
 /**
  * FXML Controller class
@@ -116,15 +118,8 @@ public class MantenerFiltrosController implements Initializable {
         else if(tip.equals("Casa")) tipo = 2;
         else tipo = 3;
         Statement s1;
-        try{
-            s1 = con.getConnection().createStatement();
-            s1.executeUpdate("INSERT INTO filtros(id, ciudad, tipo, p_min, p_max, habitaciones, baños, ventaAlquiler) "
-                    + "VALUES(1, '"+ ciu +"', '"+ tipo +"', '"+ precioMin +"', '"+ precioMax +"', '"+ habitaciones +"',"
-                    + " '"+ baños +"', '"+ alqOVen +"')");
-            System.out.println("filtros guardados con exito");
-        }catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch 
+        ConectorFiltrosBD.insrtarFiltrosSinFecha(username, ciu, tipo, precioMin, precioMax, habitaciones, baños, alqOVen);
+        
      }
      
      private void insertarFiltrosConFechas(Conectar con) {

@@ -17,7 +17,7 @@ import trobify.controlador.InicioController;
  *
  * @author davido747
  */
-public class ConectorUsuarioDB {
+public class ConectorUsuarioBD {
     private static Conectar con = new Conectar();
     
    public static void añadirUsuario(Usuario u){

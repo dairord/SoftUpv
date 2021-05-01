@@ -213,7 +213,7 @@ public class FichaViviendaController implements Initializable {
         return fotoGaleria;
     }
     
-  public void consultarServicios(String id){
+     public void consultarServicios(String id){
       Servicios servi = ConectorViviendaBD.consultarServicios(id);
       if(servi.getBanco() ==1) listaServicios.add("Banco");
       if(servi.getSupermercado() ==1) listaServicios.add("Supermercado");
@@ -225,6 +225,7 @@ public class FichaViviendaController implements Initializable {
       ObservableList servicios = FXCollections.observableList(listaServicios);     
       this.serviciosCerca.setItems(servicios);  
     }
+   
     
     //Muestra botones de favoritos
     public void mostrarBotones(){

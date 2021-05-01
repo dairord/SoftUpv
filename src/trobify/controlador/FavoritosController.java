@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -152,9 +155,7 @@ public class FavoritosController implements Initializable {
         botonEliminar.setText("Eliminar de favoritos");
         botonEliminar.setId(id);
         botonEliminar.setOnAction(e -> {
-         
-            ConectorViviendaBD.eliminarDeFavoritos(botonEliminar.getId(), username);
-            ordenCambiado(null);
+          alerta(botonEliminar.getId());
         });
         
         eliminarFav.getChildren().add(botonEliminar);
@@ -182,6 +183,18 @@ public class FavoritosController implements Initializable {
         }
     }
 
+    private void alerta(String botonEliminar){
+       Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+        alerta.setHeaderText("Seguro que quieres eliminar?");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+             ConectorViviendaBD.eliminarDeFavoritos(botonEliminar, username);
+            ordenCambiado(null);
+            alerta.close();
+           
+    } alerta.close();
+    }
+    
     @FXML
     private void ordenCambiado(ActionEvent event) {
         orden();
