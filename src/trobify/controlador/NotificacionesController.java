@@ -26,7 +26,7 @@ import trobify.Conectar;
 /**
  * FXML Controller class
  *
- * @author Usuario
+ * @author gabri
  */
 public class NotificacionesController implements Initializable {
 

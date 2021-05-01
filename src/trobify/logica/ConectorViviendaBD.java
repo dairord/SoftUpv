@@ -172,11 +172,13 @@ public class ConectorViviendaBD {
         int i = 0;
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery ("SELECT f.id FROM fotografia f WHERE f.id_vivienda IN (SELECT v.id FROM vivienda v WHERE v.id NOT LIKE '" + id + "' AND v.precio BETWEEN '" + precioBajo + "' AND '" + precioAlto + "')");
+            ResultSet rsl = stm.executeQuery ("SELECT DISTINCT f.id_vivienda FROM fotografia f WHERE f.id_vivienda IN (SELECT v.id FROM vivienda v WHERE v.id NOT LIKE '" + id + "' AND v.precio BETWEEN '" + precioBajo + "' AND '" + precioAlto + "')");
             if(rsl.first()){
                 rsl.beforeFirst();
+                String foto;
                 while(rsl.next() && i < 3){
-                    listaRecomendados.add(rsl.getNString("id"));
+                    foto = consultarFoto(rsl.getNString("id_vivienda"));
+                    listaRecomendados.add(foto);
                     i++;
                 }
             }

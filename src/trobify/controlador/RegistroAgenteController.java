@@ -32,7 +32,7 @@ import trobify.logica.ConectorAgenciaBD;
 /**
  * FXML Controller class
  *
- * @author Usuario
+ * @author gabri
  */
 public class RegistroAgenteController implements Initializable {
 

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Usuario
+ * @author gabri
  */
 public class TarjetaController implements Initializable {
 
