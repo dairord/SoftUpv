@@ -15,10 +15,10 @@ import trobify.controlador.InicioController;
 
 /**
  *
- * @author gabri
+ * @author davido747
  */
-public class conectorUsuarioBD {
-   private static Conectar con = new Conectar();
+public class ConectorUsuarioDB {
+    private static Conectar con = new Conectar();
     
    public static void añadirUsuario(Usuario u){
         try {
@@ -62,3 +62,5 @@ public class conectorUsuarioBD {
         return false;
     }
 }
+    
+

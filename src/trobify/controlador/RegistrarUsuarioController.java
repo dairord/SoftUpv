@@ -29,7 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import trobify.Conectar;
 import trobify.logica.Usuario;
-import trobify.logica.ConectorUsuarioBD;
+import trobify.logica.ConectorUsuarioDB;
 
 /**
  * FXML Controller class
@@ -111,7 +111,7 @@ public class RegistrarUsuarioController implements Initializable {
    }
    
    private boolean usuarioNoRepetido(){
-      if(!ConectorUsuarioBD.usuarioRepetido(username.getText())){
+      if(!ConectorUsuarioDB.usuarioRepetido(username.getText())){
            usuIncorrecto.setText(" *");
            errorText.setText("Nombre de usuario ya en uso.");
            return false;
@@ -124,7 +124,7 @@ public class RegistrarUsuarioController implements Initializable {
        if(usuarioNoRepetido() && errorContraseña()){
            Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
-           ConectorUsuarioBD.añadirUsuario(nuevo);
+           ConectorUsuarioDB.añadirUsuario(nuevo);
            if(agenteCheck.isSelected()) esAgente();
            else estaRegistrado();
      }//fin if

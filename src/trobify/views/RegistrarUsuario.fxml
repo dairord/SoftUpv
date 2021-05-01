@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
+<VBox prefHeight="645.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
          <items>

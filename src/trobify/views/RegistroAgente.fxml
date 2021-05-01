@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistroAgenteController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistroAgenteController">
    <children>
       <HBox prefHeight="59.0" prefWidth="600.0" />
       <HBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0">
@@ -23,7 +23,8 @@
       </HBox>
       <HBox prefHeight="64.0" prefWidth="600.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="194.0">
+            <VBox prefHeight="64.0" prefWidth="251.0" />
+            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="185.0">
                <children>
                   <Label text="Código agencia" />
                </children>
@@ -41,6 +42,7 @@
       </HBox>
       <HBox prefHeight="60.0" prefWidth="600.0">
          <children>
+            <VBox prefHeight="60.0" prefWidth="241.0" />
             <VBox alignment="CENTER" prefHeight="60.0" prefWidth="198.0">
                <children>
                   <Label text="Contraseña" />
@@ -64,12 +66,14 @@
       </HBox>
       <HBox prefHeight="85.0" prefWidth="600.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="523.0">
+            <VBox prefHeight="85.0" prefWidth="385.0" />
+            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="249.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="503.0">
+            <VBox prefHeight="85.0" prefWidth="29.0" />
+            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="162.0">
                <children>
                   <Button fx:id="confirmarBoton" mnemonicParsing="false" onAction="#confirmar" text="Confirmar" />
                </children>

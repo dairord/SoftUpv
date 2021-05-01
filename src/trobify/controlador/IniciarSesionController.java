@@ -26,7 +26,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
-import trobify.logica.ConectorUsuarioBD;
+import trobify.logica.ConectorUsuarioDB;
 
 /**
  * FXML Controller class
@@ -117,7 +117,7 @@ public class IniciarSesionController implements Initializable {
          nom = nombre.getText();
          pas = contraseña.getText();
        Statement s;
-        if(ConectorUsuarioBD.usuarioCorrecto(nom, pas)){
+        if(ConectorUsuarioDB.usuarioCorrecto(nom, pas)){
             return true;
         } else {
             mensajeError.setText("Nombre de usuario o contraseña incorrecto");
