@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1334.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1334.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.BuscadorController">
    <children>
       <HBox prefHeight="100.0" prefWidth="627.0">
          <children>
@@ -139,11 +139,10 @@
             <Insets bottom="10.0" top="10.0" />
          </VBox.margin>
       </VBox>
-      <HBox prefHeight="495.0" prefWidth="617.0">
+      <HBox prefHeight="495.0" prefWidth="617.0" spacing="10.0">
          <children>
-            <VBox minHeight="-Infinity" prefHeight="462.0" prefWidth="246.0" spacing="5.0">
+            <VBox minHeight="-Infinity" prefHeight="462.0" prefWidth="367.0" spacing="5.0">
                <children>
-                  <WebView fx:id="mapa" prefHeight="200.0" prefWidth="200.0" />
                   <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="189.0">
                      <children>
                         <Label alignment="CENTER" text="Tipo de vivienda" />
@@ -252,14 +251,15 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </VBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="446.0" HBox.hgrow="ALWAYS">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="462.0" prefWidth="740.0" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="listaViviendas" prefHeight="618.0" prefWidth="1051.0" spacing="10.0" />
+                  <VBox fx:id="listaViviendas" prefHeight="618.0" prefWidth="648.0" spacing="10.0" />
                </content>
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </HBox.margin>
             </ScrollPane>
+            <WebView fx:id="mapa" prefHeight="462.0" prefWidth="528.0" />
          </children>
       </HBox>
       <HBox prefHeight="28.0" prefWidth="637.0">
