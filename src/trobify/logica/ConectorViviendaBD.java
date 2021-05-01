@@ -229,9 +229,9 @@ public class ConectorViviendaBD {
        String idVivienda = "";
         try {
             Statement stm = con.getConnection().createStatement();
-            //esta consulta no va creo
-            ResultSet rsl = stm.executeQuery ("SELECT id_vivienda FROM fotografia WHERE id = '%" + direccion + "'");
-            if(rsl.first()){
+           ResultSet rsl = stm.executeQuery ("SELECT id_vivienda FROM fotografia WHERE id LIKE '%" + direccion + "'");
+             System.out.println("prueba "+ direccion);
+           if(rsl.first()){
             idVivienda = rsl.getString("id_vivienda");
             System.out.println("prueba "+ idVivienda);
             }

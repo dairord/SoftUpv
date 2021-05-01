@@ -141,10 +141,10 @@ public class FichaViviendaController implements Initializable {
         
         //Viviendas recomendadas        
         for (int i = 0; i < listaRecomendados.size(); i++){
-            Button botonRecomendacion = new Button();
+           Button botonRecomendacion = new Button();
             botonRecomendacion.setPadding(new Insets(0, 0, 0, 0));
             botonRecomendacion.setId(ConectorViviendaBD.consultarIdVivienda(listaRecomendados.get(i)));
-            System.out.println("gabriela" + listaRecomendados);
+            System.out.println("caca" + botonRecomendacion.getId());
             configurarBoton(botonRecomendacion);
             try{
                 ImageView fotoBoton = galeria(listaRecomendados.get(i)); 
@@ -182,8 +182,9 @@ public class FichaViviendaController implements Initializable {
     //Funcion para poder moverte entre casas relacionadas a traves de botones en recomendados
     public void configurarBoton(Button boton){
         boton.setOnAction(e -> {
+            
             FichaViviendaController.pasarIdVivienda(boton.getId());
-
+            
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
             s.close();
