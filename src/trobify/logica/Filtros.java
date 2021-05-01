@@ -10,5 +10,5 @@ package trobify.logica;
  * @author gabri
  */
 public class Filtros {
-    
+    String id;
 }
