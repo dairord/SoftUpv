@@ -457,6 +457,26 @@ public class BuscadorController implements Initializable {
         Button botonRedireccion = new Button();
         botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
+        botonRedireccion.setOnAction(e -> {
+            System.out.println(id);
+            FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
+            FichaViviendaController.deDondeViene("buscador");
+            FichaViviendaController.pasarUsuario(username);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
+            s.close();
+            Stage stage = new Stage();
+            Scene scene;
+            try {
+                scene = new Scene(fxmlLoader.load());
+                FichaViviendaController.pasarStage(stage);
+                stage.setScene(scene);
+                stage.setTitle("Trobify");
+                stage.show();
+            } catch (IOException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 
         miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -464,6 +484,8 @@ public class BuscadorController implements Initializable {
         javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
         foto.setFitWidth(200);
         foto.setFitHeight(150);
+        
+        botonRedireccion.setGraphic(foto);
 
         javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
         datos.setPadding(new Insets(20, 30, 30, 15));
@@ -473,7 +495,7 @@ public class BuscadorController implements Initializable {
 
         datos.getChildren().addAll(calle, precio);
 
-        miniatura.getChildren().addAll(foto, datos);
+        miniatura.getChildren().addAll(botonRedireccion, datos);
         return miniatura;
     }
 
