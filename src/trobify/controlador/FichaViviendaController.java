@@ -323,7 +323,17 @@ public class FichaViviendaController implements Initializable {
     }
 
     @FXML
-    private void editar(ActionEvent event) {
+    private void editar(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/EditarVivienda.fxml"));
+        EditarViviendaController.pasarDatos(username, id);
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        EditarViviendaController.pasarStage(s);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
     }
 
     @FXML
@@ -340,11 +350,11 @@ public class FichaViviendaController implements Initializable {
     private void volverAtras() throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(aDondeVa));
-    
+        
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        InicioController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
