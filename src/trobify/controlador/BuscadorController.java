@@ -270,6 +270,7 @@ public class BuscadorController implements Initializable {
 
     private void geolocalizacion() {
         //Inicialización del WebView para que se muestre GoogleMaps
+        location = ciudad.getText();
         System.setProperty("java.net.useSystemProxies", "true");
         googleMaps = getClass().getResource("GeoPrueba.html");
         engine = mapa.getEngine();
