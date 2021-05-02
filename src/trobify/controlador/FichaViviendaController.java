@@ -23,6 +23,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,10 +44,13 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 import trobify.Conectar;
+import static trobify.controlador.BuscadorController.location;
 import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Servicios;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -183,7 +187,78 @@ public class FichaViviendaController implements Initializable {
         //para saber de donde viene y volver atrás correctamente
         if(deDondeViene.equals("favoritos")) aDondeVa = "/trobify/views/Favoritos.fxml";
         else aDondeVa = "/trobify/views/Buscador.fxml";
+        
+        geo();
     }    
+    private Vivienda ciudad;
+     private URL googleMaps;
+    private WebEngine engine;
+    public static String location;
+
+    
+    private void geo(){
+        ciudad = ConectorViviendaBD.getVivienda(id);
+        geolocalizacion();
+        listarGeoPunto(ciudad);
+    }
+    
+    private void geolocalizacion() {
+        //Inicialización del WebView para que se muestre GoogleMaps
+        location = ciudad.getCalle();
+        System.setProperty("java.net.useSystemProxies", "true");
+        googleMaps = getClass().getResource("GeoPrueba.html");
+        engine = mapa.getEngine();
+        engine.load(googleMaps.toExternalForm());
+        engine.getLoadWorker().stateProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+               // System.out.println("oldValue: " + oldValue);
+               // System.out.println("newValue: " + newValue);
+
+                if (newValue != Worker.State.SUCCEEDED) {
+                    return;
+                }
+               // System.out.println("Succeeded!");
+
+                JSObject jsObject = (JSObject) engine.executeScript("window");
+                jsObject.call("geocode", location);
+                
+
+            }
+        });
+    } //fin geolocalizacion
+    
+    private void listarGeoPunto(Vivienda res) {
+        //Provisional
+       // res = new Vivienda();
+        //res.setCalle("Calle Arzobispo Mayoral");
+        //res.setId("vivienda1");
+       // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
+        /////////////////////////////////////////////////////////////////////
+        
+        String punto = res.getCalle() +" " +res.getCodigo_postal();
+       
+        String desc = res.getCalle();
+
+        engine.getLoadWorker().stateProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+               // System.out.println("oldValue: " + oldValue);
+               // System.out.println("newValue: " + newValue);
+
+                if (newValue != Worker.State.SUCCEEDED) {
+                    return;
+                }
+                System.out.println(id);
+
+                JSObject jsObject = (JSObject) engine.executeScript("window");
+                jsObject.call("mark", punto, null, desc);
+
+            }
+        });
+    }
     
   
     //Funcion para poder moverte entre casas relacionadas a traves de botones en recomendados

@@ -427,4 +427,27 @@ public class ConectorViviendaBD {
 
         return res;
     }
+    
+    public static Vivienda getVivienda(String id){
+        Vivienda res = new Vivienda();
+        try {
+            // System.out.println(id_usuario);
+            Statement stm = con.getConnection().createStatement();
+
+            ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id + "'");
+            if (rsl.isBeforeFirst()){
+                rsl.first();
+                res = new Vivienda(rsl.getString("id"),
+                                rsl.getString("calle"), rsl.getString("ciudad"), rsl.getInt("ventaAlquiler"),
+                                rsl.getString("id_agencia"), rsl.getInt("precio"), rsl.getString("id_propietario"),
+                                rsl.getInt("tipo"), rsl.getInt("baños"), rsl.getInt("habitaciones"),
+                                rsl.getString("descripcion"), rsl.getInt("piso"), rsl.getString("puerta"),
+                                rsl.getInt("codigo_postal"), rsl.getInt("activo"));
+                
+            }
+    }catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
+    }
 } //fin clase
