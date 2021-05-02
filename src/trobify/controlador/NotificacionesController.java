@@ -46,7 +46,7 @@ public class NotificacionesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
        //con = new Conectar();
        //lista();
-       System.out.println(listaNotis.get(0));
+//       System.out.println(listaNotis.get(0));
        lista.setItems(listaNotis);
       // favList = new ArrayList(); 
     }    
@@ -62,7 +62,7 @@ public class NotificacionesController implements Initializable {
      
      public static void pasarNotis(ArrayList<String> noti){
          
-         System.out.println(noti.get(0));
+         
          
          listaNotis = FXCollections.observableList(noti);
          

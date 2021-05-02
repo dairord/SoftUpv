@@ -168,7 +168,7 @@ public class BuscadorController implements Initializable {
     } //fin initialice
 
     private void sesionIniciada() {
-        System.out.println(username);
+     //   System.out.println(username);
         //compobar si ha iniciado sesión
         if (estaIniciado) {
             nombreUsuario.setText(username);
@@ -282,13 +282,13 @@ public class BuscadorController implements Initializable {
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                System.out.println("oldValue: " + oldValue);
-                System.out.println("newValue: " + newValue);
+               // System.out.println("oldValue: " + oldValue);
+               // System.out.println("newValue: " + newValue);
 
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-                System.out.println("Succeeded!");
+               // System.out.println("Succeeded!");
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("geocode", location);
@@ -315,13 +315,13 @@ public class BuscadorController implements Initializable {
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                System.out.println("oldValue: " + oldValue);
-                System.out.println("newValue: " + newValue);
+               // System.out.println("oldValue: " + oldValue);
+               // System.out.println("newValue: " + newValue);
 
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-                System.out.println("Succeeded!");
+               // System.out.println("Succeeded!");
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("mark", punto, id, desc);
@@ -348,7 +348,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void notificar(ActionEvent event) {
-        ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
+       /* ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
         ArrayList<String> res = new ArrayList<String>();
         
         ///////////////////////////////////////////////////////////////////
@@ -359,13 +359,13 @@ public class BuscadorController implements Initializable {
         //////////////////////////////////////////////////////////////////
         
         for(int i = 0; i < viviendasFav.size(); i++){
-            System.out.println("Caca");
+          //  System.out.println("Caca");
             if (viviendasFav.get(i).getActivo() == 1){
-                System.out.println("Cacota");
+            //    System.out.println("Cacota");
                 res.add("La vivienda de la " +viviendasFav.get(i).getCalle() +" ya no se encuentra disponible.");
             }
         }
-        NotificacionesController.pasarNotis(res);
+        NotificacionesController.pasarNotis(res);*/
     }
 
     @FXML
@@ -480,7 +480,7 @@ public class BuscadorController implements Initializable {
         botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
         botonRedireccion.setOnAction(e -> {
-            System.out.println(id);
+          //  System.out.println(id);
             FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
             FichaViviendaController.deDondeViene("buscador");
             FichaViviendaController.pasarUsuario(username);
@@ -585,20 +585,21 @@ public class BuscadorController implements Initializable {
     @FXML
     private void notifica(ActionEvent event) throws IOException {
         //notificar(null);
-        ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
+        ArrayList<Vivienda> viviendasFav = ConectorViviendaBD.getFavoritosUsuario(username);
+        
         ArrayList<String> res = new ArrayList<String>();
         
-        ///////////////////////////////////////////////////////////////////
+       /* ///////////////////////////////////////////////////////////////////
         Vivienda prueba = new Vivienda();
         prueba.setCalle("Calle de pruebas");
         prueba.setActivo(1);
         viviendasFav.add(prueba);
-        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////*/
         
         for(int i = 0; i < viviendasFav.size(); i++){
-            System.out.println("Caca");
+            
             if (viviendasFav.get(i).getActivo() == 1){
-                System.out.println("Cacota");
+                
                 res.add("La vivienda de la " +viviendasFav.get(i).getCalle() +" ya no se encuentra disponible.");
             }
         }

@@ -5,6 +5,15 @@
  */
 package trobify.logica;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import trobify.Conectar;
+import trobify.controlador.InicioController;
+
 /**
  *
  * @author gabri
@@ -12,6 +21,7 @@ package trobify.logica;
 public class Favoritos {
     String id, id_cliente;
     int valoracion;
+     private static Conectar con = new Conectar();
 
     public Favoritos(String id, String id_cliente, int valoracion) {
         this.id = id;
@@ -30,6 +40,8 @@ public class Favoritos {
     public int getValoracion() {
         return valoracion;
     }
+    
+    
     
     
 }
