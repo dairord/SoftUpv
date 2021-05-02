@@ -139,6 +139,8 @@ public class BuscadorController implements Initializable {
     private Button notificaciones;
     @FXML
     private Label agente;
+    @FXML
+    private Button registrarV;
 
     /**
      * Initializes the controller class.
@@ -180,6 +182,7 @@ public class BuscadorController implements Initializable {
             mensajes.setVisible(false);
             notificaciones.setVisible(false);
             botonGuardarFiltros.setVisible(false);
+            registrarV.setVisible(false);
         }
 
     } //fin sesion iniciada
@@ -613,6 +616,21 @@ public class BuscadorController implements Initializable {
         NotificacionesController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+    }
+
+    @FXML
+    private void RegistrarViv(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
+        RegistrarViviendaController.pasarUsuario(username);
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        RegistrarViviendaController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Registrar vivienda");
         stage.show();
         event.consume();
     }
