@@ -15,7 +15,7 @@
 			
 			var key = '&key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE';
 			
-			var res = url+location+key;
+			var res = url+location+"spain"+key;
 			fetch(res)
 			.then(response => response.json())
 				.then(data => document.map.setCenter(data.results[0].geometry.location));
