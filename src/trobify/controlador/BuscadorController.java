@@ -529,7 +529,7 @@ public class BuscadorController implements Initializable {
 
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
         javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: Consulta con el propietario");
-        if(alquilada == 1) precio.setText("Precio: " + precioVivienda + "€");
+        if(alquilada == 1) precio.setText("Precio: " + precioVivienda + "€  ");
         if(alquilada == 2) precio.setText("Precio: " + precioVivienda + "€ /mes");
         
         datos.getChildren().addAll(calle, precio);
