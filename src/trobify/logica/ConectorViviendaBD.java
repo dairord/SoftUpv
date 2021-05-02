@@ -339,4 +339,21 @@ public class ConectorViviendaBD {
         }
         return null;
     }
+    public static int numeroViviendas(){
+       int cont = 0;
+       try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT * from vivienda");
+             if(rsl.first()){
+                rsl.beforeFirst();
+                while (rsl.next() ) {
+                   cont++;
+                }
+             }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return cont;
+        
+    } 
 } //fin clase

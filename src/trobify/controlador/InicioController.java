@@ -78,7 +78,7 @@ public class InicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
+     
     //si está iniciado sesión
     if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
