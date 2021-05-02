@@ -7,6 +7,7 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -87,8 +88,14 @@ public class EditarViviendaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        codigoField.textProperty().addListener(new ChangeListener<String>() {
+        soloNumeros();
+        autorellenoDatos();
+        mostrarServicios();
+        mostrarFotos();
+    }    
+    
+    private void soloNumeros(){
+         codigoField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, 
             String newValue) {
@@ -97,8 +104,8 @@ public class EditarViviendaController implements Initializable {
                 }
             }
         });
-        
-        habitacionesField.textProperty().addListener(new ChangeListener<String>() {
+         
+         habitacionesField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, 
             String newValue) {
@@ -137,10 +144,8 @@ public class EditarViviendaController implements Initializable {
                 }
             }
         });
-       
-        autorellenoDatos();
-        mostrarServicios();
-    }    
+    }
+    
     private void autorellenoDatos(){
         vivi = ConectorViviendaBD.vivienda(id);
         calleField.setText(vivi.getCalle());
@@ -224,6 +229,10 @@ public class EditarViviendaController implements Initializable {
     public static void pasarDatos (String u, String vivi){
         username = u;
         id = vivi;
+    }
+    
+    private static void mostrarFotos(){
+        ArrayList<String> fotos = ConectorViviendaBD.crearListaFotos(id);
     }
 }
 
