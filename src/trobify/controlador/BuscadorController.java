@@ -161,9 +161,9 @@ public class BuscadorController implements Initializable {
             Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
         geolocalizacion();
-        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudad(ciudad.getText());
+        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
         for (int i = 0; i < listaCiudad.size(); i++) {
-            listarGeoPunto(listaCiudad.get(i));
+            listarGeoPunto(listaCiudad.get(i), i);
         }
     } //fin initialice
 
@@ -299,17 +299,17 @@ public class BuscadorController implements Initializable {
 
     //Pasándole una vivienda como parámetro es suficiente para listar el punto en el mapa, poner el número de su id (si fuese vivivienda1 pues 1), y mostrár la desc en el mapa
     //La primera parte del código es provisional hasta que el resto funcione correctamente
-    private void listarGeoPunto(Vivienda res) {
+    private void listarGeoPunto(Vivienda res, int idd) {
         //Provisional
        // res = new Vivienda();
         //res.setCalle("Calle Arzobispo Mayoral");
         //res.setId("vivienda1");
        // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
         /////////////////////////////////////////////////////////////////////
-
-        String punto = res.getCalle();
-        String id = res.getId().substring(8);
-        String desc = res.getDescripcion();
+        
+        String punto = res.getCalle() +" " +res.getCodigo_postal();
+        String id = String.valueOf(idd+1);
+        String desc = res.getCalle();
 
         engine.getLoadWorker().stateProperty().addListener(
                 new ChangeListener() {
@@ -321,7 +321,7 @@ public class BuscadorController implements Initializable {
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-               // System.out.println("Succeeded!");
+                System.out.println(id);
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("mark", punto, id, desc);
