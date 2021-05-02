@@ -96,8 +96,8 @@ public class RegistrarViviendaController implements Initializable {
     private static int banco = 0;
     private static int farmacia = 0;
     
-    private static ArrayList <String> FotosSource;
-    private static ArrayList <Fotografia> fotos;
+    private static ArrayList <String> FotosSource = new ArrayList<String>();
+    private static ArrayList <Fotografia> fotos = new ArrayList<Fotografia>();
     
     @FXML
     private Button registrarBoton;
@@ -118,7 +118,9 @@ public class RegistrarViviendaController implements Initializable {
                  .or(Bindings.isEmpty(codigoField.textProperty()))
                  .or(Bindings.isEmpty(precioField.textProperty()))
                  .or(Bindings.isEmpty(habitacionesField.textProperty()))
-                 .or(Bindings.isEmpty(bañosField.textProperty()));
+                 .or(Bindings.isEmpty(bañosField.textProperty()))
+                 .or(Bindings.isNull(TipoVivienda.getSelectionModel().selectedItemProperty()))
+                 .or(Bindings.isNull(ComprarAlquilar.getSelectionModel().selectedItemProperty()));
         
         registrarBoton.disableProperty().bind(sePuedeBuscar);
         
@@ -221,7 +223,7 @@ public class RegistrarViviendaController implements Initializable {
         
         //codigo para pasar las fotos añadidas al array
         
-        if(FotosSource.isEmpty()) {FotosSource.add("C:\\Users\\davido747\\Documents\\Uni\\SoftUpv\\src\\trobify\\images\\foto0.jpeg");}
+        if(FotosSource.isEmpty()) {FotosSource.add("C:\\\\Users\\\\davido747\\\\Documents\\\\Uni\\\\SoftUpv\\\\src\\\\trobify\\\\images\\\\foto0.jpeg");}
         
         Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, "ninguna", precio, username, tipo, baños, habitaciones,
                 descripcionField.getText(), piso, numeroField.getText(), codigo, 0);

@@ -315,12 +315,11 @@ public class ConectorViviendaBD {
     public static void añadirVivienda(Vivienda vivi) {
         try {
             Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO vivienda (id, ,calle, ciudad, ventAlquiler, id_agencia, precio, id_propietario, tipo, "
-                    + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"'"
+            stm.executeUpdate("INSERT INTO vivienda (id, calle, ciudad, ventaAlquiler, id_agencia, precio, id_propietario, tipo, "
+                    + "baños, habitaciones, descripcion, piso, puerta, codigo_postal) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
                     + ", '"+vivi.getCiudad()+"', '"+vivi.getVentaAlquiler()+"', '"+vivi.getId_agencia()+"', '"+vivi.getPrecio()+"'"
                     + ", '"+vivi.getId_propietario()+"', '"+vivi.getTipo()+"', '"+vivi.getBaños()+"', '"+vivi.getHabitaciones()+"'"
-                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+", '"+vivi.getCodigo_postal()+"'"
-                    + "')");
+                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"' )");
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }

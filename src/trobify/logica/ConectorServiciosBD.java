@@ -23,7 +23,7 @@ public class ConectorServiciosBD {
     public static void añadirServicios(Servicios servi){
         try {
             Statement stm = con.getConnection().createStatement();
-            stm.executeLargeUpdate("INSERT INTO servicios (id, supermercado, transporte_publico, banco, estanco, "
+            stm.executeUpdate("INSERT INTO servicios (id, supermercado, transporte_publico, banco, estanco, "
                     + "centro_comercial, gimnasio, farmacia) VALUES ('"+servi.getId()+"', '"+servi.getSupermercado()+"'"
                     + ", '"+servi.getTransporte_publico()+"', '"+servi.getBanco()+"', '"+servi.getEstanco()+"'"
                     + ", '"+servi.getCentro_comercial()+"', '"+servi.getGimnasio()+"', '"+servi.getFarmacia()+"')");
