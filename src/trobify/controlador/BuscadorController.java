@@ -162,13 +162,12 @@ public class BuscadorController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        geolocalizacion();
-        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
-        for (int i = 0; i < listaCiudad.size(); i++) {
-            listarGeoPunto(listaCiudad.get(i), i);
-        }
+        
+        geo();
     } //fin initialice
 
+    
+    
     private void sesionIniciada() {
      //   System.out.println(username);
         //compobar si ha iniciado sesión
@@ -273,6 +272,17 @@ public class BuscadorController implements Initializable {
         tipoVivienda.getSelectionModel().select(tip);
 
     } //fin autocompletar filtros
+    
+    private void geo(){
+        geolocalizacion();
+        try{
+            wait(100);
+        }catch(Exception ex){}
+        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
+        for (int i = 0; i < listaCiudad.size(); i++) {
+            listarGeoPunto(listaCiudad.get(i), i);
+        }
+    }
 
     private void geolocalizacion() {
         //Inicialización del WebView para que se muestre GoogleMaps
@@ -373,7 +383,8 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) throws SQLException {
-        geolocalizacion();
+        geo();
+        
         comprobaciones();
     }
 
@@ -470,6 +481,7 @@ public class BuscadorController implements Initializable {
 
     //metodo nuevo de sql
     private void consulta() throws SQLException {
+        ciu = ciudad.getText();
         viviendasList = ConectorViviendaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
         ordenarLista();
     }//fin consulta
