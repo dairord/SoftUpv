@@ -475,7 +475,7 @@ public class BuscadorController implements Initializable {
     }//fin consulta
 
     //generador de miniaturas
-    private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException {
+    private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int alquilada) throws FileNotFoundException {
 
         javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();
 
@@ -516,8 +516,10 @@ public class BuscadorController implements Initializable {
         datos.setPadding(new Insets(20, 30, 30, 15));
 
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
-
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: Consulta con el propietario");
+        if(alquilada == 1) precio.setText("Precio: " + precioVivienda + "€ en total");
+        if(alquilada == 2) precio.setText("Precio: " + precioVivienda + "€ /mes");
+        
         datos.getChildren().addAll(calle, precio);
 
         miniatura.getChildren().addAll(botonRedireccion, datos);
@@ -532,7 +534,8 @@ public class BuscadorController implements Initializable {
                 String foto = ConectorViviendaBD.consultarFoto(viviendasList.get(i));
                 String calle = ConectorViviendaBD.consultarDireccion(viviendasList.get(i));
                 int precio = ConectorViviendaBD.consultarPrecio(viviendasList.get(i));
-                this.listaViviendas.getChildren().add(crearMiniatura(id, foto, calle, precio));
+                int alquilada = ConectorViviendaBD.consultarAlquiler(viviendasList.get(i));
+                this.listaViviendas.getChildren().add(crearMiniatura(id, foto, calle, precio, alquilada));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }

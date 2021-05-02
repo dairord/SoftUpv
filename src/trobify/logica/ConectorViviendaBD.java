@@ -96,6 +96,11 @@ public class ConectorViviendaBD {
         Vivienda vivi = vivienda(id);
         return vivi.getPrecio();
     }
+    
+    public static int consultarAlquiler(String id) {
+        Vivienda vivi = vivienda(id);
+        return vivi.getVentaAlquiler();
+    }
 
     public static void eliminarDeFavoritos(String id, String username) {
         try {
