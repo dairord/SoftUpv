@@ -276,7 +276,7 @@ public class BuscadorController implements Initializable {
     private void geo(){
         geolocalizacion();
         try{
-            wait(200);
+            wait(500);
         }catch(Exception ex){}
         ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
         for (int i = 0; i < listaCiudad.size(); i++) {
