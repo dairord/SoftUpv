@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
-<HBox prefHeight="652.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.FichaViviendaController">
+<HBox prefHeight="652.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.FichaViviendaController">
    <children>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="685.0" prefWidth="572.0" HBox.hgrow="ALWAYS">
          <content>
@@ -43,6 +43,12 @@
                                     <Insets />
                                  </HBox.margin>
                               </HBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="esPropietario" alignment="CENTER" prefHeight="30.0" prefWidth="428.0" spacing="20.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#editar" text="Editar vivienda   " />
+                              <Button mnemonicParsing="false" onAction="#desactivar" text="Desactivar vivienda" />
                            </children>
                         </HBox>
                      </items>

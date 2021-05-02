@@ -73,10 +73,7 @@ public class FavoritosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        //Crear una conexion
-        con = new Conectar();        
-        
-        // Seleccion del orden de busqueda
+       // Seleccion del orden de busqueda
         ArrayList<String> orden = new ArrayList();
         orden.add("Relevancia");
         orden.add("Precio más bajo");
@@ -167,8 +164,7 @@ public class FavoritosController implements Initializable {
     //Lista de viviendas
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
-            
-            String idBoton = favList.get(i);
+           String idBoton = favList.get(i);
             
             try {
                 String foto = ConectorViviendaBD.consultarFoto(favList.get(i));

@@ -161,7 +161,10 @@ public class BuscadorController implements Initializable {
             Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
         geolocalizacion();
-        listarGeoPunto(null);
+        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudad(ciudad.getText());
+        for (int i = 0; i < listaCiudad.size(); i++) {
+            listarGeoPunto(listaCiudad.get(i));
+        }
     } //fin initialice
 
     private void sesionIniciada() {
@@ -270,7 +273,6 @@ public class BuscadorController implements Initializable {
 
     private void geolocalizacion() {
         //Inicialización del WebView para que se muestre GoogleMaps
-        location = ciudad.getText();
         System.setProperty("java.net.useSystemProxies", "true");
         googleMaps = getClass().getResource("GeoPrueba.html");
         engine = mapa.getEngine();
@@ -293,22 +295,21 @@ public class BuscadorController implements Initializable {
             }
         });
     } //fin geolocalizacion
-    
-    
+
     //Pasándole una vivienda como parámetro es suficiente para listar el punto en el mapa, poner el número de su id (si fuese vivivienda1 pues 1), y mostrár la desc en el mapa
     //La primera parte del código es provisional hasta que el resto funcione correctamente
-    private void listarGeoPunto(Vivienda res){
+    private void listarGeoPunto(Vivienda res) {
         //Provisional
-        res = new Vivienda();
-        res.setCalle("Calle Arzobispo Mayoral");
-        res.setId("vivienda1");
-        res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
+       // res = new Vivienda();
+        //res.setCalle("Calle Arzobispo Mayoral");
+        //res.setId("vivienda1");
+       // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
         /////////////////////////////////////////////////////////////////////
-        location = ciudad.getText();
+
         String punto = res.getCalle();
         String id = res.getId().substring(8);
         String desc = res.getDescripcion();
-        
+
         engine.getLoadWorker().stateProperty().addListener(
                 new ChangeListener() {
             @Override
@@ -346,24 +347,6 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void notificar(ActionEvent event) {
-        ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
-        ArrayList<String> res = new ArrayList<String>();
-        
-        ///////////////////////////////////////////////////////////////////
-        Vivienda prueba = new Vivienda();
-        prueba.setCalle("Calle de pruebas");
-        prueba.setActivo(1);
-        viviendasFav.add(prueba);
-        //////////////////////////////////////////////////////////////////
-        
-        for(int i = 0; i < viviendasFav.size(); i++){
-            System.out.println("Caca");
-            if (viviendasFav.get(i).getActivo() == 1){
-                System.out.println("Cacota");
-                res.add("La vivienda de la " +viviendasFav.get(i).getCalle() +" ya no se encuentra disponible.");
-            }
-        }
-        NotificacionesController.pasarNotis(res);
     }
 
     @FXML
@@ -460,7 +443,7 @@ public class BuscadorController implements Initializable {
             comoOrdenar = "precio DESC";
         }
         consulta();
-        
+
     }//fin comprobaciones
 
     //metodo nuevo de sql
@@ -478,6 +461,7 @@ public class BuscadorController implements Initializable {
         botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
         botonRedireccion.setOnAction(e -> {
+            System.out.println(id);
             FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
             FichaViviendaController.deDondeViene("buscador");
             FichaViviendaController.pasarUsuario(username);
@@ -486,9 +470,9 @@ public class BuscadorController implements Initializable {
             s.close();
             Stage stage = new Stage();
             Scene scene;
-            FichaViviendaController.pasarStage(stage);
             try {
                 scene = new Scene(fxmlLoader.load());
+                FichaViviendaController.pasarStage(stage);
                 stage.setScene(scene);
                 stage.setTitle("Trobify");
                 stage.show();
@@ -503,7 +487,7 @@ public class BuscadorController implements Initializable {
         javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
         foto.setFitWidth(200);
         foto.setFitHeight(150);
-        
+
         botonRedireccion.setGraphic(foto);
 
         javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
@@ -581,27 +565,6 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void notifica(ActionEvent event) throws IOException {
-        //notificar(null);
-        ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
-        ArrayList<String> res = new ArrayList<String>();
-        
-        ///////////////////////////////////////////////////////////////////
-        Vivienda prueba = new Vivienda();
-        prueba.setCalle("Calle de pruebas");
-        prueba.setActivo(1);
-        viviendasFav.add(prueba);
-        //////////////////////////////////////////////////////////////////
-        
-        for(int i = 0; i < viviendasFav.size(); i++){
-            System.out.println("Caca");
-            if (viviendasFav.get(i).getActivo() == 1){
-                System.out.println("Cacota");
-                res.add("La vivienda de la " +viviendasFav.get(i).getCalle() +" ya no se encuentra disponible.");
-            }
-        }
-        NotificacionesController.pasarNotis(res);
-        
-        
         NotificacionesController.pasarUsuario(username);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
