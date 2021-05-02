@@ -20,6 +20,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import trobify.logica.ConectorViviendaBD;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -73,12 +75,13 @@ public class EditarViviendaController implements Initializable {
     private static Stage st;
     private static String username;
     private static String id;
+    Vivienda vivi;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        vivi = ConectorViviendaBD.vivienda(id);
         
         
     }    
