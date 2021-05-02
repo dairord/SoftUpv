@@ -209,7 +209,7 @@ public class ConectorViviendaBD {
         }
     }
 
-    private static Vivienda vivienda(String id) {
+    public static Vivienda vivienda(String id) {
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id + "'");
@@ -310,7 +310,12 @@ public class ConectorViviendaBD {
     public static void añadirVivienda(Vivienda vivi) {
         try {
             Statement stm = con.getConnection().createStatement();
-            // stm.executeUpdate("consulta");
+            stm.executeUpdate("INSERT INTO vivienda (id, ,calle, ciudad, ventAlquiler, id_agencia, precio, id_propietario, tipo, "
+                    + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"'"
+                    + ", '"+vivi.getCiudad()+"', '"+vivi.getVentaAlquiler()+"', '"+vivi.getId_agencia()+"', '"+vivi.getPrecio()+"'"
+                    + ", '"+vivi.getId_propietario()+"', '"+vivi.getTipo()+"', '"+vivi.getBaños()+"', '"+vivi.getHabitaciones()+"'"
+                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+", '"+vivi.getCodigo_postal()+"'"
+                    + "')");
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
