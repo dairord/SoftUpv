@@ -458,7 +458,6 @@ public class BuscadorController implements Initializable {
         botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
         botonRedireccion.setOnAction(e -> {
-            System.out.println(id);
             FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
             FichaViviendaController.deDondeViene("buscador");
             FichaViviendaController.pasarUsuario(username);
@@ -467,9 +466,9 @@ public class BuscadorController implements Initializable {
             s.close();
             Stage stage = new Stage();
             Scene scene;
+            FichaViviendaController.pasarStage(stage);
             try {
                 scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage);
                 stage.setScene(scene);
                 stage.setTitle("Trobify");
                 stage.show();

@@ -101,6 +101,9 @@ public class FichaViviendaController implements Initializable {
         //Crear una conexion
         con = new Conectar();
         
+        //Ocultar botón si viene de buscador y no está iniciada la sesión
+        if(username == null){addFavoritos.setVisible(false);}
+        
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
         this.precioBase = ConectorViviendaBD.consultarPrecio(id);
@@ -295,6 +298,7 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
+        BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
