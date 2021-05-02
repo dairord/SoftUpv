@@ -9,7 +9,16 @@
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE">
         </script>
         <script type="text/javascript">
+            
+             let markers = [];
+             
+             function clearMarker(){
+                markers = [];
+             }
+             
            function geocode(location){
+                    clearMarker();
+                
 		   
 		   var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
 			
@@ -18,7 +27,7 @@
 			var res = url+location+"spain"+key;
 			fetch(res)
 			.then(response => response.json())
-				.then(data => document.map.setCenter(data.results[0].geometry.location));
+				.then(data => init(data.results[0].geometry.location));
 		   
 		   }
 		   
@@ -31,7 +40,7 @@
 			
 			var key = '&key=AIzaSyDRP7CnhHfbjjp74xr8nUv_MN0whJMygLE';
 			
-			var res = url+calle+key;
+			var res = url+calle+"spain"+key;
 			fetch(res)
 			.then(response => response.json())
 				.then(data => mark = data.results[0].geometry.location)
@@ -55,17 +64,18 @@
 				  infoWindow.setContent(marker.getTitle());
 				  infoWindow.open(marker.getMap(), marker);
 				});
-			  
+			  markers.push(marker);
 			}
+                  
                    
                    
                    
-                   
-            function initialize() {
-            var latlng = new google.maps.LatLng(37.39822, -121.9643936);
+            
+            
+            function init(centro){
             var myOptions = {
-            zoom: 14,
-            center: latlng,
+            zoom: 10,
+            center: centro,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             mapTypeControl: false,
             navigationControl: false,
@@ -98,8 +108,6 @@
             document.setMapTypeTerrain = function setMapTypeTerrain() {
             document.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
             }
-			//geocode("Valencia");
-			//mark("Calle de Sorní");
             }
         </script>
     </head>
