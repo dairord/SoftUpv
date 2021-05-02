@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,13 +39,16 @@ public class NotificacionesController implements Initializable {
     Conectar con;
     private String[] viviendas;
     ArrayList<String> favList;
+    private static String notis;
+    private static ObservableList listaNotis;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       con = new Conectar();
-       lista();
-       
-       favList = new ArrayList(); 
+       //con = new Conectar();
+       //lista();
+       System.out.println(listaNotis.get(0));
+       lista.setItems(listaNotis);
+      // favList = new ArrayList(); 
     }    
 
     @FXML
@@ -53,6 +58,14 @@ public class NotificacionesController implements Initializable {
     
      public static void pasarStage(Stage m){
          st = m;  
+     }
+     
+     public static void pasarNotis(ArrayList<String> noti){
+         
+         System.out.println(noti.get(0));
+         
+         listaNotis = FXCollections.observableList(noti);
+         
      }
      
      public boolean consulta(){
