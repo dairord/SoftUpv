@@ -7,7 +7,12 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,9 +52,9 @@ public class EditarViviendaController implements Initializable {
     @FXML
     private TextField bañosField;
     @FXML
-    private ComboBox<?> ComprarAlquilar;
+    private ComboBox<String> ComprarAlquilar;
     @FXML
-    private ComboBox<?> TipoVivienda;
+    private ComboBox<String> TipoVivienda;
     @FXML
     private TextArea descripcionField;
     @FXML
@@ -81,10 +86,98 @@ public class EditarViviendaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        vivi = ConectorViviendaBD.vivienda(id);
         
+        codigoField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+            String newValue) {
+                if (!newValue.matches("\\d*")) {
+                codigoField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
         
+        habitacionesField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+            String newValue) {
+                if (!newValue.matches("\\d*")) {
+                habitacionesField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        
+        bañosField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+            String newValue) {
+                if (!newValue.matches("\\d*")) {
+                bañosField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        
+        precioField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+            String newValue) {
+                if (!newValue.matches("\\d*")) {
+                precioField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        
+        pisoField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+            String newValue) {
+                if (!newValue.matches("\\d*")) {
+                pisoField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+       
+        autorellenoDatos();
     }    
+    private void autorellenoDatos(){
+        vivi = ConectorViviendaBD.vivienda(id);
+        calleField.setText(vivi.getCalle());
+        numeroField.setText(vivi.getPuerta());
+        pisoField.setText(vivi.getPiso()+ " ");
+        CiudadField.setText(vivi.getCiudad());
+        codigoField.setText(vivi.getCodigo_postal()+ "");
+        precioField.setText(vivi.getPrecio()+ "");
+        habitacionesField.setText(vivi.getHabitaciones() + "");
+        bañosField.setText(vivi.getBaños()+ " ");
+        pisoOCasa();
+        
+    }
+    private void pisoOCasa(){
+        if(vivi.getTipo()==1) TipoVivienda.getSelectionModel().select("Piso");
+        else TipoVivienda.getSelectionModel().select("Casa");
+    }
+    
+    private void comprarOVender(){
+        if(vivi.getVentaAlquiler()==1) ComprarAlquilar.getSelectionModel().select("Comprar");
+        else ComprarAlquilar.getSelectionModel().select("Alquilar");
+    }
+    
+     private void rellenoComboBox() {
+        ArrayList<String> tiposViviendas = new ArrayList<String>();
+        tiposViviendas.add("Piso");
+        tiposViviendas.add("Casa");
+        ObservableList<String> viv = FXCollections.observableList(tiposViviendas);
+        TipoVivienda.setItems(viv);
+        
+        ArrayList <String> queHacer = new ArrayList <String> ();
+        queHacer.add("Comprar");
+        queHacer.add("Alquilar");
+        ObservableList<String> caoc = FXCollections.observableList(queHacer);
+        ComprarAlquilar.setItems(caoc);
+    }
+     
+    
+    
 
     @FXML
     private void atras(ActionEvent event) throws IOException {
@@ -95,7 +188,7 @@ public class EditarViviendaController implements Initializable {
         st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        FichaViviendaController.pasarStage(st);
+        FichaViviendaController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
