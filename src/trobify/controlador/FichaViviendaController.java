@@ -112,6 +112,9 @@ public class FichaViviendaController implements Initializable {
         //Ocultar botón si viene de buscador y no está iniciada la sesión
         if(username == null){addFavoritos.setVisible(false);}
         
+        //Ocultar botón si viene de buscador y no está iniciada la sesión
+        if(username == null){addFavoritos.setVisible(false);}
+        
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
         this.precioBase = ConectorViviendaBD.consultarPrecio(id);
