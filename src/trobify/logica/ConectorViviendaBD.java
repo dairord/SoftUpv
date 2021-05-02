@@ -316,11 +316,11 @@ public class ConectorViviendaBD {
         }
     }
 
-    public static ArrayList<Vivienda> getViviendasPorCiudad(String ciudad) {
+    public static ArrayList<Vivienda> getViviendasPorCiudadActivas(String ciudad, int CompraAlquiler) {
         ArrayList<Vivienda> lista = new ArrayList<Vivienda>();
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE ciudad = '" + ciudad + "'");
+            ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE ciudad = '" + ciudad + "' AND activo = 0 AND tipo = " +CompraAlquiler);
             if (rsl.isBeforeFirst()) {
                 while (rsl.next()) {
                     Vivienda res = new Vivienda(rsl.getString("id"),
