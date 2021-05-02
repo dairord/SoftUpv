@@ -25,7 +25,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import trobify.logica.ConectorServiciosBD;
 import trobify.logica.ConectorViviendaBD;
+import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
 
 /**
@@ -76,8 +78,7 @@ public class EditarViviendaController implements Initializable {
     @FXML
     private Button registrarBoton;
 
-    private static String vieneDe;
-    private static Stage st;
+   private static Stage st;
     private static String username;
     private static String id;
     Vivienda vivi;
@@ -138,6 +139,7 @@ public class EditarViviendaController implements Initializable {
         });
        
         autorellenoDatos();
+        mostrarServicios();
     }    
     private void autorellenoDatos(){
         vivi = ConectorViviendaBD.vivienda(id);
@@ -150,6 +152,8 @@ public class EditarViviendaController implements Initializable {
         habitacionesField.setText(vivi.getHabitaciones() + "");
         bañosField.setText(vivi.getBaños()+ " ");
         pisoOCasa();
+        comprarOVender();
+        descripcionField.setText(vivi.getDescripcion() + "");
         
     }
     private void pisoOCasa(){
@@ -161,8 +165,18 @@ public class EditarViviendaController implements Initializable {
         if(vivi.getVentaAlquiler()==1) ComprarAlquilar.getSelectionModel().select("Comprar");
         else ComprarAlquilar.getSelectionModel().select("Alquilar");
     }
+    private void mostrarServicios(){
+         Servicios servi = ConectorServiciosBD.servicios(id);
+       System.out.println("gabriela "+ servi.getBanco());
+        if(servi.getSupermercado()==1) botonSupermercado.selectedProperty().set(true);
+        if(servi.getTransporte_publico()==1) BotonTransportePublico.selectedProperty().set(true);
+        if(servi.getBanco()==1) botonBanco.selectedProperty().set(true);
+        if(servi.getCentro_comercial()==1) botonCentroComercial.selectedProperty().set(true);
+        if(servi.getGimnasio()==1) botonGimnasio.selectedProperty().set(true);
+        if(servi.getFarmacia()==1) botonFarmacia.selectedProperty().set(true);
+    }
     
-     private void rellenoComboBox() {
+    private void rellenoComboBox() {
         ArrayList<String> tiposViviendas = new ArrayList<String>();
         tiposViviendas.add("Piso");
         tiposViviendas.add("Casa");

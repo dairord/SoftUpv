@@ -35,6 +35,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorServiciosBD;
 import trobify.logica.ConectorViviendaBD;
 
 /**
@@ -78,7 +79,7 @@ public class InicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-     
+    
     //si está iniciado sesión
     if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
