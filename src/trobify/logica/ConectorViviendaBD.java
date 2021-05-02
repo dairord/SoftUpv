@@ -209,7 +209,7 @@ public class ConectorViviendaBD {
         }
     }
 
-    private static Vivienda vivienda(String id) {
+    public static Vivienda vivienda(String id) {
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id + "'");
