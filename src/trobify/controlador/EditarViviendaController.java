@@ -101,6 +101,7 @@ public class EditarViviendaController implements Initializable {
         autorellenoDatos();
         mostrarServicios();
         mostrarFotos();
+        rellenoComboBox();
     }    
     
     private void soloNumeros(){
