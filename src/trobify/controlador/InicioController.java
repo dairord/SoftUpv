@@ -5,6 +5,8 @@
  */
 package trobify.controlador;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -34,6 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JFrame;
 import trobify.Conectar;
 import trobify.logica.ConectorServiciosBD;
 import trobify.logica.ConectorViviendaBD;
@@ -80,6 +83,7 @@ public class InicioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     
+   
     //si está iniciado sesión
     if(estaIniciado){
         nombreUsuario.setText("Bienvenido "+ username);
@@ -133,7 +137,7 @@ public class InicioController implements Initializable {
         */
      
     }
-        
+   
       
     @FXML
     private void inicia(ActionEvent event) throws IOException {
