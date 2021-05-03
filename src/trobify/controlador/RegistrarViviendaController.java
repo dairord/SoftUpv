@@ -207,19 +207,19 @@ public class RegistrarViviendaController implements Initializable {
         int codigo = Integer.parseInt(codigoField.getText());
         
         
-        if (ComprarAlquilar.getSelectionModel().selectedItemProperty().getValue().equals("comprar")) {alquilerOVenta = 1;}
+            if (ComprarAlquilar.getSelectionModel().selectedItemProperty().getValue().equals("Vender")) {alquilerOVenta = 1;}
         else {alquilerOVenta = 2;}
         
-        if (TipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("casa")) {tipo = 2;}
+        if (TipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {tipo = 2;}
         else {tipo = 1;}
         
-        if(botonSupermercado.isPressed()) {supermercado = 1;}
-        if(BotonTransportePublico.isPressed()) {transportePublico = 1;}
-        if(botonEstanco.isPressed()) {estanco = 1;}
-        if(botonGimnasio.isPressed()) {gimnasio = 1;}
-        if(botonCentroComercial.isPressed()) {centroComercial = 1;}
-        if(botonFarmacia.isPressed()) {farmacia = 1;}
-        if(botonBanco.isPressed()) {banco = 1;}
+        if(botonSupermercado.isSelected()) {supermercado = 1;}
+        if(BotonTransportePublico.isSelected()) {transportePublico = 1;}
+        if(botonEstanco.isSelected()) {estanco = 1;}
+        if(botonGimnasio.isSelected()) {gimnasio = 1;}
+        if(botonCentroComercial.isSelected()) {centroComercial = 1;}
+        if(botonFarmacia.isSelected()) {farmacia = 1;}
+        if(botonBanco.isSelected()) {banco = 1;}
         
         //codigo para pasar las fotos añadidas al array
         
@@ -259,7 +259,7 @@ public class RegistrarViviendaController implements Initializable {
         TipoVivienda.setItems(viv);
         
         ArrayList <String> queHacer = new ArrayList <String> ();
-        queHacer.add("Comprar");
+        queHacer.add("Vender");
         queHacer.add("Alquilar");
         ObservableList<String> caoc = FXCollections.observableList(queHacer);
         ComprarAlquilar.setItems(caoc);
