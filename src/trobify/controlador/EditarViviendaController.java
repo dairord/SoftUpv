@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -173,7 +176,7 @@ public class EditarViviendaController implements Initializable {
     }
     
     private void comprarOVender(){
-        if(vivi.getVentaAlquiler()==1) ComprarAlquilar.getSelectionModel().select("Comprar");
+        if(vivi.getVentaAlquiler()==1) ComprarAlquilar.getSelectionModel().select("Vender");
         else ComprarAlquilar.getSelectionModel().select("Alquilar");
     }
     private void mostrarServicios(){
@@ -196,7 +199,7 @@ public class EditarViviendaController implements Initializable {
         TipoVivienda.setItems(viv);
         
         ArrayList <String> queHacer = new ArrayList <String> ();
-        queHacer.add("Comprar");
+        queHacer.add("Vender");
         queHacer.add("Alquilar");
         ObservableList<String> caoc = FXCollections.observableList(queHacer);
         ComprarAlquilar.setItems(caoc);
@@ -224,9 +227,8 @@ public class EditarViviendaController implements Initializable {
     @FXML
     private void añadirFoto(ActionEvent event) {
     }
-
-    @FXML
-    private void registrar(ActionEvent event) {
+    
+    private Vivienda viviendaActualizada(){
         int compOalq = 0;
         if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Vender")) compOalq = 1;
         if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Alquilar")) compOalq = 2;
@@ -240,7 +242,51 @@ public class EditarViviendaController implements Initializable {
                 Integer.parseInt(bañosField.getText()),Integer.parseInt(habitacionesField.getText()),
                 descripcionField.getText(), Integer.parseInt(pisoField.getText()),
                 numeroField.getText(), Integer.parseInt(codigoField.getText()), 0 );
-        System.out.print(actualizada.getId());
+        return actualizada;
+    }
+    
+    private Servicios serviciosActualizados(){
+        int supermercado = 0;
+        int transportePublico = 0;
+        int estanco = 0;
+        int gimnasio = 0;
+        int centroComercial = 0;
+        int banco = 0;
+        int farmacia = 0;
+    
+        if(botonSupermercado.isSelected()) {supermercado = 1;}
+        if(BotonTransportePublico.isSelected()) {transportePublico = 1;}
+        if(botonEstanco.isSelected()) {estanco = 1;}
+        if(botonGimnasio.isSelected()) {gimnasio = 1;}
+        if(botonCentroComercial.isSelected()) {centroComercial = 1;}
+        if(botonFarmacia.isSelected()) {farmacia = 1;}
+        if(botonBanco.isSelected()) {banco = 1;}
+        System.out.print(supermercado);
+        Servicios actualizado = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
+    
+         return actualizado;
+    }      
+    
+    @FXML
+    private void registrar(ActionEvent event) {
+         Alert alerta1 = new Alert (Alert.AlertType.CONFIRMATION);
+        alerta1.setHeaderText("Seguro que quieres actul¡alizar la vivienda?");
+        Optional<ButtonType> aceptar = alerta1.showAndWait();
+        if(aceptar.isPresent() && aceptar.get().equals(ButtonType.OK)) {
+                Vivienda viviActualizada = viviendaActualizada();
+                ConectorViviendaBD.actualizarVivienda(viviActualizada);
+                Servicios servActualizado = serviciosActualizados();
+                ConectorServiciosBD.acualizarServicios(servActualizado);
+            
+                Alert alerta2 = new Alert (Alert.AlertType.INFORMATION);
+                    alerta2.setHeaderText("Vivienda actualizada correctamente");
+                    Optional<ButtonType> ok = alerta2.showAndWait();
+                    if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+            
+    } alerta2.close();
+            
+    } alerta1.close();
+        
     }
     
     public static void pasarStage(Stage s){

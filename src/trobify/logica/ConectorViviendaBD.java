@@ -464,4 +464,18 @@ public class ConectorViviendaBD {
         }
         return res;
     }
+    
+    public static void actualizarVivienda(Vivienda vivi){
+        try {
+         Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("UPDATE `vivienda` SET `calle`='"+ vivi.getCalle()+ "',`ciudad`='"+ vivi.getCiudad()+"',`ventaAlquiler`='" +vivi.getVentaAlquiler()+"',`id_agencia`='"+vivi.getId_agencia()+
+                    "',`precio`='"+vivi.getPrecio()+"',`id_propietario`='"+vivi.getId_propietario()+"',`tipo`='"+vivi.getTipo()+"',`baños`='"+vivi.getBaños()+"',"
+                    + "`habitaciones`='"+vivi.getHabitaciones()+"',`descripcion`='"+ vivi.getDescripcion() +"',`piso`='"+ vivi.getPiso() +"',`puerta`='"+ vivi.getPuerta()+"',"
+                    + "`codigo_postal`='"+ vivi.getCodigo_postal() +"',`activo`='"+ vivi.getActivo()+ "' WHERE id = '" + vivi.getId() + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+   
 } //fin clase

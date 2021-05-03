@@ -51,5 +51,18 @@ public class ConectorServiciosBD {
         }
         return null;
 }
+     public static void acualizarServicios(Servicios serv){
+        try {
+            System.out.println("se hace" + serv.getSupermercado());
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("UPDATE `servicios` SET `supermercado`='"+serv.getSupermercado()+
+                    "',`transporte_publico`='"+serv.getTransporte_publico()+
+                    "',`banco`='"+serv.getBanco()+"',`estanco`='"+serv.getEstanco()+
+                    "',`centro_comercial`='"+serv.getCentro_comercial()+"',`gimnasio`='"+serv.getGimnasio()+
+                    "',`farmacia`='"+serv.getFarmacia()+"' WHERE `id`='"+serv.id+"'");
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }
