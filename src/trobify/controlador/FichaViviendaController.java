@@ -47,6 +47,7 @@ import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
 import static trobify.controlador.BuscadorController.location;
+import trobify.logica.ConectorServiciosBD;
 import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Servicios;
@@ -296,7 +297,7 @@ public class FichaViviendaController implements Initializable {
     }
     
      public void consultarServicios(String id){
-      Servicios servi = ConectorViviendaBD.consultarServicios(id);
+      Servicios servi = ConectorServiciosBD.consultarServicios(id);
       if(servi.getBanco() ==1) listaServicios.add("Banco");
       if(servi.getSupermercado() ==1) listaServicios.add("Supermercado");
       if(servi.getTransporte_publico() ==1) listaServicios.add("Transporte publico");

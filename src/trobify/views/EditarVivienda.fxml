@@ -231,7 +231,7 @@
       </HBox>
       <VBox alignment="CENTER" prefHeight="69.0" prefWidth="1280.0">
          <children>
-            <Button fx:id="registrarBoton" mnemonicParsing="false" onAction="#registrar" text="Registrar" />
+            <Button fx:id="registrarBoton" mnemonicParsing="false" onAction="#registrar" text="Actualizar" />
          </children>
       </VBox>
    </children>

@@ -226,8 +226,8 @@ public class RegistrarViviendaController implements Initializable {
         if(botonBanco.isSelected()) {banco = 1;}
         
         //codigo para pasar las fotos añadidas al array
-        
-        if(FotosSource.isEmpty()) {FotosSource.add("C:\\\\Users\\\\davido747\\\\Documents\\\\Uni\\\\SoftUpv\\\\src\\\\trobify\\\\images\\\\foto0.jpeg");}
+        //direccion gabriela C:\\\\Users\\\\gabi\\\\Desktop\\\\gabri\\\\SoftUpv\\\\src\\\\trobify\\\\images\\\\foto0.jpeg
+        if(FotosSource.isEmpty()) {FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");}
         
         Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, "ninguna", precio, username, tipo, baños, habitaciones,
                 descripcionField.getText(), piso, numeroField.getText(), codigo, 0);
@@ -240,7 +240,7 @@ public class RegistrarViviendaController implements Initializable {
         añadirVivienda(vivi);
         añadirServicios(servi);
         añadirConjuntoFotos(fotos);
-         Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+         Alert alerta = new Alert (Alert.AlertType.INFORMATION);
         alerta.setHeaderText("Vivienda Registrada");
         Optional<ButtonType> ok = alerta.showAndWait();
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {

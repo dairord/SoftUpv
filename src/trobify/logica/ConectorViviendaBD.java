@@ -62,10 +62,10 @@ public class ConectorViviendaBD {
 
     public static String consultarFoto(String id) {
         Fotografia foto = fotografia(id);
-        if (foto.getId() != null) {
+     if (foto.getId() != null) {
             return foto.getId();
         } else {
-            return "C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\foto0.jpg";
+            return "C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\foto0.jpeg";
         }
     }
     
@@ -286,21 +286,7 @@ public class ConectorViviendaBD {
         }
     }
 
-    public static Servicios consultarServicios(String id) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT * FROM servicios WHERE id = '" + id + "'");
-            if (rsl.first()) {
-                Servicios servi = new Servicios(id, rsl.getInt("supermercado"), rsl.getInt("transporte_publico"),
-                        rsl.getInt("banco"), rsl.getInt("estanco"), rsl.getInt("centro_comercial"), rsl.getInt("gimnasio"),
-                        rsl.getInt("farmacia"));
-                return servi;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+  
 
     public static boolean esPropietario(String id, String username) {
         try {
@@ -331,10 +317,10 @@ public class ConectorViviendaBD {
         try {
             Statement stm = con.getConnection().createStatement();
             stm.executeUpdate("INSERT INTO vivienda (id, calle, ciudad, ventaAlquiler, id_agencia, precio, id_propietario, tipo, "
-                    + "baños, habitaciones, descripcion, piso, puerta, codigo_postal) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
+                    + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
                     + ", '"+vivi.getCiudad()+"', '"+vivi.getVentaAlquiler()+"', '"+vivi.getId_agencia()+"', '"+vivi.getPrecio()+"'"
                     + ", '"+vivi.getId_propietario()+"', '"+vivi.getTipo()+"', '"+vivi.getBaños()+"', '"+vivi.getHabitaciones()+"'"
-                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"' )");
+                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"','"+ vivi.getActivo() +")");
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
