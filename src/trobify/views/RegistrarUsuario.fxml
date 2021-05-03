@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="645.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
+<VBox prefHeight="645.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
          <items>
@@ -223,7 +223,7 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#tajeta">
                                  <graphic>
-                                    <ImageView fitHeight="52.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="52.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
                                        <image>
                                           <Image url="@../images/tarjetaDeCredito.png" />
                                        </image>
@@ -263,7 +263,7 @@
                <children>
                   <Button fx:id="foto" mnemonicParsing="false" prefHeight="107.0" prefWidth="123.0">
                      <graphic>
-                        <ImageView fitHeight="88.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="88.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
                            <image>
                               <Image url="@../images/avatar.jpg" />
                            </image>
