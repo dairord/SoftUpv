@@ -8,6 +8,7 @@ package trobify.controlador;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -20,7 +21,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -31,6 +34,7 @@ import static jdk.nashorn.internal.objects.NativeArray.forEach;
 import trobify.Conectar;
 import static trobify.logica.ConectorFotosBD.añadirConjuntoFotos;
 import static trobify.logica.ConectorServiciosBD.añadirServicios;
+import trobify.logica.ConectorViviendaBD;
 import static trobify.logica.ConectorViviendaBD.añadirVivienda;
 import static trobify.logica.ConectorViviendaBD.numeroViviendas;
 import trobify.logica.Fotografia;
@@ -236,6 +240,14 @@ public class RegistrarViviendaController implements Initializable {
         añadirVivienda(vivi);
         añadirServicios(servi);
         añadirConjuntoFotos(fotos);
+         Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+        alerta.setHeaderText("Vivienda Registrada");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+            ConectorViviendaBD.desactivarVivienda(id);
+            
+
+       
         
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
@@ -247,7 +259,7 @@ public class RegistrarViviendaController implements Initializable {
         stage.setTitle("Trobify");
         stage.show();
         event.consume();
-        
+         } alerta.close();
     }
 
     private void rellenoComboBox() {
