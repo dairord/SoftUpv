@@ -249,7 +249,7 @@ public class EditarViviendaController implements Initializable {
         String direccion = parts[parts.length - 1];
         
         //String destino = "F:\\PSW\\SoftUpv\\src\\trobify\\images\\" + direccion;
-        String destino = "C:\\Users\\davido747\\Documents\\Uni\\SoftUpv\\src\\trobify\\images\\" + direccion;
+        String destino = "src\\trobify\\images\\" + direccion;
         Path origenPath = FileSystems.getDefault().getPath(origen);
         Path destinoPath = FileSystems.getDefault().getPath(destino);
 

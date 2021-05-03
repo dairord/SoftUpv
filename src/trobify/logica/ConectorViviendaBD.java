@@ -326,6 +326,7 @@ public class ConectorViviendaBD {
 
     public static void añadirVivienda(Vivienda vivi) {
         try {
+            
             Statement stm = con.getConnection().createStatement();
             stm.executeUpdate("INSERT INTO vivienda (id, calle, ciudad, ventaAlquiler, id_agencia, precio, id_propietario, tipo, "
                     + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
