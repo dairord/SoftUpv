@@ -205,10 +205,12 @@ public class ConectorViviendaBD {
         return listaFotos;
     }
 
-    public static ArrayList<String> crearListaRecomendados(String id, int precioBase) {
+    public static ArrayList<String> crearListaRecomendados(String id) {
         ArrayList<String> listaRecomendados = new ArrayList();
-        int precioAlto = precioBase + 150;
-        int precioBajo = precioBase - 150;
+        int precioBase = consultarPrecio(id);
+        double porcentaje = precioBase * 0.15;
+        double precioAlto = precioBase + porcentaje;
+        double precioBajo = precioBase - porcentaje;
         int i = 0;
         try {
             Statement stm = con.getConnection().createStatement();

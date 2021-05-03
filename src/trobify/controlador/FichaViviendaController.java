@@ -128,7 +128,7 @@ public class FichaViviendaController implements Initializable {
        
         //Crear Array con la lista de fotos de la galeria
         this.listaRecomendados = new ArrayList();
-        listaRecomendados = ConectorViviendaBD.crearListaRecomendados(id, precioBase);
+        listaRecomendados = ConectorViviendaBD.crearListaRecomendados(id);
         
         //Mostrar el precio de la vivienda    
         precioVivienda.setText("Precio: " +this.precioBase + "€");
