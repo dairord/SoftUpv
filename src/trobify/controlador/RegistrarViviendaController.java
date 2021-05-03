@@ -207,7 +207,7 @@ public class RegistrarViviendaController implements Initializable {
         int codigo = Integer.parseInt(codigoField.getText());
         
         
-            if (ComprarAlquilar.getSelectionModel().selectedItemProperty().getValue().equals("Vender")) {alquilerOVenta = 1;}
+        if (ComprarAlquilar.getSelectionModel().selectedItemProperty().getValue().equals("Vender")) {alquilerOVenta = 1;}
         else {alquilerOVenta = 2;}
         
         if (TipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {tipo = 2;}

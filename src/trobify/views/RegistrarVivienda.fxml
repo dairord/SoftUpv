@@ -136,7 +136,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="47.0" prefWidth="291.0">
                            <children>
-                              <ComboBox fx:id="ComprarAlquilar" prefWidth="150.0" promptText="Vender" />
+                              <ComboBox fx:id="ComprarAlquilar" prefWidth="150.0" promptText="Operación" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="47.0" prefWidth="205.0">
