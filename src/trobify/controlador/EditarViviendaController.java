@@ -5,10 +5,14 @@
  */
 package trobify.controlador;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -34,6 +38,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import trobify.logica.ConectorServiciosBD;
 import trobify.logica.ConectorViviendaBD;
@@ -226,7 +231,37 @@ public class EditarViviendaController implements Initializable {
     }
 
     @FXML
-    private void añadirFoto(ActionEvent event) {
+    private void añadirFoto(ActionEvent event) throws IOException {
+        FileChooser imageChooser = new FileChooser();
+        imageChooser.setTitle("Seleccionar Imagen");
+
+        imageChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Todas las Imágenes", "*.jpg", "*.png", "*.ico", "*.PNG", "*.JPG"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+        );
+
+        File imgFile = imageChooser.showOpenDialog(null);
+        String origen = imgFile.getCanonicalPath();
+        
+        String cadena = origen;
+        String[] parts = cadena.split("\\\\");
+        String direccion = parts[parts.length - 1];
+        
+        String destino = "F:\\PSW\\SoftUpv\\src\\trobify\\images\\" + direccion;
+        Path origenPath = FileSystems.getDefault().getPath(origen);
+        Path destinoPath = FileSystems.getDefault().getPath(destino);
+
+        try {
+            Files.move(origenPath, destinoPath);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+        
+        String idFotoBD = "src\\\\trobify\\\\images\\\\" + direccion;
+        
+        ConectorViviendaBD.añadirFotografia(idFotoBD, id);
+        mostrarFotos();
     }
     
     private Vivienda viviendaActualizada(){

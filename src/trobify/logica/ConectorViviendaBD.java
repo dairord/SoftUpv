@@ -83,6 +83,15 @@ public class ConectorViviendaBD {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void añadirFotografia (String idFoto, String idVivienda){
+        try {
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')");
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static Fotografia fotografia(String id) {
         try {
