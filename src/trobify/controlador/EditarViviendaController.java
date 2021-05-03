@@ -5,11 +5,15 @@
  */
 package trobify.controlador;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,12 +22,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import trobify.logica.ConectorServiciosBD;
@@ -79,7 +85,7 @@ public class EditarViviendaController implements Initializable {
     @FXML
     private Button registrarBoton;
 
-   private static Stage st;
+    private static Stage st;
     private static String username;
     private static String id;
     Vivienda vivi;
@@ -179,6 +185,7 @@ public class EditarViviendaController implements Initializable {
         if(servi.getCentro_comercial()==1) botonCentroComercial.selectedProperty().set(true);
         if(servi.getGimnasio()==1) botonGimnasio.selectedProperty().set(true);
         if(servi.getFarmacia()==1) botonFarmacia.selectedProperty().set(true);
+        if(servi.getEstanco()==1) botonEstanco.selectedProperty().set(true);
     }
     
     private void rellenoComboBox() {
@@ -220,6 +227,20 @@ public class EditarViviendaController implements Initializable {
 
     @FXML
     private void registrar(ActionEvent event) {
+        int compOalq = 0;
+        if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Vender")) compOalq = 1;
+        if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Alquilar")) compOalq = 2;
+
+      int tipo = 0;
+        if(TipoVivienda.getSelectionModel().getSelectedItem().equals("Piso")) tipo = 1;
+        if(TipoVivienda.getSelectionModel().getSelectedItem().equals("Casa")) tipo = 2;
+
+        Vivienda actualizada = new Vivienda(id, calleField.getText(), CiudadField.getText(),
+                compOalq, "ninguna", Integer.parseInt(precioField.getText()), username, tipo,
+                Integer.parseInt(bañosField.getText()),Integer.parseInt(habitacionesField.getText()),
+                descripcionField.getText(), Integer.parseInt(pisoField.getText()),
+                numeroField.getText(), Integer.parseInt(codigoField.getText()), 0 );
+        System.out.print(actualizada.getId());
     }
     
     public static void pasarStage(Stage s){
@@ -231,8 +252,40 @@ public class EditarViviendaController implements Initializable {
         id = vivi;
     }
     
-    private static void mostrarFotos(){
+    private void mostrarFotos(){
+        listaDeFotos.getChildren().clear();
         ArrayList<String> fotos = ConectorViviendaBD.crearListaFotos(id);
+        listaDeFotos.setSpacing(5);
+        
+        for (int i = 0; i < fotos.size(); ++i) {
+        try{
+            listaDeFotos.getChildren().add(crearFotos(fotos.get(i)));
+        } catch (FileNotFoundException ex) {
+                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private javafx.scene.layout.VBox crearFotos(String rutaFoto) throws FileNotFoundException{
+        
+        javafx.scene.layout.VBox fotosConBoton = new javafx.scene.layout.VBox();
+        fotosConBoton.setSpacing(5);
+        fotosConBoton.setAlignment(Pos.TOP_CENTER);
+        
+        Image image1 = new Image(new FileInputStream(rutaFoto));
+        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
+        foto.setFitWidth(175);
+        foto.setFitHeight(125);
+        
+        Button botonEliminar = new Button("Eliminar");
+        botonEliminar.setId(rutaFoto);
+        botonEliminar.setOnAction(e -> {
+            ConectorViviendaBD.eliminarFoto(rutaFoto, id);
+            mostrarFotos();
+        });
+        
+        fotosConBoton.getChildren().addAll(foto, botonEliminar);        
+        return fotosConBoton;
     }
 }
 

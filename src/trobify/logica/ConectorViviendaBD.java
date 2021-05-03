@@ -68,6 +68,21 @@ public class ConectorViviendaBD {
             return "C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\foto0.jpg";
         }
     }
+    
+    public static void eliminarFoto(String rutaFoto, String idVivienda){
+        String cadena = rutaFoto;
+        String[] parts = cadena.split("\\\\");
+        String direccion = parts[parts.length - 1];
+        System.out.println(direccion);
+        
+        try {
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static Fotografia fotografia(String id) {
         try {
