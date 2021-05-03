@@ -331,7 +331,7 @@ public class ConectorViviendaBD {
                     + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
                     + ", '"+vivi.getCiudad()+"', '"+vivi.getVentaAlquiler()+"', '"+vivi.getId_agencia()+"', '"+vivi.getPrecio()+"'"
                     + ", '"+vivi.getId_propietario()+"', '"+vivi.getTipo()+"', '"+vivi.getBaños()+"', '"+vivi.getHabitaciones()+"'"
-                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"','"+ vivi.getActivo() +")");
+                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"','"+ vivi.getActivo() +"')");
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }

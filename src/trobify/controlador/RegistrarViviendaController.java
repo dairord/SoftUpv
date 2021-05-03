@@ -5,11 +5,19 @@
  */
 package trobify.controlador;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
@@ -20,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -28,7 +37,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeArray.forEach;
 import trobify.Conectar;
@@ -197,8 +208,39 @@ public class RegistrarViviendaController implements Initializable {
     }
 
     @FXML
-    private void añadirFoto(ActionEvent event) {
+    private void añadirFoto(ActionEvent event) throws IOException {
+        FileChooser imageChooser = new FileChooser();
+        imageChooser.setTitle("Seleccionar Imagen");
+
+        imageChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Todas las Imágenes", "*.jpg", "*.png", "*.ico", "*.PNG", "*.JPG"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+        );
+
+        File imgFile = imageChooser.showOpenDialog(null);
+        String origen = imgFile.getCanonicalPath();
+        
+        String cadena = origen;
+        String[] parts = cadena.split("\\\\");
+        String direccion = parts[parts.length - 1];
+        
+        //String destino = "F:\\PSW\\SoftUpv\\src\\trobify\\images\\" + direccion;
+        String destino = "C:\\Users\\davido747\\Documents\\Uni\\SoftUpv\\src\\trobify\\images\\" + direccion;
+        Path origenPath = FileSystems.getDefault().getPath(origen);
+        Path destinoPath = FileSystems.getDefault().getPath(destino);
+
+        try {
+            Files.move(origenPath, destinoPath);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+        
+        String idFotoBD = "src\\\\trobify\\\\images\\\\" + direccion;
+        FotosSource.add(idFotoBD);
+        mostrarFotos();
     }
+    
 
     @FXML
     private void registrar(ActionEvent event) throws IOException {
@@ -285,4 +327,45 @@ public class RegistrarViviendaController implements Initializable {
         st = m;
     }
     
+    private javafx.scene.layout.VBox crearFotos(String rutaFoto) throws FileNotFoundException{
+        
+        javafx.scene.layout.VBox fotosConBoton = new javafx.scene.layout.VBox();
+        fotosConBoton.setSpacing(5);
+        fotosConBoton.setAlignment(Pos.TOP_CENTER);
+        
+        Image image1 = new Image(new FileInputStream(rutaFoto));
+        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
+        foto.setFitWidth(175);
+        foto.setFitHeight(125);
+        
+        Button botonEliminar = new Button("Eliminar");
+        botonEliminar.setId(rutaFoto);
+        botonEliminar.setOnAction(e -> {
+            Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+            alerta.setHeaderText("¿Seguro que quieres eliminar esta fotografía?");
+            Optional<ButtonType> ok = alerta.showAndWait();
+            if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+                FotosSource.remove(botonEliminar.getId());
+                mostrarFotos();
+            }
+            alerta.close();
+            
+        });
+        
+        fotosConBoton.getChildren().addAll(foto, botonEliminar);        
+        return fotosConBoton;
+    }
+    
+    private void mostrarFotos(){
+        listaDeFotos.getChildren().clear();
+        listaDeFotos.setSpacing(5);
+        
+        for (int i = 0; i < FotosSource.size(); ++i) {
+        try{
+            listaDeFotos.getChildren().add(crearFotos(FotosSource.get(i)));
+        } catch (FileNotFoundException ex) {
+                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
