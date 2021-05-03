@@ -362,8 +362,15 @@ public class EditarViviendaController implements Initializable {
         Button botonEliminar = new Button("Eliminar");
         botonEliminar.setId(rutaFoto);
         botonEliminar.setOnAction(e -> {
-            ConectorViviendaBD.eliminarFoto(rutaFoto, id);
-            mostrarFotos();
+            Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+            alerta.setHeaderText("¿Seguro que quieres eliminar esta fotografía?");
+            Optional<ButtonType> ok = alerta.showAndWait();
+            if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+                ConectorViviendaBD.eliminarFoto(rutaFoto, id);
+                mostrarFotos();
+            }
+            alerta.close();
+            
         });
         
         fotosConBoton.getChildren().addAll(foto, botonEliminar);        
