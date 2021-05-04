@@ -329,7 +329,7 @@ public class BuscadorController implements Initializable {
         // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
         /////////////////////////////////////////////////////////////////////
 
-        String punto = res.getCalle() + " " + res.getCodigo_postal();
+        String punto = res.getCalle() + " " + res.getCiudad();
         String id = String.valueOf(idd + 1);
         String desc = res.getCalle();
 
