@@ -162,14 +162,12 @@ public class BuscadorController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         geo();
     } //fin initialice
 
-    
-    
     private void sesionIniciada() {
-     //   System.out.println(username);
+        //   System.out.println(username);
         //compobar si ha iniciado sesión
         if (estaIniciado) {
             nombreUsuario.setText(username);
@@ -272,15 +270,26 @@ public class BuscadorController implements Initializable {
         tipoVivienda.getSelectionModel().select(tip);
 
     } //fin autocompletar filtros
-    
-    private void geo(){
+
+    private void geo() {
         geolocalizacion();
-        try{
+        try {
             wait(500);
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
         ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
-        for (int i = 0; i < listaCiudad.size(); i++) {
-            listarGeoPunto(listaCiudad.get(i), i);
+        try {
+            for (int i = 0; i < listaCiudad.size(); i++) {
+                if (listaCiudad.get(i).getPrecio() >= Integer.parseInt(precioMin.getText()) && listaCiudad.get(i).getPrecio() <= Integer.parseInt(precioMax.getText())) {
+                    listarGeoPunto(listaCiudad.get(i), i);
+                }
+            }
+        } catch (Exception ex) {
+            for (int i = 0; i < listaCiudad.size(); i++) {
+
+                listarGeoPunto(listaCiudad.get(i), i);
+
+            }
         }
     }
 
@@ -295,13 +304,13 @@ public class BuscadorController implements Initializable {
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-               // System.out.println("oldValue: " + oldValue);
-               // System.out.println("newValue: " + newValue);
+                // System.out.println("oldValue: " + oldValue);
+                // System.out.println("newValue: " + newValue);
 
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-               // System.out.println("Succeeded!");
+                // System.out.println("Succeeded!");
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("geocode", location);
@@ -314,22 +323,22 @@ public class BuscadorController implements Initializable {
     //La primera parte del código es provisional hasta que el resto funcione correctamente
     private void listarGeoPunto(Vivienda res, int idd) {
         //Provisional
-       // res = new Vivienda();
+        // res = new Vivienda();
         //res.setCalle("Calle Arzobispo Mayoral");
         //res.setId("vivienda1");
-       // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
+        // res.setDescripcion("Vivienda que se encuentra en la calle Arzobispo Mayoral");
         /////////////////////////////////////////////////////////////////////
-        
-        String punto = res.getCalle() +" " +res.getCodigo_postal();
-        String id = String.valueOf(idd+1);
+
+        String punto = res.getCalle() + " " + res.getCodigo_postal();
+        String id = String.valueOf(idd + 1);
         String desc = res.getCalle();
 
         engine.getLoadWorker().stateProperty().addListener(
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-               // System.out.println("oldValue: " + oldValue);
-               // System.out.println("newValue: " + newValue);
+                // System.out.println("oldValue: " + oldValue);
+                // System.out.println("newValue: " + newValue);
 
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
@@ -361,7 +370,7 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void notificar(ActionEvent event) {
-       /* ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
+        /* ArrayList<Vivienda> viviendasFav = new ArrayList<Vivienda>();
         ArrayList<String> res = new ArrayList<String>();
         
         ///////////////////////////////////////////////////////////////////
@@ -384,7 +393,7 @@ public class BuscadorController implements Initializable {
     @FXML
     private void buscar(ActionEvent event) throws SQLException {
         geo();
-        
+
         comprobaciones();
     }
 
@@ -495,7 +504,7 @@ public class BuscadorController implements Initializable {
         botonRedireccion.setPadding(new Insets(0, 0, 0, 0));
         botonRedireccion.setId(id);
         botonRedireccion.setOnAction(e -> {
-          //  System.out.println(id);
+            //  System.out.println(id);
             FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
             FichaViviendaController.deDondeViene("buscador");
             FichaViviendaController.pasarUsuario(username);
@@ -529,9 +538,13 @@ public class BuscadorController implements Initializable {
 
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
         javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: Consulta con el propietario");
-        if(alquilada == 1) precio.setText("Precio: " + precioVivienda + "€  ");
-        if(alquilada == 2) precio.setText("Precio: " + precioVivienda + "€ /mes");
-        
+        if (alquilada == 1) {
+            precio.setText("Precio: " + precioVivienda + "€  ");
+        }
+        if (alquilada == 2) {
+            precio.setText("Precio: " + precioVivienda + "€ /mes");
+        }
+
         datos.getChildren().addAll(calle, precio);
 
         miniatura.getChildren().addAll(botonRedireccion, datos);
@@ -604,25 +617,24 @@ public class BuscadorController implements Initializable {
     private void notifica(ActionEvent event) throws IOException {
         //notificar(null);
         ArrayList<Vivienda> viviendasFav = ConectorViviendaBD.getFavoritosUsuario(username);
-        
+
         ArrayList<String> res = new ArrayList<String>();
-        
-       /* ///////////////////////////////////////////////////////////////////
+
+        /* ///////////////////////////////////////////////////////////////////
         Vivienda prueba = new Vivienda();
         prueba.setCalle("Calle de pruebas");
         prueba.setActivo(1);
         viviendasFav.add(prueba);
         //////////////////////////////////////////////////////////////////*/
-        
-        for(int i = 0; i < viviendasFav.size(); i++){
-            
-            if (viviendasFav.get(i).getActivo() == 1){
-                
-                res.add("La vivienda de la " +viviendasFav.get(i).getCalle() +" ya no se encuentra disponible.");
+        for (int i = 0; i < viviendasFav.size(); i++) {
+
+            if (viviendasFav.get(i).getActivo() == 1) {
+
+                res.add("La vivienda de la " + viviendasFav.get(i).getCalle() + " ya no se encuentra disponible.");
             }
         }
         NotificacionesController.pasarNotis(res);
-        
+
         NotificacionesController.pasarUsuario(username);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
