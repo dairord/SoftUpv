@@ -298,26 +298,34 @@ public class RegistrarViviendaController implements Initializable {
             fotos.add(new Fotografia(f, id));
         }
 
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setHeaderText("¿Seguro que desea registrar esta vivienda?");
-        Optional<ButtonType> ok = alerta.showAndWait();
+      Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta1.setHeaderText("¿Seguro que desea registrar esta vivienda?");
+        Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
             añadirVivienda(vivi);
             añadirServicios(servi);
             añadirConjuntoFotos(fotos);
 
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
-            st.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load());
-            BuscadorController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setHeaderText("Vivienda registrada correctamente.");
+            Optional<ButtonType> vale = alerta.showAndWait();
+            if (vale.isPresent() && vale.get().equals(ButtonType.OK)) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+                st.close();
+                Stage stage = new Stage();
+                Scene scene = new Scene(fxmlLoader.load());
+                BuscadorController.pasarStage(stage);
+                stage.setScene(scene);
+                stage.setTitle("Trobify");
+                stage.show();
+                event.consume();
+
+            }
+            alerta.close();
         }
-        alerta.close();
+        alerta1.close();
+    
     }
 
     private void rellenoComboBox() {
