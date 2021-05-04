@@ -305,7 +305,7 @@ public class EditarViviendaController implements Initializable {
     }      
     
     @FXML
-    private void registrar(ActionEvent event) {
+    private void registrar(ActionEvent event) throws IOException {
          Alert alerta1 = new Alert (Alert.AlertType.CONFIRMATION);
         alerta1.setHeaderText("Seguro que quieres actul¡alizar la vivienda?");
         Optional<ButtonType> aceptar = alerta1.showAndWait();
@@ -319,11 +319,25 @@ public class EditarViviendaController implements Initializable {
                     alerta2.setHeaderText("Vivienda actualizada correctamente");
                     Optional<ButtonType> ok = alerta2.showAndWait();
                     if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            
+            volverAtras();
     } alerta2.close();
             
     } alerta1.close();
         
+    }
+    
+    public void volverAtras() throws IOException{
+        FichaViviendaController.pasarUsuario(username);
+        FichaViviendaController.pasarIdVivienda(id);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
+        st.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        FichaViviendaController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
     }
     
     public static void pasarStage(Stage s){
