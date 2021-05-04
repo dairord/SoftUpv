@@ -158,7 +158,7 @@ public class InicioController implements Initializable {
    
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-     if(comprobaciones()){
+     if(comprobaciones() && consulta()){
         FXMLLoader fxmlLoader = new FXMLLoader();
          fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
          BuscadorController.pasarUsuario(estaIniciado, username);
