@@ -179,9 +179,9 @@
                   </HBox>
                   <HBox prefHeight="47.0" prefWidth="471.0">
                      <children>
-                        <HBox prefHeight="66.0" prefWidth="474.0">
+                        <HBox prefHeight="47.0" prefWidth="759.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="280.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="309.0">
                                  <children>
                                     <Label text="email">
                                        <VBox.margin>
@@ -190,22 +190,14 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="465.0">
+                              <VBox alignment="CENTER" prefHeight="47.0" prefWidth="490.0">
                                  <children>
-                                    <TextField fx:id="email" prefHeight="25.0" prefWidth="370.0" />
+                                    <TextField fx:id="email" prefHeight="25.0" prefWidth="414.0" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                        <VBox prefHeight="47.0" prefWidth="64.0">
-                           <children>
-                              <Label textFill="#fc0000">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="47.0" prefWidth="261.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="54.0" prefWidth="471.0">
