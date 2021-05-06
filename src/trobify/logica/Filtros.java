@@ -6,6 +6,7 @@
 package trobify.logica;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,10 +14,52 @@ import java.sql.Date;
  */
 public class Filtros {
     String id, ciudad;
-    Date fecha_entrada, fecha_salida;
+    LocalDate fecha_entrada, fecha_salida;
     int tipo, p_min, p_max, habitaciones, baños, ventaAlquiler;
 
-    public Filtros(String id, String ciudad, Date fecha_entrada, Date fecha_salida, int tipo, int p_min, int p_max, int habitaciones, int baños, int ventaAlquiler) {
+    public String getId() {
+        return id;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public LocalDate getFecha_entrada() {
+        return fecha_entrada;
+    }
+
+    public LocalDate getFecha_salida() {
+        return fecha_salida;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public int getP_min() {
+        return p_min;
+    }
+
+    public int getP_max() {
+        return p_max;
+    }
+
+    public int getHabitaciones() {
+        return habitaciones;
+    }
+
+    public int getBaños() {
+        return baños;
+    }
+
+    public int getVentaAlquiler() {
+        return ventaAlquiler;
+    }
+    
+    
+
+    public Filtros(String id, String ciudad, LocalDate fecha_entrada, LocalDate fecha_salida, int tipo, int p_min, int p_max, int habitaciones, int baños, int ventaAlquiler) {
         this.id = id;
         this.ciudad = ciudad;
         this.fecha_entrada = fecha_entrada;

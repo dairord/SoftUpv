@@ -56,6 +56,7 @@ import netscape.javascript.JSObject;
 import trobify.Conectar;
 import trobify.logica.ConectorFotosBD;
 import trobify.logica.ConectorViviendaBD;
+import trobify.logica.Filtros;
 import trobify.logica.Vivienda;
 
 /**
@@ -355,10 +356,17 @@ public class BuscadorController implements Initializable {
 
     @FXML
     private void guardarFiltros(ActionEvent event) throws IOException {
+        int tipo;
+        if(tip.equals("Piso")) tipo = 1;
+        else tipo = 2;
+        int pMin = Integer.parseInt(precioMin.getText());
+        int pMax = Integer.parseInt(precioMax.getText());
+        int baños = Integer.parseInt(numBaños.getText());
+        int habitaciones = Integer.parseInt(numHabitaciones.getText());
+        Filtros f = new Filtros(username, ciudad.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), tipo, pMin, pMax, habitaciones, baños, alqOVen);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
-        MantenerFiltrosController.pasarFiltrosBuscar(ciudad.getText(), tipoVivienda.getSelectionModel().selectedItemProperty().getValue(), alqOVen,
-                precioMin.getText(), precioMax.getText(), numBaños.getText(), numHabitaciones.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), usuario);
+        MantenerFiltrosController.pasarFiltrosBuscar(f);
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         MantenerFiltrosController.pasarStage(stage);

@@ -20,6 +20,22 @@ import trobify.controlador.InicioController;
 public class ConectorUsuarioBD {
     private static Conectar con = new Conectar();
     
+    public static boolean consultaBoolean(String sql){
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.first()) {
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+    
+    
    public static void añadirUsuario(Usuario u){
         try {
          Statement stm = con.getConnection().createStatement();
@@ -33,33 +49,14 @@ public class ConectorUsuarioBD {
     } //fin añadir usuario. 
     
     public static boolean usuarioRepetido (String id){
-        try {
-            Statement stm = con.getConnection().createStatement();
-             ResultSet rs = stm.executeQuery ("select id from usuario where id = '"
-             + id + " '");
-            if (rs.first())   {
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
+        String rs = "select id from usuario where id = '"+ id + " '";
+        return consultaBoolean(rs);
     }
     
     public static boolean usuarioCorrecto (String id, String contra){
          
-        try {
-           Statement stm = con.getConnection().createStatement();
-             ResultSet rs = stm.executeQuery ("select id from usuario where id = '"
-             + id + " ' and password = '" + contra + " '");
-            if (rs.first())   {
-                return true;
-            } 
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+        String rs = "select id from usuario where id = '"+ id + " ' and password = '" + contra + " '";
+        return consultaBoolean(rs);           
     }
 }
     
