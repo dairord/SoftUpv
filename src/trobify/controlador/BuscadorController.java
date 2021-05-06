@@ -5,6 +5,7 @@
  */
 package trobify.controlador;
 
+import trobify.logica.FachadaBD;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -565,11 +566,11 @@ public class BuscadorController implements Initializable {
         for (int i = 0; i < viviendasList.size(); ++i) {
             try {
                 String id_vivienda = viviendasList.get(i);
-                
+                Vivienda vivi = FachadaBD.pasarVivienda(id_vivienda);
                 String foto = ConectorFotosBD.consultarFoto(id_vivienda);
-                String calle = ConectorViviendaBD.consultarDireccion(id_vivienda);
-                int precio = ConectorViviendaBD.consultarPrecio(id_vivienda);
-                int alquilada = ConectorViviendaBD.consultarAlquiler(id_vivienda);
+                String calle = vivi.getCalle();
+                int precio = vivi.getPrecio();
+                int alquilada = vivi.getVentaAlquiler();
                 this.listaViviendas.getChildren().add(crearMiniatura(id_vivienda, foto, calle, precio, alquilada));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
