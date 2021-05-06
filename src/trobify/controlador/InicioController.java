@@ -38,8 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import trobify.Conectar;
-import trobify.logica.ConectorServiciosBD;
-import trobify.logica.ConectorViviendaBD;
+import trobify.logica.FachadaBD;
 
 /**
  * FXML Controller class
@@ -194,7 +193,7 @@ public class InicioController implements Initializable {
     
     public boolean consulta(){
     String ciu = ciudadText.getText();
-    return ConectorViviendaBD.consultaInicial(ciu, tipvivi, alqOVen);
+    return FachadaBD.consultaInicial(ciu, tipvivi, alqOVen);
     }//fin consulta
  
     public static void pasarUsuario(boolean iniciado, String usuario){

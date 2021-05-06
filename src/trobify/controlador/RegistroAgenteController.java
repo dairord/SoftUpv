@@ -27,7 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trobify.Conectar;
 import trobify.logica.Agente;
-import trobify.logica.ConectorAgenciaBD;
+import trobify.logica.FachadaBD;
 
 /**
  * FXML Controller class
@@ -107,13 +107,13 @@ public class RegistroAgenteController implements Initializable {
     }
     
     private boolean contraseñaCorrecta(){
-        if(ConectorAgenciaBD.contraseñaCorrecta(codigo.getText(), contraseña.getText())) return true;
+        if(FachadaBD.contraseñaCorrecta(codigo.getText(), contraseña.getText())) return true;
         else return false;
     }
     
     private void guardarAgente(){
        Agente nuevo = new Agente (username, codigo.getText());
-        ConectorAgenciaBD.guardarAgente(nuevo);
+        FachadaBD.guardarAgente(nuevo);
      }//fin guardar agete
     
     private void volver() throws IOException{

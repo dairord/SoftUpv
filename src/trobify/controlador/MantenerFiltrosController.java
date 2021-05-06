@@ -25,7 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import trobify.Conectar;
-import trobify.logica.ConectorFiltrosBD;
+import trobify.logica.FachadaBD;
 import trobify.logica.Filtros;
 
 /**
@@ -37,46 +37,19 @@ import trobify.logica.Filtros;
 public class MantenerFiltrosController implements Initializable {
 
     private static Stage s;
-    private static String ciu;
-    private static String tip;
-    private static int alqOVen;
-    private static String precioMin;
-    private static String precioMax;
-    private static String habitaciones;
-    private static String baños;
-    private static LocalDate fechaEntrada;
-    private static LocalDate fechaSalida;
     private static Boolean hayFechas;
-    private static String username;
-    private static String id;
-    private static Conectar con;
     private static Filtros f;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        con = new Conectar();
-        id = obtenerId(username, con);       
+              
     }    
 
     @FXML
     private void siBoton(ActionEvent event) throws IOException {
-         
-         if(alqOVen == 2 && hayFechas == true) {//Opción alquilar y los datepicker tienen fechas
-            if (comprobarFiltros(con)) {
-                borrarFiltrosAnteriores(con);
-                insertarFiltrosConFechas(con);
-            }
-            else {insertarFiltrosConFechas(con);}
-        }
-         else {//Opción comprar o alquilar sin fechas en los datepicker
-             if (comprobarFiltros(con)) {
-                 borrarFiltrosAnteriores(con);
-                insertarFiltrosSinFechas(con);
-            }
-            else {insertarFiltrosSinFechas(con);}
-         }
+            FachadaBD.guardarFiltros(f, hayFechas);
          
         Alert alerta = new Alert (Alert.AlertType.INFORMATION);
         alerta.setHeaderText("Filtros guardados correctamente!");
@@ -100,73 +73,11 @@ public class MantenerFiltrosController implements Initializable {
      //Para obtener los filtros desde la pantalla de buscar
      public static void pasarFiltrosBuscar(Filtros filtro){
          f = filtro;
-         if(filtro.getFecha_entrada() == null || fechaSalida == null) {hayFechas = false;}
+         if(f.getFecha_entrada() == null || f.getFecha_salida() == null) {hayFechas = false;}
          else {hayFechas = true;}
      }
      
-     private void insertarFiltrosSinFechas(Conectar con) {
-        int tipo;
-        if(tip.equals("Piso")) tipo = 1;
-        else if(tip.equals("Casa")) tipo = 2;
-        else tipo = 3;
-        Statement s1;
-        ConectorFiltrosBD.insrtarFiltrosSinFecha(username, ciu, tipo, precioMin, precioMax, habitaciones, baños, alqOVen);
-        
-     }
      
-     private void insertarFiltrosConFechas(Conectar con) {
-        int tipo;
-        if(tip.equals("Piso")) tipo = 1;
-        else if(tip.equals("Casa")) tipo = 2;
-        else tipo = 3;
-        Statement s1;
-        try{
-            s1 = con.getConnection().createStatement();
-            s1.executeUpdate("INSERT INTO filtros(id, fecha_entrada, fecha_salida, ciudad, tipo, p_min, p_max, habitaciones, baños, ventaAlquiler) "
-                    + "VALUES('"+ id +"', '"+ fechaEntrada +"', '"+ fechaSalida +"', '"+ ciu +"', '"+ tipo +"', '"+ precioMin +"', '"+ precioMax +"', '"+ habitaciones +"',"
-                    + " '"+ baños +"', '"+ alqOVen +"')");
-            System.out.println("filtros guardados con exito");
-        }catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch 
-     }
      
-     private void borrarFiltrosAnteriores(Conectar con) {
-        Statement s2;
-        try{
-            s2 = con.getConnection().createStatement();
-            s2.executeUpdate("DELETE from filtros WHERE id = '"+ id +"'");
-            System.out.println("Los filtros anteriores se borraron correctamente");
-        }catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch 
-     }
-     
-     private boolean comprobarFiltros(Conectar con) {
-        ResultSet rs;
-        Statement st;
-        try{st = con.getConnection().createStatement();
-            rs = st.executeQuery("SELECT id FROM filtros WHERE id = '"+ id +"'");
-            if(rs.first()) {return true;}
-            else {return false;}
-        }catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch 
-        return false;
-     }
-     
-     private String obtenerId(String us, Conectar con) {
-         System.out.println(us);
-         String res = "";
-         ResultSet r;
-         Statement st;
-          try{st = con.getConnection().createStatement();
-            r = st.executeQuery("SELECT id FROM usuario WHERE usuario = '"+ username +"'");
-            if(r.first()) {res = r.getNString(1);}
-        }catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }//fin catch 
-        return res;
-     }
      
 }

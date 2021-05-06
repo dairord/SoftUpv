@@ -93,6 +93,40 @@ public class FachadaBD {
   public static ArrayList<String> ordenarFavoritos(String username, String orden){
       return ConectorViviendaBD.ordenarFavoritos(username, orden);
   }
-           
   
-     }
+    public static void guardarFiltros(Filtros f, boolean hayFechas) {
+        if (f.getVentaAlquiler() == 2 && hayFechas == true) {//Opción alquilar y los datepicker tienen fechas
+            if (ConectorFiltrosBD.comprobarFiltros(f)) {
+                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
+                ConectorFiltrosBD.insertarFiltrosConFechas(f);
+            } else {
+                ConectorFiltrosBD.insertarFiltrosConFechas(f);
+            }
+        } else {//Opción comprar o alquilar sin fechas en los datepicker
+            if (ConectorFiltrosBD.comprobarFiltros(f)) {
+                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
+                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
+            } else {
+                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
+            }
+        }
+    }
+
+    public static boolean consultaInicial(String ciu, String tipo, int alqOVen) {
+        return ConectorViviendaBD.consultaInicial(ciu, tipo, alqOVen);
+    }
+
+    public static boolean contraseñaCorrecta(String codigo, String contraseña) {
+        return ConectorAgenciaBD.contraseñaCorrecta(codigo, contraseña);
+    }
+
+    public static void guardarAgente(Agente a) {
+        ConectorAgenciaBD.guardarAgente(a);
+    }
+
+    public static boolean usuarioCorrecto(String nom, String pas) {
+        Usuario u = ConectorUsuarioBD.getUsuario(nom);
+        return pas.equals(u.getPassword());
+    }
+      
+}
