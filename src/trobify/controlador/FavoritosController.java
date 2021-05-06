@@ -42,6 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.logica.ConectorFotosBD;
 import trobify.logica.ConectorViviendaBD;
 
 /**
@@ -167,7 +168,7 @@ public class FavoritosController implements Initializable {
            String idBoton = favList.get(i);
             
             try {
-                String foto = ConectorViviendaBD.consultarFoto(favList.get(i));
+                String foto = ConectorFotosBD.consultarFoto(favList.get(i));
                 String calle = ConectorViviendaBD.consultarDireccion(favList.get(i));
                 int precio = ConectorViviendaBD.consultarPrecio(favList.get(i));
                 int valoracion = ConectorViviendaBD.consultarValoracion(favList.get(i), username);
