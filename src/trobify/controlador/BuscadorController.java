@@ -564,12 +564,13 @@ public class BuscadorController implements Initializable {
     private void ordenarLista() {
         for (int i = 0; i < viviendasList.size(); ++i) {
             try {
-                String id = viviendasList.get(i);
-                String foto = ConectorFotosBD.consultarFoto(viviendasList.get(i));
-                String calle = ConectorViviendaBD.consultarDireccion(viviendasList.get(i));
-                int precio = ConectorViviendaBD.consultarPrecio(viviendasList.get(i));
-                int alquilada = ConectorViviendaBD.consultarAlquiler(viviendasList.get(i));
-                this.listaViviendas.getChildren().add(crearMiniatura(id, foto, calle, precio, alquilada));
+                String id_vivienda = viviendasList.get(i);
+                
+                String foto = ConectorFotosBD.consultarFoto(id_vivienda);
+                String calle = ConectorViviendaBD.consultarDireccion(id_vivienda);
+                int precio = ConectorViviendaBD.consultarPrecio(id_vivienda);
+                int alquilada = ConectorViviendaBD.consultarAlquiler(id_vivienda);
+                this.listaViviendas.getChildren().add(crearMiniatura(id_vivienda, foto, calle, precio, alquilada));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }

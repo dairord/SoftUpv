@@ -166,8 +166,8 @@ public class FavoritosController implements Initializable {
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
            String idBoton = favList.get(i);
-            
             try {
+                
                 String foto = ConectorFotosBD.consultarFoto(favList.get(i));
                 String calle = ConectorViviendaBD.consultarDireccion(favList.get(i));
                 int precio = ConectorViviendaBD.consultarPrecio(favList.get(i));
