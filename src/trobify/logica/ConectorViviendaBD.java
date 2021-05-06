@@ -24,11 +24,11 @@ import trobify.controlador.InicioController;
 public class ConectorViviendaBD {
 
     private static Conectar con = new Conectar();
-
-    public static boolean consultaInicial(String ciudad, String tipoVivienda, int alqOVent) {
+    
+    public static boolean consulta(String sql){
         try {
             Statement stm = con.getConnection().createStatement();
-            ResultSet rs = stm.executeQuery("select * from vivienda where ciudad = '" + ciudad + "'" + tipoVivienda + " and ventaAlquiler = " + alqOVent + " and activo = 0");
+            ResultSet rs = stm.executeQuery(sql);
             if (rs.first()) {
                 return true;
             }
@@ -38,6 +38,11 @@ public class ConectorViviendaBD {
         }
 
         return false;
+    }
+
+    public static boolean consultaInicial(String ciudad, String tipoVivienda, int alqOVent) {
+        String sql = "select * from vivienda where ciudad = '" + ciudad + "'" + tipoVivienda + " and ventaAlquiler = " + alqOVent + " and activo = 0";
+        return consulta(sql);
     } //fin consulta inicial 
 
     public static ArrayList<String> consultaBuscador(String ciudad, int alqOVent, String tipo, String pMin, String pMax, String baños, String habita, String comoOrdenar) throws SQLException {
@@ -60,14 +65,7 @@ public class ConectorViviendaBD {
         return viviendasList;
     }
 
-    public static String consultarFoto(String id) {
-        Fotografia foto = fotografia(id);
-     if (foto.getId() != null) {
-            return foto.getId();
-        } else {
-            return "C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\foto0.jpeg";
-        }
-    }
+   
     
     public static void eliminarFoto(String rutaFoto, String idVivienda){
         String cadena = rutaFoto;
@@ -93,21 +91,7 @@ public class ConectorViviendaBD {
         }
     }
 
-    public static Fotografia fotografia(String id) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT * FROM fotografia WHERE id_vivienda = '" + id + "'");
-            if (rsl.first()) {
-                Fotografia foto = new Fotografia(rsl.getNString("id"), rsl.getNString("id_vivienda"));
-                return foto;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
+  
     public static String consultarDireccion(String id) {
         Vivienda vivi = vivienda(id);
         if (vivi.getCalle() != null) {
@@ -219,7 +203,7 @@ public class ConectorViviendaBD {
                 rsl.beforeFirst();
                 String foto;
                 while (rsl.next() && i < 3) {
-                    foto = consultarFoto(rsl.getNString("id_vivienda"));
+                    foto = ConectorFotosBD.consultarFoto(rsl.getNString("id_vivienda"));
                     listaRecomendados.add(foto);
                     i++;
                 }

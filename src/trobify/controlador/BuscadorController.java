@@ -54,6 +54,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
+import trobify.logica.ConectorFotosBD;
 import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Vivienda;
 
@@ -556,7 +557,7 @@ public class BuscadorController implements Initializable {
         for (int i = 0; i < viviendasList.size(); ++i) {
             try {
                 String id = viviendasList.get(i);
-                String foto = ConectorViviendaBD.consultarFoto(viviendasList.get(i));
+                String foto = ConectorFotosBD.consultarFoto(viviendasList.get(i));
                 String calle = ConectorViviendaBD.consultarDireccion(viviendasList.get(i));
                 int precio = ConectorViviendaBD.consultarPrecio(viviendasList.get(i));
                 int alquilada = ConectorViviendaBD.consultarAlquiler(viviendasList.get(i));
