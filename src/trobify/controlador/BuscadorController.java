@@ -60,6 +60,7 @@ import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Filtros;
 import trobify.logica.Vivienda;
 
+
 /**
  * FXML Controller class
  *
@@ -280,7 +281,7 @@ public class BuscadorController implements Initializable {
             wait(500);
         } catch (Exception ex) {
         }
-        ArrayList<Vivienda> listaCiudad = ConectorViviendaBD.getViviendasPorCiudadActivas(ciudad.getText(), alqOVen);
+        ArrayList<Vivienda> listaCiudad = FachadaBD.viviendasEnCiudad(ciudad.getText(), alqOVen);
         try {
             for (int i = 0; i < listaCiudad.size(); i++) {
                 if (listaCiudad.get(i).getPrecio() >= Integer.parseInt(precioMin.getText()) && listaCiudad.get(i).getPrecio() <= Integer.parseInt(precioMax.getText())) {
@@ -567,7 +568,7 @@ public class BuscadorController implements Initializable {
             try {
                 String id_vivienda = viviendasList.get(i);
                 Vivienda vivi = FachadaBD.pasarVivienda(id_vivienda);
-                String foto = ConectorFotosBD.consultarFoto(id_vivienda);
+                String foto = FachadaBD.consultarFoto(id_vivienda);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 int alquilada = vivi.getVentaAlquiler();
@@ -627,8 +628,7 @@ public class BuscadorController implements Initializable {
     @FXML
     private void notifica(ActionEvent event) throws IOException {
         //notificar(null);
-        ArrayList<Vivienda> viviendasFav = ConectorViviendaBD.getFavoritosUsuario(username);
-
+        ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
         ArrayList<String> res = new ArrayList<String>();
 
         /* ///////////////////////////////////////////////////////////////////

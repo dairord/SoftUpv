@@ -331,18 +331,11 @@ public class ConectorViviendaBD {
                 Statement stm = con.getConnection().createStatement();
                 ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id_viv + "'");
                 if (rsl.isBeforeFirst()) {
-                    
                     while (rsl.next()) {
-                      Vivienda  res = new Vivienda(rsl.getString("id"),
-                                rsl.getString("calle"), rsl.getString("ciudad"), rsl.getInt("ventaAlquiler"),
-                                rsl.getString("id_agencia"), rsl.getInt("precio"), rsl.getString("id_propietario"),
-                                rsl.getInt("tipo"), rsl.getInt("baños"), rsl.getInt("habitaciones"),
-                                rsl.getString("descripcion"), rsl.getInt("piso"), rsl.getString("puerta"),
-                                rsl.getInt("codigo_postal"), rsl.getInt("activo"));
+                      Vivienda  res = vivienda(rsl.getNString("id"));
                         lista.add(res);
                     }
-
-                    
+ 
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
