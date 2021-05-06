@@ -42,12 +42,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeArray.forEach;
-import trobify.Conectar;
-import static trobify.logica.ConectorFotosBD.añadirConjuntoFotos;
-import static trobify.logica.ConectorServiciosBD.añadirServicios;
-import trobify.logica.ConectorViviendaBD;
-import static trobify.logica.ConectorViviendaBD.añadirVivienda;
-import static trobify.logica.ConectorViviendaBD.numeroViviendas;
 import trobify.logica.FachadaBD;
 import trobify.logica.Fotografia;
 import trobify.logica.Servicios;
@@ -99,7 +93,7 @@ public class RegistrarViviendaController implements Initializable {
     @FXML
     private RadioButton botonFarmacia;
 
-    Conectar con;
+  
     private static Stage st;
     private static String username;
     private static int alquilerOVenta;
@@ -123,8 +117,7 @@ public class RegistrarViviendaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        con = new Conectar();
-        rellenoComboBox();
+       rellenoComboBox();
 
         //El botón registrar no está disponible hasta rellenar los campos obligatorios
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(calleField.textProperty())
