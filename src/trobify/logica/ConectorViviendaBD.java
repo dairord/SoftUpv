@@ -25,7 +25,7 @@ public class ConectorViviendaBD {
 
     private static Conectar con = new Conectar();
     
-    public static boolean consulta(String sql){
+    public static boolean consultaBoolean(String sql){
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -42,7 +42,7 @@ public class ConectorViviendaBD {
 
     public static boolean consultaInicial(String ciudad, String tipoVivienda, int alqOVent) {
         String sql = "select * from vivienda where ciudad = '" + ciudad + "'" + tipoVivienda + " and ventaAlquiler = " + alqOVent + " and activo = 0";
-        return consulta(sql);
+        return consultaBoolean(sql);
     } //fin consulta inicial 
 
     public static ArrayList<String> consultaBuscador(String ciudad, int alqOVent, String tipo, String pMin, String pMax, String baños, String habita, String comoOrdenar) throws SQLException {
@@ -159,17 +159,8 @@ public class ConectorViviendaBD {
     }
 
     public static boolean estaEnFavoritos(String id, String username) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT id FROM favoritos WHERE id LIKE '" + id + "' AND id_cliente = '" + username + "'");
-            if (rsl.first()) {
-                return true;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+       String sql = "SELECT id FROM favoritos WHERE id LIKE '" + id + "' AND id_cliente = '" + username + "'";
+       return consultaBoolean(sql);
     }
 
     public static ArrayList<String> crearListaFotos(String id) {
@@ -284,17 +275,8 @@ public class ConectorViviendaBD {
   
 
     public static boolean esPropietario(String id, String username) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id + "' and id_propietario = '" + username + "'");
-            if (rsl.first()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
+        String sql ="SELECT * FROM vivienda WHERE id = '" + id + "' and id_propietario = '" + username + "'";
+        return consultaBoolean(sql);
     }
 
     public static void desactivarVivienda(String id) {
