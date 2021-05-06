@@ -18,9 +18,10 @@ import trobify.controlador.InicioController;
  * @author davido747
  */
 public class ConectorUsuarioBD {
+
     private static Conectar con = new Conectar();
-    
-    public static boolean consultaBoolean(String sql){
+
+    public static boolean consultaBoolean(String sql) {
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -34,30 +35,38 @@ public class ConectorUsuarioBD {
 
         return false;
     }
-    
-    
-   public static void añadirUsuario(Usuario u){
+
+    public static void añadirUsuario(Usuario u) {
         try {
-         Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
-                        + u.getId() + "','" + u.getDni() + "','" + u.getPassword() + "','" + u.getNombre() + "','" + 
-                        u.getApellidos() + "','" + u.getEmail() + "')");   
-               
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
+                    + u.getId() + "','" + u.getDni() + "','" + u.getPassword() + "','" + u.getNombre() + "','"
+                    + u.getApellidos() + "','" + u.getEmail() + "')");
+
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } //fin añadir usuario. 
-    
-    public static boolean usuarioRepetido (String id){
-        String rs = "select id from usuario where id = '"+ id + " '";
+
+    public static Usuario getUsuario(String id) {
+         try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("select * from usuario where id = '" + id + " '");
+            if (rsl.first()) {
+                return new Usuario(rsl.getString("id"), rsl.getString("dni"),
+                        rsl.getString("password"), rsl.getString("nombre"), rsl.getString("apellidos"),
+                        rsl.getString("email"), rsl.getString("foto"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new Usuario();
+    }
+
+    public static boolean usuarioCorrecto(String id, String contra) {
+        String rs = "select id from usuario where id = '" + id + " ' and password = '" + contra + " '";
         return consultaBoolean(rs);
     }
-    
-    public static boolean usuarioCorrecto (String id, String contra){
-         
-        String rs = "select id from usuario where id = '"+ id + " ' and password = '" + contra + " '";
-        return consultaBoolean(rs);           
-    }
 }
-    
-

@@ -40,8 +40,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import trobify.logica.ConectorServiciosBD;
-import trobify.logica.ConectorViviendaBD;
+import trobify.logica.FachadaBD;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
 
@@ -162,7 +161,7 @@ public class EditarViviendaController implements Initializable {
     }
     
     private void autorellenoDatos(){
-        vivi = ConectorViviendaBD.vivienda(id);
+        vivi = FachadaBD.getVivienda(id);
         calleField.setText(vivi.getCalle());
         numeroField.setText(vivi.getPuerta());
         pisoField.setText(vivi.getPiso()+ " ");
@@ -186,8 +185,7 @@ public class EditarViviendaController implements Initializable {
         else ComprarAlquilar.getSelectionModel().select("Alquilar");
     }
     private void mostrarServicios(){
-         Servicios servi = ConectorServiciosBD.servicios(id);
-       System.out.println("gabriela "+ servi.getBanco());
+        Servicios servi = FachadaBD.getServicios(id);
         if(servi.getSupermercado()==1) botonSupermercado.selectedProperty().set(true);
         if(servi.getTransporte_publico()==1) BotonTransportePublico.selectedProperty().set(true);
         if(servi.getBanco()==1) botonBanco.selectedProperty().set(true);
@@ -261,7 +259,7 @@ public class EditarViviendaController implements Initializable {
         
         String idFotoBD = "src\\\\trobify\\\\images\\\\" + direccion;
         
-        ConectorViviendaBD.añadirFotografia(idFotoBD, id);
+        FachadaBD.añadirFotografia(idFotoBD, id);
         mostrarFotos();
     }
     
@@ -311,9 +309,8 @@ public class EditarViviendaController implements Initializable {
         Optional<ButtonType> aceptar = alerta1.showAndWait();
         if(aceptar.isPresent() && aceptar.get().equals(ButtonType.OK)) {
                 Vivienda viviActualizada = viviendaActualizada();
-                ConectorViviendaBD.actualizarVivienda(viviActualizada);
                 Servicios servActualizado = serviciosActualizados();
-                ConectorServiciosBD.acualizarServicios(servActualizado);
+                FachadaBD.actualiarVivienda(viviActualizada, servActualizado);
             
                 Alert alerta2 = new Alert (Alert.AlertType.INFORMATION);
                     alerta2.setHeaderText("Vivienda actualizada correctamente");
@@ -351,7 +348,7 @@ public class EditarViviendaController implements Initializable {
     
     private void mostrarFotos(){
         listaDeFotos.getChildren().clear();
-        ArrayList<String> fotos = ConectorViviendaBD.crearListaFotos(id);
+        ArrayList<String> fotos = FachadaBD.listaFotos(id);
         listaDeFotos.setSpacing(5);
         
         for (int i = 0; i < fotos.size(); ++i) {
@@ -381,7 +378,7 @@ public class EditarViviendaController implements Initializable {
             alerta.setHeaderText("¿Seguro que quieres eliminar esta fotografía?");
             Optional<ButtonType> ok = alerta.showAndWait();
             if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-                ConectorViviendaBD.eliminarFoto(rutaFoto, id);
+                FachadaBD.eliminarFoto(rutaFoto, id);
                 mostrarFotos();
             }
             alerta.close();

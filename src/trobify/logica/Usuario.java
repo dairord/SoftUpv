@@ -10,8 +10,10 @@ package trobify.logica;
  * @author gabri
  */
 public class Usuario {
+
     String id, dni, password, nombre, apellidos, email, foto;
-    public Usuario (String id, String dni, String password, String nombre, String apellidos, String email, String foto){
+
+    public Usuario(String id, String dni, String password, String nombre, String apellidos, String email, String foto) {
         this.id = id;
         this.dni = dni;
         this.password = password;
@@ -20,32 +22,42 @@ public class Usuario {
         this.email = email;
         this.foto = foto;
     }
-    
-   public String getId (){
-       return id;
-   }
-   
-   public String getDni () {
-       return dni;
-   }
-   
-   public String getPassword (){
-       return password;
-   }
-   
-   public String getNombre (){
-       return nombre;
-   }
-   
-   public String getApellidos () {
-       return apellidos;
-   }
-   
-   public String getEmail () {
-       return email;
-   }
-   
-   public String getFoto() {
-       return foto;
-   }
+
+    public Usuario() {
+        this.id = "";
+        this.dni = "";
+        this.password = "";
+        this.nombre = "";
+        this.apellidos = "";
+        this.email = "";
+        this.foto = "";
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
 }
