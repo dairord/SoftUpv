@@ -55,8 +55,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
-import trobify.logica.ConectorFotosBD;
-import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Filtros;
 import trobify.logica.Vivienda;
 
@@ -502,7 +500,7 @@ public class BuscadorController implements Initializable {
     //metodo nuevo de sql
     private void consulta() throws SQLException {
         ciu = ciudad.getText();
-        viviendasList = ConectorViviendaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
+        viviendasList = FachadaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
         ordenarLista();
     }//fin consulta
 

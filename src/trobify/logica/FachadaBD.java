@@ -6,6 +6,7 @@
 package trobify.logica;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,5 +35,9 @@ public class FachadaBD {
    
    public static ArrayList<Vivienda> viviendasEnCiudad(String ciu, int alqOVen){
         return ConectorViviendaBD.getViviendasPorCiudadActivas(ciu, alqOVen);
+   }
+   
+   public static ArrayList<String> consultaBuscador(String ciu, int alqOVen,String tipo, String pMin, String pMax, String baños, String habita, String comoOrdenar) throws SQLException{
+       return ConectorViviendaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
    }
 }
