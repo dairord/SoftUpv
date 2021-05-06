@@ -28,6 +28,12 @@ public class Favoritos {
         this.id_cliente = id_cliente;
         this.valoracion = valoracion;
     }
+    
+    public Favoritos(){
+        this.id = "";
+        this.id_cliente = "";
+        this.valoracion = 0;
+    }
 
     public String getId() {
         return id;

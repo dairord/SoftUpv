@@ -80,5 +80,21 @@ public class ConectorServiciosBD {
         }
         return null;
     }
+       
+       public static Servicios getServicios(String id) {
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT * FROM servicios WHERE id = '" + id + "'");
+            if (rsl.first()) {
+                Servicios servi = new Servicios(id, rsl.getInt("supermercado"), rsl.getInt("transporte_publico"),
+                        rsl.getInt("banco"), rsl.getInt("estanco"), rsl.getInt("centro_comercial"), rsl.getInt("gimnasio"),
+                        rsl.getInt("farmacia"));
+                return servi;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 }

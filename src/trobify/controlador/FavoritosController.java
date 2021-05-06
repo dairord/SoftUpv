@@ -170,7 +170,7 @@ public class FavoritosController implements Initializable {
                 String foto = FachadaBD.consultarFoto(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
-                int valoracion = FachadaBD.consultarValoracion(favList.get(i), username);
+                int valoracion = FachadaBD.getValoracion(favList.get(i), username);
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, valoracion));
                 
             } catch (FileNotFoundException ex) {
