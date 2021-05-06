@@ -66,14 +66,14 @@ public class FachadaBD {
        ConectorViviendaBD.eliminarFoto(rutaFoto, id);
    }
    
-   public static void registrarVivinda(Vivienda v, Servicios s, ArrayList<Fotografia> fotos) {
+   public static void registrarVivienda(Vivienda v, Servicios s, ArrayList<Fotografia> fotos) {
        ConectorViviendaBD.añadirVivienda(v);
        ConectorServiciosBD.añadirServicios(s);
        ConectorFotosBD.añadirConjuntoFotos(fotos);
     }
    
    public static Boolean isUsernameRepetido(String username){
-        if(username.equals(ConectorUsuarioBD.getUsuario(username))){
+        if(username.equals(ConectorUsuarioBD.getUsuario(username).getId())){
         return true;
         }
         return false;

@@ -112,7 +112,7 @@ public class RegistrarUsuarioController implements Initializable {
    }
    
    private boolean usuarioNoRepetido(){
-      if(!FachadaBD.isUsernameRepetido(username.getText())){
+      if(FachadaBD.isUsernameRepetido(username.getText())){
            usuIncorrecto.setText(" *");
            errorText.setText("Nombre de usuario ya en uso.");
            return false;
@@ -123,8 +123,7 @@ public class RegistrarUsuarioController implements Initializable {
     @FXML
     private void Registrarme(ActionEvent event) throws IOException  {
        if(usuarioNoRepetido() && errorContraseña()){
-          System.out.print("aqui no llegq");
-           Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
+          Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
            ConectorUsuarioBD.añadirUsuario(nuevo);
            if(agenteCheck.isSelected()) esAgente();

@@ -48,6 +48,7 @@ import static trobify.logica.ConectorServiciosBD.añadirServicios;
 import trobify.logica.ConectorViviendaBD;
 import static trobify.logica.ConectorViviendaBD.añadirVivienda;
 import static trobify.logica.ConectorViviendaBD.numeroViviendas;
+import trobify.logica.FachadaBD;
 import trobify.logica.Fotografia;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
@@ -302,9 +303,7 @@ public class RegistrarViviendaController implements Initializable {
         alerta1.setHeaderText("¿Seguro que desea registrar esta vivienda?");
         Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            añadirVivienda(vivi);
-            añadirServicios(servi);
-            añadirConjuntoFotos(fotos);
+            FachadaBD.registrarVivienda(vivi, servi, fotos);
 
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);
             alerta.setHeaderText("Vivienda registrada correctamente.");
