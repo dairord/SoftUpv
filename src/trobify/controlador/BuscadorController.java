@@ -344,7 +344,7 @@ public class BuscadorController implements Initializable {
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-                System.out.println(id);
+               // System.out.println(id);
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("mark", punto, id, desc);

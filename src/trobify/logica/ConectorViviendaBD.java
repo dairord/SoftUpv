@@ -25,7 +25,7 @@ public class ConectorViviendaBD {
 
     private static Conectar con = new Conectar();
     
-    public static boolean consultaBoolean(String sql){
+    private static boolean consultaBoolean(String sql){
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -38,6 +38,33 @@ public class ConectorViviendaBD {
         }
 
         return false;
+    }
+    
+    private static void consultaVoid(String sql){
+         try {
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate(sql);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private static ArrayList<String> consultaLista(String sql){
+         ArrayList<String> listaFotos = new ArrayList();
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery(sql);
+            if (rsl.isBeforeFirst()) {
+                
+                while (rsl.next()) {
+                    listaFotos.add(rsl.getString("id"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFotos;
     }
 
     public static boolean consultaInicial(String ciudad, String tipoVivienda, int alqOVent) {
@@ -73,23 +100,15 @@ public class ConectorViviendaBD {
         String direccion = parts[parts.length - 1];
         System.out.println(direccion);
         
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       String sql = "DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'";
+       consultaVoid(sql);
     }
     
     public static void añadirFotografia (String idFoto, String idVivienda){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')");
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String sql = "INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')";
+        consultaVoid(sql);
     }
+   
 
   
     public static String consultarDireccion(String id) {
@@ -111,14 +130,9 @@ public class ConectorViviendaBD {
     }
 
     public static void eliminarDeFavoritos(String id, String username) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("DELETE FROM favoritos WHERE id = '" + id + "' and id_cliente = '"
-                    + username + "'");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String sql = "DELETE FROM favoritos WHERE id = '" + id + "' and id_cliente = '"
+                    + username + "'";
+        consultaVoid(sql);
     }
 
     public static int consultarValoracion(String id, String username) {
@@ -142,20 +156,8 @@ public class ConectorViviendaBD {
     }
 
     public static ArrayList<String> ordenarFavoritos(String username, String orden) {
-        ArrayList<String> favList = new ArrayList();
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + "' and activo = 0 " + orden);
-            if (rsl.isBeforeFirst()) {
-                
-                while (rsl.next()) {
-                    favList.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return favList;
+        String sql = "SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + "' and activo = 0 " + orden;
+        return consultaLista(sql);
     }
 
     public static boolean estaEnFavoritos(String id, String username) {
@@ -164,20 +166,8 @@ public class ConectorViviendaBD {
     }
 
     public static ArrayList<String> crearListaFotos(String id) {
-        ArrayList<String> listaFotos = new ArrayList();
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
-            if (rsl.isBeforeFirst()) {
-                
-                while (rsl.next()) {
-                    listaFotos.add(rsl.getString("id"));
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listaFotos;
+       String sql = "SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'";
+       return consultaLista(sql);
     }
 
     public static ArrayList<String> crearListaRecomendados(String id) {
@@ -206,13 +196,8 @@ public class ConectorViviendaBD {
     }
 
     public static void editarValoracion(int valoracion, String id, String username) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("UPDATE `favoritos` SET `valoracion`='" + valoracion + "' WHERE id = '" + id + "' AND id_cliente = '" + username + "'");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       String sql = "UPDATE `favoritos` SET `valoracion`='" + valoracion + "' WHERE id = '" + id + "' AND id_cliente = '" + username + "'";
+       consultaVoid(sql);
     }
 
     public static Vivienda vivienda(String id) {
@@ -264,12 +249,8 @@ public class ConectorViviendaBD {
     }
 
     public static void añadirFavoritos(Favoritos nuevo) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `favoritos`(`id`, `id_cliente`) VALUES ('" + nuevo.getId() + "','" + nuevo.getId_cliente() + "')");
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String sql = "INSERT INTO `favoritos`(`id`, `id_cliente`) VALUES ('" + nuevo.getId() + "','" + nuevo.getId_cliente() + "')";
+        consultaVoid(sql);
     }
 
   
@@ -282,26 +263,18 @@ public class ConectorViviendaBD {
     public static void desactivarVivienda(String id) {
         Vivienda vivi = vivienda(id);
         vivi.setActivo(1);
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("UPDATE `vivienda` SET `activo`='" + vivi.getActivo() + "' WHERE id = '" + vivi.getId() + "'");
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      String sql = "UPDATE `vivienda` SET `activo`='" + vivi.getActivo() + "' WHERE id = '" + vivi.getId() + "'";
+      consultaVoid(sql);
     }
 
     public static void añadirVivienda(Vivienda vivi) {
-        try {
-            
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO vivienda (id, calle, ciudad, ventaAlquiler, id_agencia, precio, id_propietario, tipo, "
+        String sql = "INSERT INTO vivienda (id, calle, ciudad, ventaAlquiler, id_agencia, precio, id_propietario, tipo, "
                     + "baños, habitaciones, descripcion, piso, puerta, codigo_postal, activo) VALUE ('"+vivi.getId()+"', '"+vivi.getCalle()+"'"
                     + ", '"+vivi.getCiudad()+"', '"+vivi.getVentaAlquiler()+"', '"+vivi.getId_agencia()+"', '"+vivi.getPrecio()+"'"
                     + ", '"+vivi.getId_propietario()+"', '"+vivi.getTipo()+"', '"+vivi.getBaños()+"', '"+vivi.getHabitaciones()+"'"
-                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"','"+ vivi.getActivo() +"')");
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    + ", '"+vivi.getDescripcion()+"', '"+vivi.getPiso()+"', '"+vivi.getPuerta()+"', '"+vivi.getCodigo_postal()+"','"+ vivi.getActivo() +"')";
+        
+        consultaVoid(sql);
     }
 
     public static ArrayList<Vivienda> getViviendasPorCiudadActivas(String ciudad, int CompraAlquiler) {
@@ -430,15 +403,11 @@ public class ConectorViviendaBD {
     }
     
     public static void actualizarVivienda(Vivienda vivi){
-        try {
-         Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("UPDATE `vivienda` SET `calle`='"+ vivi.getCalle()+ "',`ciudad`='"+ vivi.getCiudad()+"',`ventaAlquiler`='" +vivi.getVentaAlquiler()+"',`id_agencia`='"+vivi.getId_agencia()+
+       String sql = "UPDATE `vivienda` SET `calle`='"+ vivi.getCalle()+ "',`ciudad`='"+ vivi.getCiudad()+"',`ventaAlquiler`='" +vivi.getVentaAlquiler()+"',`id_agencia`='"+vivi.getId_agencia()+
                     "',`precio`='"+vivi.getPrecio()+"',`id_propietario`='"+vivi.getId_propietario()+"',`tipo`='"+vivi.getTipo()+"',`baños`='"+vivi.getBaños()+"',"
                     + "`habitaciones`='"+vivi.getHabitaciones()+"',`descripcion`='"+ vivi.getDescripcion() +"',`piso`='"+ vivi.getPiso() +"',`puerta`='"+ vivi.getPuerta()+"',"
-                    + "`codigo_postal`='"+ vivi.getCodigo_postal() +"',`activo`='"+ vivi.getActivo()+ "' WHERE id = '" + vivi.getId() + "'");
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    + "`codigo_postal`='"+ vivi.getCodigo_postal() +"',`activo`='"+ vivi.getActivo()+ "' WHERE id = '" + vivi.getId() + "'";
+       consultaVoid(sql);
     }
     
    
