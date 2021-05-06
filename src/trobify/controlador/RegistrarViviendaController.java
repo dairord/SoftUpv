@@ -236,7 +236,7 @@ public class RegistrarViviendaController implements Initializable {
 
     @FXML
     private void registrar(ActionEvent event) throws IOException {
-        int numero = numeroViviendas() + 1;
+        int numero = FachadaBD.numeroViviendas() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
         int baños = Integer.parseInt(bañosField.getText());

@@ -71,6 +71,9 @@ public class FachadaBD {
        ConectorServiciosBD.añadirServicios(s);
        ConectorFotosBD.añadirConjuntoFotos(fotos);
     }
+   public static int numeroViviendas(){
+       return numeroViviendas();
+   }
    
    public static Boolean isUsernameRepetido(String username){
         if(username.equals(ConectorUsuarioBD.getUsuario(username).getId())){
