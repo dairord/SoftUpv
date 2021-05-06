@@ -41,9 +41,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import trobify.Conectar;
-import trobify.logica.ConectorFotosBD;
-import trobify.logica.ConectorViviendaBD;
+import trobify.logica.FachadaBD;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -65,7 +64,7 @@ public class FavoritosController implements Initializable {
      * Initializes the controller class.
      */
     
-    Conectar con;
+   
     ArrayList<String> favList;
     
     
@@ -166,12 +165,12 @@ public class FavoritosController implements Initializable {
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
            String idBoton = favList.get(i);
+           Vivienda vivi = FachadaBD.pasarVivienda(idBoton);
             try {
-                
-                String foto = ConectorFotosBD.consultarFoto(favList.get(i));
-                String calle = ConectorViviendaBD.consultarDireccion(favList.get(i));
-                int precio = ConectorViviendaBD.consultarPrecio(favList.get(i));
-                int valoracion = ConectorViviendaBD.consultarValoracion(favList.get(i), username);
+                String foto = FachadaBD.consultarFoto(idBoton);
+                String calle = vivi.getCalle();
+                int precio = vivi.getPrecio();
+                int valoracion = FachadaBD.consultarValoracion(favList.get(i), username);
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, valoracion));
                 
             } catch (FileNotFoundException ex) {
@@ -185,7 +184,7 @@ public class FavoritosController implements Initializable {
         alerta.setHeaderText("Seguro que quieres eliminar?");
         Optional<ButtonType> ok = alerta.showAndWait();
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-             ConectorViviendaBD.eliminarDeFavoritos(botonEliminar, username);
+             FachadaBD.eliminarDeFavoritos(botonEliminar, username);
             ordenCambiado(null);
             alerta.close();
            
@@ -202,32 +201,23 @@ public class FavoritosController implements Initializable {
         String orden = "";
         switch (elegirOrdenPor.getSelectionModel().selectedItemProperty().getValue()) {
             case "Relevancia":                
-                listaViviendas.getChildren().clear();
                 orden = "";
-                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
-                ordenarLista();
                 break;
             case "Precio más bajo":
-                listaViviendas.getChildren().clear();
                 orden = "ORDER BY precio ASC";
-                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
-                ordenarLista();
                 break;
             case "Precio más alto":
-                listaViviendas.getChildren().clear();
-                orden = "ORDER BY precio DESC";
-                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
-                ordenarLista();
-                break;
+               orden = "ORDER BY precio DESC";
+               break;
             case "Valoracion":
-                listaViviendas.getChildren().clear();
-                orden = "ORDER BY valoracion DESC";
-                favList = ConectorViviendaBD.ordenarFavoritos(username, orden);
-                ordenarLista();
-                break;
+              orden = "ORDER BY valoracion DESC";
+              break;
             default:
                 break;
         }
+        listaViviendas.getChildren().clear();
+        favList = FachadaBD.ordenarFavoritos(username, orden);
+                ordenarLista();
     }
     
     @FXML

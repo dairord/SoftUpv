@@ -81,4 +81,18 @@ public class FachadaBD {
         }
         return false;
         }
+   
+   public static int consultarValoracion(String id, String username){
+       return ConectorViviendaBD.consultarValoracion(id, username);
+   }
+  
+  public static void eliminarDeFavoritos(String botonElinimar, String username ){
+      ConectorViviendaBD.eliminarDeFavoritos(botonElinimar, username);
+  }
+   
+  public static ArrayList<String> ordenarFavoritos(String username, String orden){
+      return ConectorViviendaBD.ordenarFavoritos(username, orden);
+  }
+           
+  
      }
