@@ -40,7 +40,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
 

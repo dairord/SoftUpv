@@ -38,7 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import trobify.Conectar;
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 
 /**
  * FXML Controller class

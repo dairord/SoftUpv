@@ -41,7 +41,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 import trobify.logica.Vivienda;
 
 /**

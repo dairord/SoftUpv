@@ -29,8 +29,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import trobify.Conectar;
 import trobify.logica.Usuario;
-import trobify.logica.ConectorUsuarioBD;
-import trobify.logica.FachadaBD;
+import trobify.conectores.ConectorUsuarioBD;
+import trobify.fachada.FachadaBD;
 
 /**
  * FXML Controller class

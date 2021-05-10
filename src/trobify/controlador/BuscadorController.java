@@ -5,7 +5,7 @@
  */
 package trobify.controlador;
 
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -42,7 +42,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeArray.forEach;
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 import trobify.logica.Fotografia;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;

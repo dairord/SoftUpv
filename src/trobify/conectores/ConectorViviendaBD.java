@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trobify.logica;
+package trobify.conectores;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import trobify.Conectar;
 import trobify.controlador.InicioController;
+import trobify.logica.Favoritos;
+import trobify.logica.Vivienda;
 
 /**
  *

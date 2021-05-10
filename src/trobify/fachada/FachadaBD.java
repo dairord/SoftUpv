@@ -3,15 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trobify.logica;
+package trobify.fachada;
 
+import trobify.conectores.ConectorServiciosBD;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import trobify.logica.ConectorFotosBD;
-import trobify.logica.ConectorViviendaBD;
+import trobify.conectores.ConectorAgenciaBD;
+import trobify.conectores.ConectorFotosBD;
+import trobify.conectores.ConectorViviendaBD;
+import trobify.logica.Agente;
+import trobify.conectores.ConectorFiltrosBD;
+import trobify.conectores.ConectorFotosBD;
+import trobify.conectores.ConectorUsuarioBD;
+import trobify.logica.Favoritos;
+import trobify.logica.Filtros;
+import trobify.logica.Fotografia;
+import trobify.logica.Servicios;
+import trobify.logica.Usuario;
+import trobify.logica.Vivienda;
 import trobify.logica.Vivienda;
 
 /**

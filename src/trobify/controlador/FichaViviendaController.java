@@ -47,7 +47,7 @@ import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import trobify.Conectar;
 import static trobify.controlador.BuscadorController.location;
-import trobify.logica.FachadaBD;
+import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;
 //import trobify.logica.ConectorServiciosBD;
 //import trobify.logica.ConectorViviendaBD;
