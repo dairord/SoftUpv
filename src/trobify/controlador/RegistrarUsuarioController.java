@@ -15,11 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -27,6 +30,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import trobify.Conectar;
 import trobify.logica.Usuario;
 import trobify.conectores.ConectorUsuarioBD;
@@ -71,6 +75,10 @@ public class RegistrarUsuarioController implements Initializable {
     private Label errorText;
     @FXML
     private TextField email;
+    @FXML
+    private Label dniError;
+    @FXML
+    private Label emailError;
     
     
     /**
@@ -98,14 +106,41 @@ public class RegistrarUsuarioController implements Initializable {
                  ;
          registrarmeBoton.disableProperty().bind(sePuedeBuscar);
      
-        
+         nombre.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
+                    nombre.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
+                }
+            }
+        });
+         
+         apellidos.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
+                    apellidos.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
+                }
+            }
+        });
+         
+        dni.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number valorAnterior, Number valorActual) -> {
+            if (valorActual.intValue() > valorAnterior.intValue()) {
+                // Revisa que la longitud del texto no sea mayor a la variable definida.
+                if (dni.getText().length() >= 9) {
+                    dni.setText(dni.getText().substring(0, 9));
+                }
+            }
+        });
     }    
 
    private boolean errorContraseña(){
        if(!contraseña.getText().equals(repetirContraseña.getText())) {
            repetirContraseña.setText("");
            contraIncorrecta.setText(" *");
-           errorText.setText("Debes introducir la misma contraseña.");
+           errorText.setText(errorText.getText() + "Debes introducir la misma contraseña. \n");
            return false;
        }
        return true;
@@ -114,22 +149,34 @@ public class RegistrarUsuarioController implements Initializable {
    private boolean usuarioNoRepetido(){
       if(FachadaBD.isUsernameRepetido(username.getText())){
            usuIncorrecto.setText(" *");
-           errorText.setText("Nombre de usuario ya en uso.");
+           errorText.setText(errorText.getText() + "Nombre de usuario ya en uso. \n");
            return false;
        }
       return true;
    }
+   
+   private boolean dniCorrecto(){
+       if(!formatoDNI()) {
+           dniError.setText(" *");
+           errorText.setText(errorText.getText() + "Formato del DNI incorrecto. Recuerde que deben ser 8 numeros y una letra. \n");
+       }
+       return true;
+   }
     
     @FXML
     private void Registrarme(ActionEvent event) throws IOException  {
-       if(usuarioNoRepetido() && errorContraseña()){
+        errorText.setText("");
+        boolean repetido = usuarioNoRepetido();
+        boolean contraseñar = errorContraseña();
+        boolean Dnir = dniCorrecto();
+        if(repetido && contraseñar && Dnir){
           Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
            ConectorUsuarioBD.añadirUsuario(nuevo);
            if(agenteCheck.isSelected()) esAgente();
            else estaRegistrado();
      }//fin if
-       
+        
     } // fin metodo
     
     //volver al inicio o buscador con la sesion iniciada
@@ -196,5 +243,15 @@ public class RegistrarUsuarioController implements Initializable {
         stage.setTitle("Trobify");
         stage.show();
         event.consume();
+    }
+    
+    public boolean formatoDNI() {
+        String cadena = dni.getText();
+        if(cadena.length() != 9) {return false;}
+        for(int i = 0; i < cadena.length() - 1; i++) {
+            if(!Character.isDigit(cadena.charAt(i))) {return false;}
+        }
+        if(!Character.isLetter(cadena.charAt(cadena.length() - 1))) {return false;}
+        else {return true;}
     }
 }

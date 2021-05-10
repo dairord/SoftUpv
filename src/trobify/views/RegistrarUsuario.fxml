@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="645.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
+<VBox prefHeight="645.0" prefWidth="1276.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.RegistrarUsuarioController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="600.0">
          <items>
@@ -170,9 +170,9 @@
                               <TextField fx:id="dni" prefHeight="25.0" prefWidth="325.0" />
                            </children>
                         </VBox>
-                        <VBox prefHeight="45.0" prefWidth="192.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="192.0">
                            <children>
-                              <Label />
+                              <Label fx:id="dniError" />
                            </children>
                         </VBox>
                      </children>
@@ -197,7 +197,10 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <VBox alignment="CENTER" prefHeight="47.0" prefWidth="261.0" />
+                        <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="261.0">
+                           <children>
+                              <Label fx:id="emailError" />
+                           </children></VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="54.0" prefWidth="471.0">
