@@ -35,6 +35,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
 import trobify.Conectar;
@@ -76,19 +77,30 @@ public class InicioController implements Initializable {
     private Label mensajeError;
     @FXML
     private Label nombreUsuario;
+    @FXML
+    private Button misViviendasBoton;
+    @FXML
+    private Label agente;
+    @FXML
+    private Button registrarV;
+    @FXML
+    private Button favoritos;
+    @FXML
+    private Button mensajes;
+    @FXML
+    private Button notificaciones;
+    @FXML
+    private HBox iniciado;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     
-   
+    iniciado.setVisible(false);
     //si está iniciado sesión
-    if(estaIniciado){
-        nombreUsuario.setText("Bienvenido "+ username);
-        iniciaBoton.setVisible(false);
-        registrarse.setVisible(false);
-    }
+    bienvenido();
+    
    //tipos de viviendas gabri
      ArrayList <String> tiposViviendas = new ArrayList <String> ();
      tiposViviendas.add("Indiferente");
@@ -207,6 +219,7 @@ public class InicioController implements Initializable {
         nombreUsuario.setText("Bienvenido "+ username);
         iniciaBoton.setVisible(false);
         registrarse.setVisible(false);
+        iniciado.setVisible(true);
     }
  }
 
@@ -223,5 +236,33 @@ public class InicioController implements Initializable {
             stage.setTitle("Trobify");
             stage.show();
             event.consume();
+    }
+
+    @FXML
+    private void misViviendas(ActionEvent event) throws IOException {
+         FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/GestionViviendas.fxml"));
+         GestionViviendasController.deDondeViene("inicio");
+         GestionViviendasController.pasarUsuario(username);
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            GestionViviendasController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
+    }
+
+    @FXML
+    private void RegistrarViv(ActionEvent event) {
+    }
+
+    @FXML
+    private void favBoton(ActionEvent event) {
+    }
+
+    @FXML
+    private void notifica(ActionEvent event) {
     }
 }

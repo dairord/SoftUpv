@@ -193,6 +193,10 @@ public class FachadaBD {
         FachadaBD.desactivarVivienda(id);
     }
     
+    public static ArrayList<String> viviendasDelUsusario(String username, String orden) {
+        return ConectorViviendaBD.viviendasDelUsuario(username, orden);
+    }
     
+   
 
 }

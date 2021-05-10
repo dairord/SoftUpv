@@ -167,6 +167,10 @@ public class ConectorViviendaBD {
        return consultaBoolean(sql);
     }*/
 
+     public static ArrayList<String> viviendasDelUsuario(String username, String orden) {
+        String sql = "SELECT id FROM vivienda WHERE id_propietario = '" + username + "' " + orden;
+        return consultaLista(sql);
+    }
     public static ArrayList<String> crearListaFotos(String id) {
        String sql = "SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'";
        return consultaLista(sql);
@@ -420,5 +424,6 @@ public class ConectorViviendaBD {
          return new Favoritos();
     }
     
+
    
 } //fin clase

@@ -12,10 +12,65 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="641.0" prefWidth="1272.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.InicioController">
+<VBox prefHeight="641.0" prefWidth="1272.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.InicioController">
    <children>
       <HBox alignment="TOP_RIGHT" prefHeight="64.0" prefWidth="600.0">
          <children>
+            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="587.0">
+               <children>
+                  <HBox fx:id="iniciado" alignment="CENTER" prefHeight="49.0" prefWidth="943.0">
+                     <children>
+                        <Button fx:id="misViviendasBoton" mnemonicParsing="false" onAction="#misViviendas" text="Mis viviendas" />
+                        <Label fx:id="agente" prefHeight="30.0" prefWidth="40.0" textFill="#0a06f5">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="registrarV" mnemonicParsing="false" onAction="#RegistrarViv" text="Registar Vivienda">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="favoritos" mnemonicParsing="false" onAction="#favBoton">
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
+                                 <image>
+                                    <Image url="@../images/favo.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="mensajes" mnemonicParsing="false">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
+                                 <image>
+                                    <Image url="@../images/mensaje.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="notificaciones" mnemonicParsing="false" onAction="#notifica" prefHeight="49.0" prefWidth="47.0">
+                           <HBox.margin>
+                              <Insets right="35.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
+                                 <image>
+                                    <Image url="@../images/notificacion.jpg" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
             <HBox alignment="CENTER" prefHeight="64.0" prefWidth="438.0">
                <children>
                   <Label fx:id="nombreUsuario" prefHeight="34.0" prefWidth="422.0" textAlignment="CENTER">

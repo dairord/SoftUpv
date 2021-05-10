@@ -50,7 +50,7 @@ public class IniciarSesionController implements Initializable {
     private String pas;
     private static String vieneDe;
     private String direccion;
-    private String dondeVa;
+    
     
     /**
      * Initializes the controller class.
@@ -66,9 +66,9 @@ public class IniciarSesionController implements Initializable {
        
        if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";
-            dondeVa = "BuscadorController";}
+            }
        else {direccion = "/trobify/views/Inicio.fxml";
-            dondeVa = "InicioController";}
+           }
     }    
 
     @FXML
