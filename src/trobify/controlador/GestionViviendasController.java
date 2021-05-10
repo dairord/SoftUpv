@@ -57,6 +57,8 @@ public class GestionViviendasController implements Initializable {
     private static String vieneDe;
     private String direccion;
     private ArrayList<String> misViviendas;
+    private String activo;
+    private String textoBoton;
     /**
      * Initializes the controller class.
      */
@@ -66,8 +68,11 @@ public class GestionViviendasController implements Initializable {
         rellenoComboBox();
         direccion();
         
-        misViviendas = new ArrayList();       
+        misViviendas = new ArrayList();    
+      
         orden();
+        
+       
     }    
 
     private void direccion(){
@@ -150,26 +155,32 @@ public class GestionViviendasController implements Initializable {
         
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
         javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
-        javafx.scene.control.Label valoracion = new javafx.scene.control.Label("Activo: " + activo );
+        javafx.scene.control.Label estado = new javafx.scene.control.Label("Vivienda " + activo );
         
         
-        datos.getChildren().addAll(calle,precio,valoracion);
+        datos.getChildren().addAll(calle,precio,estado);
         
-        javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
-        eliminarFav.setAlignment(Pos.CENTER);
-        eliminarFav.setPadding(new Insets(20,20,20,25));
+      javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
+       eliminarFav.setAlignment(Pos.CENTER);
+       eliminarFav.setPadding(new Insets(20,20,20,25));
+       //boton de activar o desactivar
+       if(activo.equals("Activa")) textoBoton = "Desactivar vivienda";
+       else textoBoton = "Activar vivienda";
+      
+        Button botonGestionar = new Button();
+        botonGestionar.setText(textoBoton);
+        botonGestionar.setId(id);
+        botonGestionar.setOnAction(e -> {
+        alerta(botonGestionar.getId());
+       });
+       
         
-        Button botonEliminar = new Button();
-        botonEliminar.setText("Eliminar de favoritos");
-        botonEliminar.setId(id);
-        botonEliminar.setOnAction(e -> {
-          alerta(botonEliminar.getId());
-        });
-        
-        eliminarFav.getChildren().add(botonEliminar);
+       eliminarFav.getChildren().add(botonGestionar);
         
         miniatura.getChildren().addAll(botonRedireccion, datos, eliminarFav);        
-        return miniatura;
+      
+       return miniatura;
+
     }
     
     //Lista de viviendas
@@ -181,7 +192,7 @@ public class GestionViviendasController implements Initializable {
                 String foto = FachadaBD.consultarFoto(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
-                String activo = "Activa";
+                activo = "Activa";
                 if(vivi.getActivo() == 1) activo = "Desactivada";
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, activo));
                 
@@ -191,12 +202,15 @@ public class GestionViviendasController implements Initializable {
         }
     }
 
-    private void alerta(String botonEliminar){
+    private void alerta(String botonGestionar){
        Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
-        alerta.setHeaderText("Seguro que quieres eliminar?");
+       String texto = "activar";
+       if(activo.equals("Desactivada")) texto = "desactivar";
+        alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
         Optional<ButtonType> ok = alerta.showAndWait();
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-             FachadaBD.eliminarDeFavoritos(botonEliminar, username);
+           if(texto.equals("desactivar"))FachadaBD.desactivarVivienda(botonGestionar);
+           else FachadaBD.activarVivienda(botonGestionar);
             ordenCambiado(null);
             alerta.close();
            

@@ -190,13 +190,15 @@ public class FachadaBD {
     }
 
     public static void desactivarVivienda(String id) {
-        FachadaBD.desactivarVivienda(id);
+        ConectorViviendaBD.desactivarVivienda(id);
     }
     
     public static ArrayList<String> viviendasDelUsusario(String username, String orden) {
         return ConectorViviendaBD.viviendasDelUsuario(username, orden);
     }
-    
+    public static void activarVivienda(String id){
+        ConectorViviendaBD.activarVivienda(id);
+    }
    
 
 }

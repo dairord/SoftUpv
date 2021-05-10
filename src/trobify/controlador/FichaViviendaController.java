@@ -195,11 +195,11 @@ public class FichaViviendaController implements Initializable {
         engine.load(googleMaps.toExternalForm());
 
         //para saber de donde viene y volver atrás correctamente
-        if (deDondeViene.equals("favoritos")) {
+        if (deDondeViene.equals("favoritos")) 
             aDondeVa = "/trobify/views/Favoritos.fxml";
-        } else {
-            aDondeVa = "/trobify/views/Buscador.fxml";
-        }
+        if(deDondeViene.equals("gestionVivienda")) 
+            aDondeVa = "/trobify/views/GestionViviendas.fxml";
+        else aDondeVa = "/trobify/views/Buscador.fxml";
 
         geo();
     }
@@ -380,6 +380,7 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
+        GestionViviendasController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
@@ -439,6 +440,7 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
+        GestionViviendasController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

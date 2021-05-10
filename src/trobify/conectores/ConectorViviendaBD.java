@@ -424,6 +424,12 @@ public class ConectorViviendaBD {
          return new Favoritos();
     }
     
+     public static void activarVivienda(String id) {
+        Vivienda vivi = getVivienda(id);
+        vivi.setActivo(0);
+      String sql = "UPDATE `vivienda` SET `activo`='" + vivi.getActivo() + "' WHERE id = '" + vivi.getId() + "'";
+      consultaVoid(sql);
+    }
 
    
 } //fin clase
