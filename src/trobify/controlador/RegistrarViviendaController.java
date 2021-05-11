@@ -111,6 +111,8 @@ public class RegistrarViviendaController implements Initializable {
 
     @FXML
     private Button registrarBoton;
+    private static String vieneDe;
+    private String direccion;
 
     /**
      * Initializes the controller class.
@@ -184,12 +186,22 @@ public class RegistrarViviendaController implements Initializable {
             }
         });
 
+        direccion();
     }
 
+     private void direccion(){
+        if(vieneDe.equals("inicio"))
+           direccion = "/trobify/views/Inicio.fxml";
+        
+        if(vieneDe.equals("buscador"))
+            direccion = "/trobify/views/Buscador.fxml";
+       else { //otros sitios de donde pueda venir
+           }
+    }
     @FXML
     private void atras(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+        fxmlLoader.setLocation(getClass().getResource(direccion));
         st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -200,6 +212,10 @@ public class RegistrarViviendaController implements Initializable {
         event.consume();
     }
 
+     public static void deDondeViene (String donde){
+         vieneDe = donde;
+    }
+     
     @FXML
     private void añadirFoto(ActionEvent event) throws IOException {
         FileChooser imageChooser = new FileChooser();
@@ -303,11 +319,12 @@ public class RegistrarViviendaController implements Initializable {
             Optional<ButtonType> vale = alerta.showAndWait();
             if (vale.isPresent() && vale.get().equals(ButtonType.OK)) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+                fxmlLoader.setLocation(getClass().getResource(direccion));
                 st.close();
                 Stage stage = new Stage();
                 Scene scene = new Scene(fxmlLoader.load());
                 BuscadorController.pasarStage(stage);
+                InicioController.pasarStage(stage);
                 stage.setScene(scene);
                 stage.setTitle("Trobify");
                 stage.show();

@@ -76,9 +76,11 @@ public class GestionViviendasController implements Initializable {
     }    
 
     private void direccion(){
-        if(vieneDe.equals("inicio")){ 
+        if(vieneDe.equals("inicio"))
            direccion = "/trobify/views/Inicio.fxml";
-            }
+        
+        if(vieneDe.equals("buscador"))
+            direccion = "/trobify/views/Buscador.fxml";
        else { //otros sitios de donde pueda venir
            }
     }
@@ -104,6 +106,7 @@ public class GestionViviendasController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene (fxmlLoader.load());
             InicioController.pasarStage(stage);
+            BuscadorController.pasarStage(stage);
             //añadir todos los controller a los que podria ir
             stage.setScene(scene);
             stage.setTitle("Trobify");
@@ -257,6 +260,26 @@ public class GestionViviendasController implements Initializable {
     
      public static void deDondeViene (String donde){
          vieneDe = donde;
+    }
+
+    @FXML
+    private void favoritos(ActionEvent event) throws IOException {
+          FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
+         FavoritosController.deDondeViene("gestionVivienda");
+         FavoritosController.pasarUsuario(username);
+         st.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            FavoritosController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
+    }
+
+    @FXML
+    private void notifica(ActionEvent event) {
     }
             
 }

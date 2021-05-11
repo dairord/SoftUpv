@@ -21,7 +21,7 @@
                   <HBox fx:id="iniciado" alignment="CENTER" prefHeight="49.0" prefWidth="943.0">
                      <children>
                         <Button fx:id="misViviendasBoton" mnemonicParsing="false" onAction="#misViviendas" text="Mis viviendas" />
-                        <Label fx:id="agente" prefHeight="30.0" prefWidth="40.0" textFill="#0a06f5">
+                        <Label fx:id="agente" prefHeight="30.0" prefWidth="18.0" textFill="#0a06f5">
                            <font>
                               <Font size="20.0" />
                            </font>

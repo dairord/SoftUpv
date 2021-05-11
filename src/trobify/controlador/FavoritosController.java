@@ -59,6 +59,8 @@ public class FavoritosController implements Initializable {
     private ComboBox<String> elegirOrdenPor;
     private static Stage s;
     private static String username;
+    private static String vieneDe;
+    private String direccion;
     
     /**
      * Initializes the controller class.
@@ -91,10 +93,11 @@ public class FavoritosController implements Initializable {
                                
         //Mostrar nombre de usuario
         nombreUsuario.setText(username);
-             
+        
+        direccion();
         
     }    
-    
+   
     
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int valoracionVivienda) throws FileNotFoundException{
@@ -179,6 +182,17 @@ public class FavoritosController implements Initializable {
         }
     }
 
+     private void direccion(){
+        if(vieneDe.equals("inicio"))
+           direccion = "/trobify/views/Inicio.fxml";
+        if(vieneDe.equals("buscador"))
+            direccion = "/trobify/views/Buscador.fxml";
+        if(vieneDe.equals("gestionVivienda"))
+            direccion = "/trobify/views/GestionViviendas.fxml";
+       else { //otros sitios de donde pueda venir
+           }
+     }
+     
     private void alerta(String botonEliminar){
        Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
         alerta.setHeaderText("Seguro que quieres eliminar?");
@@ -223,11 +237,15 @@ public class FavoritosController implements Initializable {
     @FXML
     private void InicioBoton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+        fxmlLoader.setLocation(getClass().getResource(direccion));
+        GestionViviendasController.deDondeViene("inicio");
+         GestionViviendasController.pasarUsuario(username);
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);
+        GestionViviendasController.pasarStage(stage);
+        InicioController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
@@ -239,5 +257,9 @@ public class FavoritosController implements Initializable {
      }
     public static void pasarUsuario(String usu){
         username = usu;
+    }
+    
+    public static void deDondeViene (String donde){
+         vieneDe = donde;
     }
 }

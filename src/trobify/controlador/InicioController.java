@@ -35,6 +35,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -255,14 +256,41 @@ public class InicioController implements Initializable {
     }
 
     @FXML
-    private void RegistrarViv(ActionEvent event) {
+    private void RegistrarViv(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
+        RegistrarViviendaController.pasarUsuario(username);
+        RegistrarViviendaController.deDondeViene("inicio");
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        RegistrarViviendaController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Registrar vivienda");
+        stage.show();
+        event.consume();
     }
 
     @FXML
-    private void favBoton(ActionEvent event) {
+    private void favBoton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
+         FavoritosController.deDondeViene("inicio");
+         FavoritosController.pasarUsuario(username);
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            FavoritosController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
     }
 
     @FXML
-    private void notifica(ActionEvent event) {
+    private void notifica(ActionEvent event) throws IOException {
+        //falta esto
     }
+
+
 }

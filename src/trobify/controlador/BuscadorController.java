@@ -671,4 +671,20 @@ public class BuscadorController implements Initializable {
         event.consume();
     }
 
+    @FXML
+    private void misViviendas(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/GestionViviendas.fxml"));
+         GestionViviendasController.deDondeViene("buscador");
+         GestionViviendasController.pasarUsuario(username);
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            GestionViviendasController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();
+    }
+
 }// fin clase
