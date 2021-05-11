@@ -431,5 +431,9 @@ public class ConectorViviendaBD {
       consultaVoid(sql);
     }
 
+     public static int getActivo(String id){
+         Vivienda vivi = getVivienda(id);
+         return vivi.getActivo();
+     }
    
 } //fin clase

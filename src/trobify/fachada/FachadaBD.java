@@ -199,6 +199,10 @@ public class FachadaBD {
     public static void activarVivienda(String id){
         ConectorViviendaBD.activarVivienda(id);
     }
+    public static String getActivo(String id){
+       if( ConectorViviendaBD.getActivo(id) == 0) return "activo";
+       else return "desactivo";
+    }
    
 
 }

@@ -102,6 +102,7 @@ public class FichaViviendaController implements Initializable {
     private URL googleMaps;
     private WebEngine engine;
     public static String location;
+    public static String activo;
 
     @FXML
     private Text precioVivienda;
@@ -109,6 +110,8 @@ public class FichaViviendaController implements Initializable {
     private WebView mapa;
     @FXML
     private HBox esPropietario;
+    @FXML
+    private Button desOactBoton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -202,9 +205,16 @@ public class FichaViviendaController implements Initializable {
         else aDondeVa = "/trobify/views/Buscador.fxml";
 
         geo();
+        
+       actiOdesacti();
     }
     
-
+    private void actiOdesacti(){
+        activo = FachadaBD.getActivo(id);
+        if(activo.equals("activo")) desOactBoton.setText("Despublicar");
+        else desOactBoton.setText("Publicar");
+    }
+    
     private void geo() {
         ciudad = FachadaBD.getVivienda(id);
         geolocalizacion();
@@ -418,19 +428,6 @@ public class FichaViviendaController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    private void desactivar(ActionEvent event) throws IOException {
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setHeaderText("Seguro que quieres desactivar la vivienda?");
-        Optional<ButtonType> ok = alerta.showAndWait();
-        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            FachadaBD.desactivarVivienda(id);
-            volverAtras();
-        }
-        alerta.close();
-
-    }
-
     private void volverAtras() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(aDondeVa));
@@ -445,6 +442,25 @@ public class FichaViviendaController implements Initializable {
         stage.setTitle("Trobify");
         stage.show();
 
+    }
+
+    @FXML
+    private void desactivarOactivar(ActionEvent event) throws IOException {
+    Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+    String texto = "activar";
+    if(activo.equals("activo")) texto = "desactivar";
+    alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
+    Optional<ButtonType> ok = alerta.showAndWait();
+    if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
+    if(texto.equals("desactivar")) FachadaBD.desactivarVivienda(id);
+    
+    else FachadaBD.activarVivienda(id);
+    listaFotos.clear();
+    this.imageList.getChildren();
+   
+    initialize(null,null);
+    
+}   alerta.close();
     }
 
 }

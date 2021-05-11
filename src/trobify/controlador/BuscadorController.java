@@ -613,6 +613,7 @@ public class BuscadorController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
         FavoritosController.pasarUsuario(username);
+        FavoritosController.deDondeViene("buscador");
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -661,6 +662,7 @@ public class BuscadorController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
         RegistrarViviendaController.pasarUsuario(username);
+        RegistrarViviendaController.deDondeViene("buscador");
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());

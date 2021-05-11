@@ -59,6 +59,7 @@ public class GestionViviendasController implements Initializable {
     private ArrayList<String> misViviendas;
     private String activo;
     private String textoBoton;
+   
     /**
      * Initializes the controller class.
      */
@@ -167,8 +168,8 @@ public class GestionViviendasController implements Initializable {
        eliminarFav.setAlignment(Pos.CENTER);
        eliminarFav.setPadding(new Insets(20,20,20,25));
        //boton de activar o desactivar
-       if(activo.equals("Activa")) textoBoton = "Desactivar vivienda";
-       else textoBoton = "Activar vivienda";
+       if(activo.equals("Activa")) textoBoton = "Despublicar vivienda";
+       else textoBoton = "Publicar vivienda";
       
         Button botonGestionar = new Button();
         botonGestionar.setText(textoBoton);
@@ -206,19 +207,21 @@ public class GestionViviendasController implements Initializable {
     }
 
     private void alerta(String botonGestionar){
-       Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
-       String texto = "activar";
-       if(activo.equals("Desactivada")) texto = "desactivar";
-        alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
-        Optional<ButtonType> ok = alerta.showAndWait();
-        if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-           if(texto.equals("desactivar"))FachadaBD.desactivarVivienda(botonGestionar);
-           else FachadaBD.activarVivienda(botonGestionar);
-            ordenCambiado(null);
-            alerta.close();
-           
-    } alerta.close();
-    }
+    Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
+    String texto = "activar";
+    Vivienda vivi = FachadaBD.getVivienda(botonGestionar);
+    if(vivi.getActivo()==0) texto = "desactivar";
+   
+    alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
+    Optional<ButtonType> ok = alerta.showAndWait();
+    if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
+    if(texto.equals("desactivar")) FachadaBD.desactivarVivienda(botonGestionar);
+    
+    else FachadaBD.activarVivienda(botonGestionar);
+    ordenCambiado(null);
+    
+}   alerta.close();
+   }
     
     
     @FXML
