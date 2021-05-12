@@ -159,9 +159,11 @@ public class RegistrarUsuarioController implements Initializable {
        if(!formatoDNI()) {
            dniError.setText(" *");
            errorText.setText(errorText.getText() + "Formato del DNI incorrecto. Recuerde que deben ser 8 numeros y una letra. \n");
+           return false;
        }
        return true;
    }
+   
     
     @FXML
     private void Registrarme(ActionEvent event) throws IOException  {
@@ -169,6 +171,7 @@ public class RegistrarUsuarioController implements Initializable {
         boolean repetido = usuarioNoRepetido();
         boolean contraseñar = errorContraseña();
         boolean Dnir = dniCorrecto();
+        System.out.println(Dnir);
         if(repetido && contraseñar && Dnir){
           Usuario nuevo = new Usuario(username.getText(), dni.getText(), contraseña.getText(),
                 nombre.getText(), apellidos.getText(), email.getText(), null);
@@ -249,6 +252,7 @@ public class RegistrarUsuarioController implements Initializable {
         String cadena = dni.getText();
         if(cadena.length() != 9) {return false;}
         for(int i = 0; i < cadena.length() - 1; i++) {
+            System.err.println(cadena.charAt(i));
             if(!Character.isDigit(cadena.charAt(i))) {return false;}
         }
         if(!Character.isLetter(cadena.charAt(cadena.length() - 1))) {return false;}

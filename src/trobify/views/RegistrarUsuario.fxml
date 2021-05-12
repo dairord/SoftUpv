@@ -172,7 +172,7 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="192.0">
                            <children>
-                              <Label fx:id="dniError" />
+                              <Label fx:id="dniError" textFill="#f50000" />
                            </children>
                         </VBox>
                      </children>
@@ -199,7 +199,7 @@
                         </HBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="261.0">
                            <children>
-                              <Label fx:id="emailError" />
+                              <Label fx:id="emailError" textFill="RED" />
                            </children></VBox>
                      </children>
                   </HBox>
