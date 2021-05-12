@@ -113,6 +113,8 @@ public class RegistrarViviendaController implements Initializable {
     private Button registrarBoton;
     private static String vieneDe;
     private String direccion;
+    @FXML
+    private Button registrarYPublicarBoton;
 
     /**
      * Initializes the controller class.
@@ -134,6 +136,7 @@ public class RegistrarViviendaController implements Initializable {
                 .or(Bindings.isNull(ComprarAlquilar.getSelectionModel().selectedItemProperty()));
 
         registrarBoton.disableProperty().bind(sePuedeBuscar);
+        registrarYPublicarBoton.disableProperty().bind(sePuedeBuscar);
 
         //Los field numericos no aceptan otra cosa que no numeros sean
         codigoField.textProperty().addListener(new ChangeListener<String>() {
@@ -400,5 +403,92 @@ public class RegistrarViviendaController implements Initializable {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @FXML
+    private void registrarYPublicar(ActionEvent event) throws IOException {
+        int numero = FachadaBD.numeroViviendas() + 1;
+        String id = "vivienda" + numero;
+        int precio = Integer.parseInt(precioField.getText());
+        int baños = Integer.parseInt(bañosField.getText());
+        int habitaciones = Integer.parseInt(habitacionesField.getText());
+        int piso = Integer.parseInt(habitacionesField.getText());
+        int codigo = Integer.parseInt(codigoField.getText());
+
+        if (ComprarAlquilar.getSelectionModel().selectedItemProperty().getValue().equals("Vender")) {
+            alquilerOVenta = 1;
+        } else {
+            alquilerOVenta = 2;
+        }
+
+        if (TipoVivienda.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {
+            tipo = 2;
+        } else {
+            tipo = 1;
+        }
+
+        if (botonSupermercado.isSelected()) {
+            supermercado = 1;
+        }
+        if (BotonTransportePublico.isSelected()) {
+            transportePublico = 1;
+        }
+        if (botonEstanco.isSelected()) {
+            estanco = 1;
+        }
+        if (botonGimnasio.isSelected()) {
+            gimnasio = 1;
+        }
+        if (botonCentroComercial.isSelected()) {
+            centroComercial = 1;
+        }
+        if (botonFarmacia.isSelected()) {
+            farmacia = 1;
+        }
+        if (botonBanco.isSelected()) {
+            banco = 1;
+        }
+
+        //codigo para pasar las fotos añadidas al array
+        //direccion gabriela C:\\\\Users\\\\gabi\\\\Desktop\\\\gabri\\\\SoftUpv\\\\src\\\\trobify\\\\images\\\\foto0.jpeg
+        if (FotosSource.isEmpty()) {
+            FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");
+        }
+
+        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, "ninguna", precio, username, tipo, baños, habitaciones,
+                descripcionField.getText(), piso, numeroField.getText(), codigo, 1);
+        Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
+
+        for (String f : FotosSource) {
+            fotos.add(new Fotografia(f, id));
+        }
+
+      Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta1.setHeaderText("¿Seguro que desea registrar y publicar esta vivienda?");
+        Optional<ButtonType> ok = alerta1.showAndWait();
+        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+            FachadaBD.registrarVivienda(vivi, servi, fotos);
+
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setHeaderText("Vivienda registrada y publicada correctamente.");
+            Optional<ButtonType> vale = alerta.showAndWait();
+            if (vale.isPresent() && vale.get().equals(ButtonType.OK)) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource(direccion));
+                st.close();
+                Stage stage = new Stage();
+                Scene scene = new Scene(fxmlLoader.load());
+                BuscadorController.pasarStage(stage);
+                InicioController.pasarStage(stage);
+                stage.setScene(scene);
+                stage.setTitle("Trobify");
+                stage.show();
+                event.consume();
+
+            }
+            alerta.close();
+        }
+        alerta1.close();
+    
     }
 }
