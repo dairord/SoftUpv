@@ -168,7 +168,7 @@ public class GestionViviendasController implements Initializable {
        eliminarFav.setAlignment(Pos.CENTER);
        eliminarFav.setPadding(new Insets(20,20,20,25));
        //boton de activar o desactivar
-       if(activo.equals("Activa")) textoBoton = "Despublicar vivienda";
+       if(activo.equals("Publicada")) textoBoton = "Despublicar vivienda";
        else textoBoton = "Publicar vivienda";
       
         Button botonGestionar = new Button();
@@ -196,8 +196,8 @@ public class GestionViviendasController implements Initializable {
                 String foto = FachadaBD.consultarFoto(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
-                activo = "Activa";
-                if(vivi.getActivo() == 1) activo = "Desactivada";
+                activo = "Publicada";
+                if(vivi.getActivo() == 1) activo = "Despublicada";
                 this.listaViviendas.getChildren().add(crearMiniatura(idBoton, foto, calle, precio, activo));
                 
             } catch (FileNotFoundException ex) {
@@ -208,14 +208,13 @@ public class GestionViviendasController implements Initializable {
 
     private void alerta(String botonGestionar){
     Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
-    String texto = "activar";
+    String texto = "publicar";
     Vivienda vivi = FachadaBD.getVivienda(botonGestionar);
-    if(vivi.getActivo()==0) texto = "desactivar";
-   
+    if(vivi.getActivo()==0) texto = "despublicar";
     alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
     Optional<ButtonType> ok = alerta.showAndWait();
     if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
-    if(texto.equals("desactivar")) FachadaBD.desactivarVivienda(botonGestionar);
+    if(texto.equals("despublicar")) FachadaBD.desactivarVivienda(botonGestionar);
     
     else FachadaBD.activarVivienda(botonGestionar);
     ordenCambiado(null);

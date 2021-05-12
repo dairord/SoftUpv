@@ -456,7 +456,7 @@ public class FichaViviendaController implements Initializable {
     
     else FachadaBD.activarVivienda(id);
     listaFotos.clear();
-    this.imageList.getChildren();
+    this.imageList.getChildren().clear();
    
     initialize(null,null);
     
