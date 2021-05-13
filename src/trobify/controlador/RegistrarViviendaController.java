@@ -208,6 +208,7 @@ public class RegistrarViviendaController implements Initializable {
         st.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
+        InicioController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
@@ -491,4 +492,6 @@ public class RegistrarViviendaController implements Initializable {
         alerta1.close();
     
     }
+    
+   
 }

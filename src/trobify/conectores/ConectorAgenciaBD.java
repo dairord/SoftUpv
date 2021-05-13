@@ -22,28 +22,15 @@ public class ConectorAgenciaBD {
     private static Conectar con = new Conectar();
    
     public static boolean contraseñaCorrecta(String codigo, String contra){
-         try {
-           Statement stm = con.getConnection().createStatement();
-             ResultSet rs = stm.executeQuery ("select codigo from agencia where codigo = '"
-             + codigo + " ' and contraseña = '" + contra + " '");
-            if (rs.first())   {
-                System.out.println("funciona");
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+        String sql = "select codigo from agencia where codigo = '"
+             + codigo + " ' and contraseña = '" + contra + " '";
+        return Plantilla.consultaBoolean(sql);
     }
     
    public static void guardarAgente(Agente a){
-       try {
-         Statement stm = con.getConnection().createStatement();
-                stm.executeUpdate("INSERT INTO `agente`(`username`, `agencia`) VALUES ('"
-                        + a.getUsername() +"','" + a.getAgencia() + "')");   
-         
-         } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      String sql = "INSERT INTO `agente`(`username`, `agencia`) VALUES ('"
+                        + a.getUsername() +"','" + a.getAgencia() + "')";
+      Plantilla.consultaVoid(sql);
+              
    }
 }

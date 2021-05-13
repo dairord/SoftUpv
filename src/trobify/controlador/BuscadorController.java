@@ -143,6 +143,8 @@ public class BuscadorController implements Initializable {
     private Label agente;
     @FXML
     private Button registrarV;
+    @FXML
+    private Button misViviBoton;
 
     /**
      * Initializes the controller class.
@@ -182,6 +184,7 @@ public class BuscadorController implements Initializable {
             notificaciones.setVisible(false);
             botonGuardarFiltros.setVisible(false);
             registrarV.setVisible(false);
+            misViviBoton.setVisible(false);
         }
 
     } //fin sesion iniciada
