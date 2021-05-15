@@ -65,7 +65,6 @@ public class Plantilla {
     }
      
    public static ResultSet soloConsulta (String sql){
-        
          try {
             Statement stm = con.getConnection().createStatement();
            ResultSet rs = stm.executeQuery(sql);

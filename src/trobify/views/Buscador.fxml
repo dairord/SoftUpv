@@ -87,7 +87,7 @@
                         <Insets right="35.0" />
                      </HBox.margin>
                      <graphic>
-                        <ImageView fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
+                        <ImageView fx:id="fotoNotificacion" fitHeight="41.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
                            <image>
                               <Image url="@../images/notificacion.jpg" />
                            </image>

@@ -7,6 +7,8 @@ package trobify.controlador;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -35,6 +37,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -92,6 +96,8 @@ public class InicioController implements Initializable {
     private Button notificaciones;
     @FXML
     private HBox iniciado;
+    @FXML
+    private ImageView fotoNotificacion;
     /**
      * Initializes the controller class.
      */
@@ -150,6 +156,15 @@ public class InicioController implements Initializable {
      
     }
    
+     private void hayNotis(){
+        //falta un if con un boolean
+         try {
+            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
+                 fotoNotificacion.setImage(image1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
       
     @FXML
     private void inicia(ActionEvent event) throws IOException {

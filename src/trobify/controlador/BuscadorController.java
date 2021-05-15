@@ -45,6 +45,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -145,12 +146,16 @@ public class BuscadorController implements Initializable {
     private Button registrarV;
     @FXML
     private Button misViviBoton;
+    @FXML
+    private ImageView fotoNotificacion;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+       
+      hayNotis();
         //Crear una conexion
         con = new Conectar();
         //lista con las viviendas a mostrar
@@ -170,6 +175,16 @@ public class BuscadorController implements Initializable {
         geo();
     } //fin initialice
 
+    private void hayNotis(){
+        //falta un if con un boolean
+         try {
+            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
+                 fotoNotificacion.setImage(image1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void sesionIniciada() {
         //   System.out.println(username);
         //compobar si ha iniciado sesión

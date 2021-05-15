@@ -29,6 +29,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -59,6 +60,8 @@ public class GestionViviendasController implements Initializable {
     private ArrayList<String> misViviendas;
     private String activo;
     private String textoBoton;
+    @FXML
+    private ImageView fotoNotificacion;
    
     /**
      * Initializes the controller class.
@@ -84,6 +87,16 @@ public class GestionViviendasController implements Initializable {
             direccion = "/trobify/views/Buscador.fxml";
        else { //otros sitios de donde pueda venir
            }
+    }
+    
+     private void hayNotis(){
+        //falta un if con un boolean
+         try {
+            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
+                 fotoNotificacion.setImage(image1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void rellenoComboBox(){

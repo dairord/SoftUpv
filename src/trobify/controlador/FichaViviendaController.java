@@ -215,6 +215,8 @@ public class FichaViviendaController implements Initializable {
         else desOactBoton.setText("Publicar");
     }
     
+   
+     
     private void geo() {
         ciudad = FachadaBD.getVivienda(id);
         geolocalizacion();

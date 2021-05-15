@@ -9,6 +9,7 @@ import trobify.Conectar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import trobify.controlador.InicioController;
@@ -18,7 +19,7 @@ import trobify.logica.Usuario;
  *
  * @author davido747
  */
-public class ConectorUsuarioBD {
+public class ConectorUsuarioBD extends Conector{
     
     public static void añadirUsuario(Usuario u) {
         String sql = "INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
@@ -47,5 +48,35 @@ public class ConectorUsuarioBD {
     public static boolean usuarioCorrecto(String id, String contra) {
         String rs = "select id from usuario where id = '" + id + " ' and password = '" + contra + " '";
         return Plantilla.consultaBoolean(rs);
+    }
+
+    @Override
+    String prepararConsulta() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    void hacerConsulta() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    void utilizarConsulta(ResultSet rs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    String devolverString() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    int devolverInt() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    ArrayList<String> devolverLista() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

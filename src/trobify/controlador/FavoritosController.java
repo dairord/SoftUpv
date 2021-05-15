@@ -35,6 +35,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -68,6 +69,8 @@ public class FavoritosController implements Initializable {
     
    
     ArrayList<String> favList;
+    @FXML
+    private ImageView fotoNotificacion;
     
     
     
@@ -98,6 +101,15 @@ public class FavoritosController implements Initializable {
         
     }    
    
+     private void hayNotis(){
+        //falta un if con un boolean
+         try {
+            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
+                 fotoNotificacion.setImage(image1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int valoracionVivienda) throws FileNotFoundException{
@@ -261,5 +273,9 @@ public class FavoritosController implements Initializable {
     
     public static void deDondeViene (String donde){
          vieneDe = donde;
+    }
+
+    @FXML
+    private void notificaciones(ActionEvent event) {
     }
 }
