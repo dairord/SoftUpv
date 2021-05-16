@@ -56,9 +56,7 @@ public class RegistroAgenteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
       //sale el nombre del usuario
         usuario.setText(username);
-        
-     //conexion bd
-      con = new Conectar();
+
       
       //boton desactivado
        final BooleanBinding bb = Bindings.isEmpty(codigo.textProperty())

@@ -20,7 +20,7 @@ import trobify.controlador.InicioController;
  */
 public class Plantilla {
     
-    private static Conectar con = new Conectar();
+    private static Conectar con = Conectar.conexion();
     
     public static boolean consultaBoolean(String sql){
         try {

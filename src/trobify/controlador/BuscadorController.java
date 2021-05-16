@@ -154,10 +154,8 @@ public class BuscadorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-      hayNotis();
         //Crear una conexion
-        con = new Conectar();
+       
         //lista con las viviendas a mostrar
         viviendasList = new ArrayList();
 
@@ -175,16 +173,6 @@ public class BuscadorController implements Initializable {
         geo();
     } //fin initialice
 
-    private void hayNotis(){
-        //falta un if con un boolean
-         try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-                 fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     private void sesionIniciada() {
         //   System.out.println(username);
         //compobar si ha iniciado sesión
@@ -199,7 +187,6 @@ public class BuscadorController implements Initializable {
             notificaciones.setVisible(false);
             botonGuardarFiltros.setVisible(false);
             registrarV.setVisible(false);
-            misViviBoton.setVisible(false);
         }
 
     } //fin sesion iniciada
@@ -631,7 +618,6 @@ public class BuscadorController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
         FavoritosController.pasarUsuario(username);
-        FavoritosController.deDondeViene("buscador");
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -680,7 +666,6 @@ public class BuscadorController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
         RegistrarViviendaController.pasarUsuario(username);
-        RegistrarViviendaController.deDondeViene("buscador");
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -692,19 +677,7 @@ public class BuscadorController implements Initializable {
     }
 
     @FXML
-    private void misViviendas(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/GestionViviendas.fxml"));
-         GestionViviendasController.deDondeViene("buscador");
-         GestionViviendasController.pasarUsuario(username);
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            GestionViviendasController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
+    private void misViviendas(ActionEvent event) {
     }
 
 }// fin clase

@@ -21,7 +21,7 @@ import trobify.controlador.InicioController;
 public class Favoritos {
     String id, id_cliente;
     int valoracion;
-     private static Conectar con = new Conectar();
+   
 
     public Favoritos(String id, String id_cliente, int valoracion) {
         this.id = id;

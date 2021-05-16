@@ -14,20 +14,29 @@ import java.sql.SQLException;
  * @author davido747
  */
 public class Conectar {
+    private static Conectar con;
     private static Connection conn;
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
     private static final String password = "";
     private static final String url = "jdbc:mysql://localhost:3306/soft_db";
-    public Conectar() {
+    int i = 0;
+    protected Conectar() {
         conn = null;
         try {
         Class.forName(driver);
         conn = DriverManager.getConnection(url, user, password);
-        if(conn != null) {System.out.println("Conexion establecida!");}
+        if(conn != null) {System.out.println("Conexion establecida! " +i++);}
         }catch(ClassNotFoundException|SQLException e){
         System.out.println(e);
         }
+    }
+    
+    public static Conectar conexion(){
+        if (con == null){
+            con = new Conectar();
+        }
+        return con;
     }
 
 

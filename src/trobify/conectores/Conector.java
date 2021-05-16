@@ -20,7 +20,7 @@ import trobify.controlador.InicioController;
  */
 abstract class Conector {
    
-  private static Conectar con = new Conectar();
+  private static Conectar con = Conectar.conexion();
   
   abstract String prepararConsulta();
   abstract void hacerConsulta();

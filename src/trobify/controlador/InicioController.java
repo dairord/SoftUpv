@@ -7,8 +7,6 @@ package trobify.controlador;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -37,9 +35,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
@@ -57,7 +53,7 @@ public class InicioController implements Initializable {
     private Button iniciaBoton;
     @FXML
     private Hyperlink registrarse;
-   
+
     @FXML
     private TextField ciudadText;
     @FXML
@@ -71,17 +67,19 @@ public class InicioController implements Initializable {
     private static int alqOVen;
     private static boolean estaIniciado;
     private static String username;
-    
+
     //para la busqueda
     private String tipvivi;
     //base de datos
-    Conectar con;
+
     ResultSet rs;
-    
+
     @FXML
     private Label mensajeError;
     @FXML
     private Label nombreUsuario;
+    @FXML
+    private HBox iniciado;
     @FXML
     private Button misViviendasBoton;
     @FXML
@@ -95,46 +93,45 @@ public class InicioController implements Initializable {
     @FXML
     private Button notificaciones;
     @FXML
-    private HBox iniciado;
-    @FXML
     private ImageView fotoNotificacion;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
-    iniciado.setVisible(false);
-    //si está iniciado sesión
-    bienvenido();
-    
-   //tipos de viviendas gabri
-     ArrayList <String> tiposViviendas = new ArrayList <String> ();
-     tiposViviendas.add("Indiferente");
-     tiposViviendas.add("Piso");
-     tiposViviendas.add("Casa");
-   
-    ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
-    tipo.setItems(viviendas);
-    
-    //comprar alquilar o compartir gabri
-    
-     ArrayList <String> queHacer = new ArrayList <String> ();
-     queHacer.add("Comprar");
-     queHacer.add("Alquilar");
-   
-    ObservableList<String> caoc = FXCollections.observableList(queHacer);
-    queBuscas.setItems(caoc);
-      
-    //activar y desactivar boton buscar gabri
-        
-    final BooleanBinding sePuedeBuscar = Bindings.isEmpty(ciudadText.textProperty())
-               .or(Bindings.isNull(tipo.getSelectionModel().selectedItemProperty()))
-               .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()))
-                ;
-          buscarBoton.disableProperty().bind(sePuedeBuscar);
-          
-          /* Este es el codigo que hay que copiar para las consultas
+       
+
+        //si está iniciado sesión
+        if (estaIniciado) {
+            nombreUsuario.setText("Bienvenido " + username);
+            iniciaBoton.setVisible(false);
+            registrarse.setVisible(false);
+        }
+        //tipos de viviendas gabri
+        ArrayList<String> tiposViviendas = new ArrayList<String>();
+        tiposViviendas.add("Indiferente");
+        tiposViviendas.add("Piso");
+        tiposViviendas.add("Casa");
+
+        ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
+        tipo.setItems(viviendas);
+
+        //comprar alquilar o compartir gabri
+        ArrayList<String> queHacer = new ArrayList<String>();
+        queHacer.add("Comprar");
+        queHacer.add("Alquilar");
+
+        ObservableList<String> caoc = FXCollections.observableList(queHacer);
+        queBuscas.setItems(caoc);
+
+        //activar y desactivar boton buscar gabri
+        final BooleanBinding sePuedeBuscar = Bindings.isEmpty(ciudadText.textProperty())
+                .or(Bindings.isNull(tipo.getSelectionModel().selectedItemProperty()))
+                .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()));
+        buscarBoton.disableProperty().bind(sePuedeBuscar);
+
+        /* Este es el codigo que hay que copiar para las consultas
        //base de datos
     Conectar con = new Conectar();
       
@@ -152,160 +149,116 @@ public class InicioController implements Initializable {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-        */
-     
+         */
     }
-   
-     private void hayNotis(){
-        //falta un if con un boolean
-         try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-                 fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-      
+
     @FXML
     private void inicia(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
-         IniciarSesionController.deDondeViene("inicio");
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            IniciarSesionController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
-            
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/IniciarSesion.fxml"));
+        IniciarSesionController.deDondeViene("inicio");
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        IniciarSesionController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+
     }
 
-   
     @FXML
     private void buscar(ActionEvent event) throws IOException {
-     if(comprobaciones() && consulta()){
-        FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
-         BuscadorController.pasarUsuario(estaIniciado, username);
-         BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue(), alqOVen);
-         BuscadorController.pasarLocalizacion(ciudadText.getText());
-         s.close();
+        if (comprobaciones() && consulta()) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/trobify/views/Buscador.fxml"));
+            BuscadorController.pasarUsuario(estaIniciado, username);
+            BuscadorController.pasarFiltrosInicio(ciudadText.getText(), tipo.getSelectionModel().selectedItemProperty().getValue(), alqOVen);
+            BuscadorController.pasarLocalizacion(ciudadText.getText());
+            s.close();
             Stage stage = new Stage();
-             Scene scene = new Scene (fxmlLoader.load());
-             BuscadorController.pasarStage(stage);
-             stage.setScene(scene);
-             stage.setTitle("Buscar vivienda");
-             stage.show();
-             event.consume();
-         }
-     else mensajeError.setText("No existe ninguna vivienda con esas características");
+            Scene scene = new Scene(fxmlLoader.load());
+            BuscadorController.pasarStage(stage);
+            stage.setScene(scene);
+            stage.setTitle("Buscar vivienda");
+            stage.show();
+            event.consume();
+        } else {
+            mensajeError.setText("No existe ninguna vivienda con esas características");
+        }
     }
-    
-    public static void pasarStage(Stage m){
-         s = m;
-     }
-    
-    private boolean comprobaciones(){
-   //tipp
-        if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) tipvivi = " and tipo = 1";
-        else if(tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) tipvivi = " and tipo = 2";
-        else tipvivi = "";
-        System.out.println(tipvivi + "kk");
+
+    public static void pasarStage(Stage m) {
+        s = m;
+    }
+
+    private boolean comprobaciones() {
+        //tippS
+        if (tipo.getSelectionModel().selectedItemProperty().getValue().equals("Piso")) {
+            tipvivi = " and tipo = 1";
+        } else if (tipo.getSelectionModel().selectedItemProperty().getValue().equals("Casa")) {
+            tipvivi = " and tipo = 2";
+        } else {
+            tipvivi = "";
+        }
+        //System.out.println(tipvivi + "kk");
         //alquilar o vender
-       if(queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) alqOVen = 1;
-      else alqOVen = 2;
-       return true;
+        if (queBuscas.getSelectionModel().selectedItemProperty().getValue().equals("Comprar")) {
+            alqOVen = 1;
+        } else {
+            alqOVen = 2;
+        }
+        return true;
     }
-    
-    public boolean consulta(){
-    String ciu = ciudadText.getText();
-    return FachadaBD.consultaInicial(ciu, tipvivi, alqOVen);
+
+    public boolean consulta() {
+        String ciu = ciudadText.getText();
+        return FachadaBD.consultaInicial(ciu, tipvivi, alqOVen);
     }//fin consulta
- 
-    public static void pasarUsuario(boolean iniciado, String usuario){
-     estaIniciado = iniciado;
-     username = usuario;
-        
+
+    public static void pasarUsuario(boolean iniciado, String usuario) {
+        estaIniciado = iniciado;
+        username = usuario;
+
     }
- 
-     private void bienvenido(){
-     if(estaIniciado){
-        nombreUsuario.setText("Bienvenido "+ username);
-        iniciaBoton.setVisible(false);
-        registrarse.setVisible(false);
-        iniciado.setVisible(true);
+
+    private void bienvenido() {
+        if (estaIniciado) {
+            nombreUsuario.setText("Bienvenido " + username);
+            iniciaBoton.setVisible(false);
+            registrarse.setVisible(false);
+        }
     }
- }
 
     @FXML
     private void registrar(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarUsuario.fxml"));
-         RegistrarUsuarioController.deDondeViene("inicio");
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            RegistrarUsuarioController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
-    }
-
-    @FXML
-    private void misViviendas(ActionEvent event) throws IOException {
-         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/GestionViviendas.fxml"));
-         GestionViviendasController.deDondeViene("inicio");
-         GestionViviendasController.pasarUsuario(username);
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            GestionViviendasController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
-    }
-
-    @FXML
-    private void RegistrarViv(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
-        RegistrarViviendaController.pasarUsuario(username);
-        RegistrarViviendaController.deDondeViene("inicio");
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarUsuario.fxml"));
+        RegistrarUsuarioController.deDondeViene("inicio");
         s.close();
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
-        RegistrarViviendaController.pasarStage(stage);
+        RegistrarUsuarioController.pasarStage(stage);
         stage.setScene(scene);
-        stage.setTitle("Registrar vivienda");
+        stage.setTitle("Trobify");
         stage.show();
         event.consume();
     }
 
     @FXML
-    private void favBoton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
-         FavoritosController.deDondeViene("inicio");
-         FavoritosController.pasarUsuario(username);
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            FavoritosController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
+    private void misViviendas(ActionEvent event) {
     }
 
     @FXML
-    private void notifica(ActionEvent event) throws IOException {
-        //falta esto
+    private void RegistrarViv(ActionEvent event) {
     }
 
+    @FXML
+    private void favBoton(ActionEvent event) {
+    }
 
+    @FXML
+    private void notifica(ActionEvent event) {
+    }
 }

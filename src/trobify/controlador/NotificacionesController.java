@@ -24,6 +24,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import trobify.Conectar;
+import trobify.fachada.FachadaBD;
+import trobify.logica.Notificacion;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -41,62 +44,83 @@ public class NotificacionesController implements Initializable {
     ArrayList<String> favList;
     private static String notis;
     private static ObservableList listaNotis;
-    
+    // private static ArrayList<Notificacion> notificaciones;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       //con = new Conectar();
-       //lista();
-//       System.out.println(listaNotis.get(0));
-       lista.setItems(listaNotis);
-      // favList = new ArrayList(); 
-    }    
+        ArrayList<Notificacion> notificaciones = FachadaBD.getNotificacionPorUsuario(username);
+        gestorNotis(notificaciones);
+        lista.setItems(listaNotis);
+        // favList = new ArrayList(); 
+    }
+
+    private void gestorNotis(ArrayList<Notificacion> notifi) {
+        for (int i = 0; i < notifi.size(); i++) {
+            Vivienda viv = FachadaBD.getVivienda(notifi.get(i).getId_vivienda());
+            Notificacion noti = notifi.get(i);
+            String res;
+            switch (noti.getTipo()) {
+                
+                case 0:
+                    res = "La vivienda de la " +viv.getCalle() +"ya no se encuentra disponible.";
+                    listaNotis.add(res);
+                    break;
+                
+                case 1:
+                    int resto = Integer.parseInt(noti.getDesc()) - viv.getPrecio();
+                    res = "Has recibido una contraoferta de " +noti.getDesc() +"€ (" +resto +") para tu vivienda de la " +viv.getCalle();
+                    listaNotis.add(res);
+                    break;
+            }
+        }
+    }
 
     @FXML
     private void atras(ActionEvent event) throws IOException {
         st.close();
     }
-    
-     public static void pasarStage(Stage m){
-         st = m;  
-     }
-     
-     public static void pasarNotis(ArrayList<String> noti){
-         
-         
-         
-         listaNotis = FXCollections.observableList(noti);
-         
-     }
-     
-     public boolean consulta(){
-         Statement s;
+
+    public static void pasarStage(Stage m) {
+        st = m;
+    }
+
+    public static void pasarNotis(ArrayList<String> noti) {
+        listaNotis = FXCollections.observableList(noti);
+
+    }
+
+    public boolean consulta() {
+        Statement s;
         try {
             s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("SELECT * FROM `favoritos` WHERE `id_cliente` = '" + username + "' AND `id` IN (SELECT `id` FROM `vivienda` WHERE `activo` = 1)");
-            if (rs.first())   {
-               rs.beforeFirst();
+            ResultSet rs = s.executeQuery("SELECT * FROM `favoritos` WHERE `id_cliente` = '" + username + "' AND `id` IN (SELECT `id` FROM `vivienda` WHERE `activo` = 1)");
+            if (rs.first()) {
+                rs.beforeFirst();
                 while (rs.next()) {
-                   System.out.println("hay algo");
-                  //  favList.add("hola");
-               }
-             
-               return true;
-            } else{ 
+                    //System.out.println("hay algo");
+                    //  favList.add("hola");
+                }
+
+                return true;
+            } else {
                 return false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-         return false;
-     }
-     
-    public static void pasarUsuario(String u){
+        return false;
+    }
+
+    public static void pasarUsuario(String u) {
         username = u;
     }
-    
-    private void lista(){
-         for (int i = 0; i < favList.size(); ++i) {
-             consulta();
-         }
+
+    private void lista() {
+        for (int i = 0; i < favList.size(); ++i) {
+            consulta();
+        }
     }
+
+
+
 }

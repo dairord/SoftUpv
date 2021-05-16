@@ -23,7 +23,7 @@ public class FXMLPrincipalController implements Initializable {
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        System.out.println("Ñordo 2");
+        
         label.setText("¿Como  estamos?");
     }
     

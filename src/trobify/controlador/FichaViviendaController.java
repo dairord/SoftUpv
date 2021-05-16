@@ -11,10 +11,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -45,10 +47,11 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-import trobify.Conectar;
+//import trobify.Conectar;
 import static trobify.controlador.BuscadorController.location;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;
+import trobify.logica.Notificacion;
 //import trobify.logica.ConectorServiciosBD;
 //import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Servicios;
@@ -88,7 +91,7 @@ public class FichaViviendaController implements Initializable {
      * Initializes the controller class.
      */
 
-    Conectar con;
+    
     private static String id;
     Boolean estaEnFav;
     ArrayList<String> listaFotos;
@@ -102,7 +105,6 @@ public class FichaViviendaController implements Initializable {
     private URL googleMaps;
     private WebEngine engine;
     public static String location;
-    public static String activo;
 
     @FXML
     private Text precioVivienda;
@@ -111,12 +113,15 @@ public class FichaViviendaController implements Initializable {
     @FXML
     private HBox esPropietario;
     @FXML
-    private Button desOactBoton;
+    private TextField ofertaField;
+    @FXML
+    private HBox ofertaBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (username == null) {
             addFavoritos.setVisible(false);
+            ofertaBox.setVisible(false);
         }
 
         //solo deja editar y eliminar vivienda si es el propietario
@@ -174,7 +179,7 @@ public class FichaViviendaController implements Initializable {
                 ImageView fotoBoton = galeria(listaRecomendados.get(i));
                 botonRecomendacion.setGraphic(fotoBoton);
                 recomendados.getChildren().add(botonRecomendacion);
-                System.out.println(botonRecomendacion);
+                //System.out.println(botonRecomendacion);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -198,25 +203,16 @@ public class FichaViviendaController implements Initializable {
         engine.load(googleMaps.toExternalForm());
 
         //para saber de donde viene y volver atrás correctamente
-        if (deDondeViene.equals("favoritos")) 
+        if (deDondeViene.equals("favoritos")) {
             aDondeVa = "/trobify/views/Favoritos.fxml";
-        if(deDondeViene.equals("gestionVivienda")) 
-            aDondeVa = "/trobify/views/GestionViviendas.fxml";
-        else aDondeVa = "/trobify/views/Buscador.fxml";
+        } else {
+            aDondeVa = "/trobify/views/Buscador.fxml";
+        }
 
         geo();
-        
-       actiOdesacti();
     }
     
-    private void actiOdesacti(){
-        activo = FachadaBD.getActivo(id);
-        if(activo.equals("activo")) desOactBoton.setText("Despublicar");
-        else desOactBoton.setText("Publicar");
-    }
-    
-   
-     
+
     private void geo() {
         ciudad = FachadaBD.getVivienda(id);
         geolocalizacion();
@@ -271,7 +267,7 @@ public class FichaViviendaController implements Initializable {
                 if (newValue != Worker.State.SUCCEEDED) {
                     return;
                 }
-                System.out.println(id);
+                //System.out.println(id);
 
                 JSObject jsObject = (JSObject) engine.executeScript("window");
                 jsObject.call("mark", punto, null, desc);
@@ -392,7 +388,6 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
-        GestionViviendasController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
@@ -430,6 +425,19 @@ public class FichaViviendaController implements Initializable {
         stage.show();
     }
 
+    @FXML
+    private void desactivar(ActionEvent event) throws IOException {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setHeaderText("Seguro que quieres desactivar la vivienda?");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+            FachadaBD.desactivarVivienda(id);
+            volverAtras();
+        }
+        alerta.close();
+
+    }
+
     private void volverAtras() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(aDondeVa));
@@ -439,7 +447,6 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         BuscadorController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
-        GestionViviendasController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();
@@ -447,22 +454,19 @@ public class FichaViviendaController implements Initializable {
     }
 
     @FXML
-    private void desactivarOactivar(ActionEvent event) throws IOException {
-    Alert alerta = new Alert (Alert.AlertType.CONFIRMATION);
-    String texto = "activar";
-    if(activo.equals("activo")) texto = "desactivar";
-    alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
-    Optional<ButtonType> ok = alerta.showAndWait();
-    if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
-    if(texto.equals("desactivar")) FachadaBD.desactivarVivienda(id);
-    
-    else FachadaBD.activarVivienda(id);
-    listaFotos.clear();
-    this.imageList.getChildren().clear();
-   
-    initialize(null,null);
-    
-}   alerta.close();
+    private void enviarOferta(ActionEvent event) {
+        int precio = Integer.parseInt(ofertaField.getText());
+        if (precio >= precioBase){
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setHeaderText("Introduzca un valor inferior al precio original");
+            Optional<ButtonType> vale = alerta.showAndWait();
+            ofertaField.clear();
+        }
+        else{
+            Date now = new Date(System.currentTimeMillis());
+            Notificacion oferta = new Notificacion(id, username, ofertaField.getText(), now, 0, 1);
+            FachadaBD.añadirNotificacionNoID(oferta);                                   
+        }
     }
 
 }

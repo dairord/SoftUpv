@@ -4,9 +4,9 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="397.0" prefWidth="443.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.NotificacionesController">
+<AnchorPane id="AnchorPane" prefHeight="512.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.NotificacionesController">
    <children>
-      <ListView fx:id="lista" prefHeight="307.0" prefWidth="443.0" />
-      <Button layoutX="185.0" layoutY="334.0" mnemonicParsing="false" onAction="#atras" prefHeight="35.0" prefWidth="70.0" text="Atrás" />
+      <ListView fx:id="lista" prefHeight="444.0" prefWidth="674.0" />
+      <Button layoutX="302.0" layoutY="454.0" mnemonicParsing="false" onAction="#atras" prefHeight="35.0" prefWidth="70.0" text="Atrás" />
    </children>
 </AnchorPane>

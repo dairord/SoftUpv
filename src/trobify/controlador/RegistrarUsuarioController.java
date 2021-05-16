@@ -86,7 +86,7 @@ public class RegistrarUsuarioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      con = new Conectar();
+
     //ruta para volver atras
         if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";

@@ -17,10 +17,12 @@ import trobify.conectores.ConectorViviendaBD;
 import trobify.logica.Agente;
 import trobify.conectores.ConectorFiltrosBD;
 import trobify.conectores.ConectorFotosBD;
+import trobify.conectores.ConectorNotificacionBD;
 import trobify.conectores.ConectorUsuarioBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Filtros;
 import trobify.logica.Fotografia;
+import trobify.logica.Notificacion;
 import trobify.logica.Servicios;
 import trobify.logica.Usuario;
 import trobify.logica.Vivienda;
@@ -202,6 +204,31 @@ public class FachadaBD {
     public static String getActivo(String id){
        if( ConectorViviendaBD.getActivo(id) == 0) return "activo";
        else return "desactivo";
+    }
+    
+    public static Notificacion getNotificacion(int id){
+        return ConectorNotificacionBD.getNotificacion(id);
+    }
+    
+    public static ArrayList<Notificacion> getNotificacionPorUsuario(String id_usuario){
+        return ConectorNotificacionBD.getNotificacionPorUsuario(id_usuario);
+    }
+    
+    public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda){
+        return ConectorNotificacionBD.getNotificacionPorVivienda(id_vivienda);
+    }
+    
+    //Los 2 siguientes métodos hacen lo mismo y sobra 1 pero está para probar
+     public static void añadirNotificacion(Notificacion n) {
+         ConectorNotificacionBD.añadirNotificacion(n);
+     }
+    
+    public static void añadirNotificacionNoID(Notificacion n) {
+        ConectorNotificacionBD.añadirNotificacionNoID(n);
+    }
+    
+    public static void borrarNotificacion(int id) {
+        ConectorNotificacionBD.borrarNotificacion(id);
     }
    
 

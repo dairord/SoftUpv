@@ -20,10 +20,15 @@ import trobify.logica.Fotografia;
  * @author davido747
  */
 public class ConectorFotosBD {
+    public static Conectar con = Conectar.conexion();
     
     public static void añadirFotografia (Fotografia f) {
-        String sql = "INSERT INTO fotografia (id, id_vivienda) VALUES ('"+f.getId()+"', '"+f.getId_vivienda()+"')";
-        Plantilla.consultaVoid(sql);
+        try {
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("INSERT INTO fotografia (id, id_vivienda) VALUES ('"+f.getId()+"', '"+f.getId_vivienda()+"')");
+        } catch (SQLException ex) {
+            Logger.getLogger(ConectorFotosBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void añadirConjuntoFotos (ArrayList <Fotografia> fotos) {
@@ -33,9 +38,9 @@ public class ConectorFotosBD {
     }
     
       public static Fotografia fotografia(String id) {
-       String sql = "SELECT * FROM fotografia WHERE id_vivienda = '" + id + "'";
-          try {
-            ResultSet rsl = Plantilla.soloConsulta(sql);
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT * FROM fotografia WHERE id_vivienda = '" + id + "'");
             if (rsl.first()) {
                 Fotografia foto = new Fotografia(rsl.getNString("id"), rsl.getNString("id_vivienda"));
                 return foto;
