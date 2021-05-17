@@ -26,10 +26,17 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Button fx:id="registrarV" mnemonicParsing="false" onAction="#RegistrarViv" text="Registar Vivienda">
+                        <Button fx:id="registrarV" mnemonicParsing="false" onAction="#RegistrarViv">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: multiply;">
+                                 <image>
+                                    <Image url="@../images/añadirVivienda.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
                         <Button fx:id="favoritos" mnemonicParsing="false" onAction="#favBoton">
                            <HBox.margin>
