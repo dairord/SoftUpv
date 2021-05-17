@@ -134,7 +134,7 @@
       </HBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="94.0" prefWidth="1272.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="reportarErroreresBoton" mnemonicParsing="false" onAction="#reportarErrores" style="-fx-background-color: #cf5b5b;" text="Reportar erroreres" textFill="WHITE" textOverrun="CLIP" />
+            <Button fx:id="reportarErroreresBoton" mnemonicParsing="false" onAction="#reportarErrores" style="-fx-background-color: #cf5b5b;" text="Reportar errores" textFill="WHITE" textOverrun="CLIP" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
