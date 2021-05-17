@@ -7,6 +7,8 @@ package trobify.controlador;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -35,6 +37,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -100,14 +103,11 @@ public class InicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
 
         //si está iniciado sesión
-        if (estaIniciado) {
-            nombreUsuario.setText("Bienvenido " + username);
-            iniciaBoton.setVisible(false);
-            registrarse.setVisible(false);
-        }
+        iniciado.setVisible(false);
+        bienvenido();
+
         //tipos de viviendas gabri
         ArrayList<String> tiposViviendas = new ArrayList<String>();
         tiposViviendas.add("Indiferente");
@@ -131,25 +131,16 @@ public class InicioController implements Initializable {
                 .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()));
         buscarBoton.disableProperty().bind(sePuedeBuscar);
 
-        /* Este es el codigo que hay que copiar para las consultas
-       //base de datos
-    Conectar con = new Conectar();
-      
-      //CODIGO PARA LAS CONSULTAs  
-       Statement s;
+    }
+
+    private void hayNotis() {
+        //falta un if con un boolean
         try {
-            s = con.getConnection().createStatement();
-             ResultSet rs = s.executeQuery ("select usuario from usuario");
-             while (rs.next())
-        {
-                   System.out.println (rs.getString("usuario"));
+            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
+            fotoNotificacion.setImage(image1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-         */
     }
 
     @FXML
@@ -228,6 +219,7 @@ public class InicioController implements Initializable {
             nombreUsuario.setText("Bienvenido " + username);
             iniciaBoton.setVisible(false);
             registrarse.setVisible(false);
+            iniciado.setVisible(true);
         }
     }
 
@@ -247,15 +239,51 @@ public class InicioController implements Initializable {
     }
 
     @FXML
-    private void misViviendas(ActionEvent event) {
+    private void misViviendas(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/GestionViviendas.fxml"));
+        GestionViviendasController.deDondeViene("inicio");
+        GestionViviendasController.pasarUsuario(username);
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        GestionViviendasController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 
     @FXML
-    private void RegistrarViv(ActionEvent event) {
+    private void RegistrarViv(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/RegistrarVivienda.fxml"));
+        RegistrarViviendaController.pasarUsuario(username);
+        RegistrarViviendaController.deDondeViene("inicio");
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        RegistrarViviendaController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Registrar vivienda");
+        stage.show();
+        event.consume();
     }
 
     @FXML
-    private void favBoton(ActionEvent event) {
+    private void favBoton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
+        FavoritosController.deDondeViene("inicio");
+        FavoritosController.pasarUsuario(username);
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        FavoritosController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 
     @FXML

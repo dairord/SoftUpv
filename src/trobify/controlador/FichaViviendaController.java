@@ -91,7 +91,6 @@ public class FichaViviendaController implements Initializable {
      * Initializes the controller class.
      */
 
-    
     private static String id;
     Boolean estaEnFav;
     ArrayList<String> listaFotos;
@@ -116,6 +115,9 @@ public class FichaViviendaController implements Initializable {
     private TextField ofertaField;
     @FXML
     private HBox ofertaBox;
+    public static String activo;
+    @FXML
+    private Button desOactBoton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -173,7 +175,7 @@ public class FichaViviendaController implements Initializable {
             Button botonRecomendacion = new Button();
             botonRecomendacion.setPadding(new Insets(0, 0, 0, 0));
             botonRecomendacion.setId(FachadaBD.consultarIdVivienda(listaRecomendados.get(i)));
-            
+
             configurarBoton(botonRecomendacion);
             try {
                 ImageView fotoBoton = galeria(listaRecomendados.get(i));
@@ -205,13 +207,17 @@ public class FichaViviendaController implements Initializable {
         //para saber de donde viene y volver atrás correctamente
         if (deDondeViene.equals("favoritos")) {
             aDondeVa = "/trobify/views/Favoritos.fxml";
+        }
+        if (deDondeViene.equals("gestionVivienda")) {
+            aDondeVa = "/trobify/views/GestionViviendas.fxml";
         } else {
             aDondeVa = "/trobify/views/Buscador.fxml";
         }
 
         geo();
+        
+        actiOdesacti();
     }
-    
 
     private void geo() {
         ciudad = FachadaBD.getVivienda(id);
@@ -312,15 +318,29 @@ public class FichaViviendaController implements Initializable {
 
     public void consultarServicios(String id) {
         Servicios servi = FachadaBD.getServicios(id);
-        if(servi.getBanco() ==1) listaServicios.add("Banco");
-      if(servi.getSupermercado() ==1) listaServicios.add("Supermercado");
-      if(servi.getTransporte_publico() ==1) listaServicios.add("Transporte publico");
-      if(servi.getGimnasio() ==1) listaServicios.add("Gimnasio");
-      if(servi.getEstanco() ==1) listaServicios.add("Estanco");
-      if(servi.getCentro_comercial() ==1) listaServicios.add("Centro comercial");
-      if(servi.getFarmacia() ==1) listaServicios.add("Farmacia");
-      ObservableList servicios = FXCollections.observableList(listaServicios);     
-      this.serviciosCerca.setItems(servicios);  
+        if (servi.getBanco() == 1) {
+            listaServicios.add("Banco");
+        }
+        if (servi.getSupermercado() == 1) {
+            listaServicios.add("Supermercado");
+        }
+        if (servi.getTransporte_publico() == 1) {
+            listaServicios.add("Transporte publico");
+        }
+        if (servi.getGimnasio() == 1) {
+            listaServicios.add("Gimnasio");
+        }
+        if (servi.getEstanco() == 1) {
+            listaServicios.add("Estanco");
+        }
+        if (servi.getCentro_comercial() == 1) {
+            listaServicios.add("Centro comercial");
+        }
+        if (servi.getFarmacia() == 1) {
+            listaServicios.add("Farmacia");
+        }
+        ObservableList servicios = FXCollections.observableList(listaServicios);
+        this.serviciosCerca.setItems(servicios);
     }
 
     //Muestra botones de favoritos
@@ -371,7 +391,7 @@ public class FichaViviendaController implements Initializable {
     private void editarValoracion(ActionEvent event) {
         if (this.valoracion == -1 || this.valoracion == 0) {
             this.valoracion = Integer.parseInt(valorValoracion.getText());
-             FachadaBD.editarValoracion(valoracion, id, username);
+            FachadaBD.editarValoracion(valoracion, id, username);
         } else {
             this.valoracion = -1;
         }
@@ -388,6 +408,7 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
+        GestionViviendasController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
         stage.setScene(scene);
         stage.setTitle("Trobify");
@@ -425,19 +446,6 @@ public class FichaViviendaController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    private void desactivar(ActionEvent event) throws IOException {
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setHeaderText("Seguro que quieres desactivar la vivienda?");
-        Optional<ButtonType> ok = alerta.showAndWait();
-        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            FachadaBD.desactivarVivienda(id);
-            volverAtras();
-        }
-        alerta.close();
-
-    }
-
     private void volverAtras() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(aDondeVa));
@@ -456,16 +464,48 @@ public class FichaViviendaController implements Initializable {
     @FXML
     private void enviarOferta(ActionEvent event) {
         int precio = Integer.parseInt(ofertaField.getText());
-        if (precio >= precioBase){
+        if (precio >= precioBase) {
             Alert alerta = new Alert(Alert.AlertType.ERROR);
             alerta.setHeaderText("Introduzca un valor inferior al precio original");
             Optional<ButtonType> vale = alerta.showAndWait();
             ofertaField.clear();
-        }
-        else{
+        } else {
             Date now = new Date(System.currentTimeMillis());
             Notificacion oferta = new Notificacion(id, username, ofertaField.getText(), now, 0, 1);
-            FachadaBD.añadirNotificacionNoID(oferta);                                   
+            FachadaBD.añadirNotificacionNoID(oferta);
+        }
+    }
+
+    @FXML
+    private void desactivarOactivar(ActionEvent event) throws IOException {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        String texto = "activar";
+        if (activo.equals("activo")) {
+            texto = "desactivar";
+        }
+        alerta.setHeaderText("Seguro que quieres " + texto + " esta vivienda?");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+            if (texto.equals("desactivar")) {
+                FachadaBD.desactivarVivienda(id);
+            } else {
+                FachadaBD.activarVivienda(id);
+            }
+            listaFotos.clear();
+            this.imageList.getChildren().clear();
+
+            initialize(null, null);
+
+        }
+        alerta.close();
+    }
+
+    private void actiOdesacti() {
+        activo = FachadaBD.getActivo(id);
+        if (activo.equals("activo")) {
+            desOactBoton.setText("Despublicar");
+        } else {
+            desOactBoton.setText("Publicar");
         }
     }
 
