@@ -18,6 +18,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -97,6 +99,8 @@ public class InicioController implements Initializable {
     private Button notificaciones;
     @FXML
     private ImageView fotoNotificacion;
+    @FXML
+    private Button reportarErroreresBoton;
 
     /**
      * Initializes the controller class.
@@ -288,5 +292,20 @@ public class InicioController implements Initializable {
 
     @FXML
     private void notifica(ActionEvent event) {
+    }
+
+    @FXML
+    private void reportarErrores(ActionEvent event) {
+        
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Reportar errores");
+        dialog.setHeaderText("Indique brevemente los errores encontrados");
+        
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            System.out.println(result.get());
+            //Aqui hay que conectar con la base de datos
+        }
+    
     }
 }
