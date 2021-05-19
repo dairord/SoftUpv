@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import trobify.Conectar;
 import trobify.controlador.InicioController;
 
 /**
@@ -19,44 +18,33 @@ import trobify.controlador.InicioController;
  * @author gabri
  */
 abstract class Conector {
-   
-  private static Conectar con = Conectar.conexion();
   
-  abstract String prepararConsulta();
-  abstract void hacerConsulta();
-  abstract void utilizarConsulta(ResultSet rs);
-  abstract String devolverString();
-  abstract int devolverInt();
-  abstract ArrayList<String> devolverLista();
-  
-  public final void consulta(){
-      String sql = prepararConsulta();
-      ResultSet rs = soloConsulta(sql);
-      utilizarConsulta(rs);
-      devolverBoolean(rs);
-  }
-
-
- public static ResultSet soloConsulta (String sql){
-         try {
+    public static Conectar con = Conectar.conexion();
+    
+    final public static boolean consultaBoolean(String sql){
+        try {
             Statement stm = con.getConnection().createStatement();
-           ResultSet rs = stm.executeQuery(sql);
-            return rs;
-     }  catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     return null;
-}
- 
- public static Boolean devolverBoolean(ResultSet rs){
-  try {
+            ResultSet rs = stm.executeQuery(sql);
             if (rs.first()) {
                 return true;
             }
- } catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
- return false;
- }
- 
+
+        return false;
+    }
+    
+    final public static void consultaVoid(String sql){
+         try {
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate(sql);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+   
 }//fin clase

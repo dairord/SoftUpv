@@ -6,7 +6,6 @@
 package trobify.conectores;
 
 import java.sql.Date;
-import trobify.Conectar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,20 +19,12 @@ import trobify.logica.Mensaje;
  *
  * @author jagon
  */
-public class ConectorMensajeBD {
+public class ConectorMensajeBD extends Conector{
     
-    public static Conectar con = Conectar.conexion();
-    
-    public static void añadirMensaje(Mensaje m) {
-              
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `mensajes`(`id`, `cuerpo`) VALUES ('"
-                    + m.getId() + "','" + m.getCuerpo() + "')");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+   public static void añadirMensaje(Mensaje m) {
+      String sql = "INSERT INTO `mensajes`(`id`, `cuerpo`) VALUES ('"
+                    + m.getId() + "','" + m.getCuerpo() + "')";
+      consultaVoid(sql);
     }
     
 }

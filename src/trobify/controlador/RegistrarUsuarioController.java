@@ -31,7 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.logica.Usuario;
 import trobify.conectores.ConectorUsuarioBD;
 import trobify.fachada.FachadaBD;

@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 
 /**

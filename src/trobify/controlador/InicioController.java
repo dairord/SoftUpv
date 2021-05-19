@@ -45,7 +45,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javax.swing.JFrame;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Mensaje;
 

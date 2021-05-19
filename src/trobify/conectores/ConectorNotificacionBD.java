@@ -6,7 +6,6 @@
 package trobify.conectores;
 
 import java.sql.Date;
-import trobify.Conectar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,9 +19,7 @@ import trobify.logica.Notificacion;
  *
  * @author dairo
  */
-public class ConectorNotificacionBD {
-
-    public static Conectar con = Conectar.conexion();
+public class ConectorNotificacionBD extends Conector{
 
     public static Notificacion getNotificacion(int id) {
         try {
@@ -86,40 +83,22 @@ public class ConectorNotificacionBD {
     }
 
     public static void añadirNotificacion(Notificacion n) {
-              
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `notificaciones`(`id`, `id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
+      String sql = "INSERT INTO `notificaciones`(`id`, `id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
                     + n.getId() + "','" + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
-                    + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')";
+      consultaVoid(sql);
     }
     
     public static void añadirNotificacionNoID(Notificacion n) {
-        try {
-            
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `notificaciones`(`id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
+       String sql = "INSERT INTO `notificaciones`(`id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
                      + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
-                    + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')";
+       consultaVoid(sql);
     }
 
     public static void borrarNotificacion(int id) {
         String sql = "DELETE FROM notificaciones WHERE id = '" + id + "'";
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate(sql);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        consultaVoid(sql);
     }
     
     

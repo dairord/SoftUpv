@@ -24,7 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Filtros;
 

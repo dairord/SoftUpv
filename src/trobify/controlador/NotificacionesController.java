@@ -23,7 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Notificacion;
 import trobify.logica.Vivienda;

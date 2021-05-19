@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import trobify.Conectar;
 import trobify.controlador.InicioController;
 import trobify.logica.Favoritos;
 import trobify.logica.Historial;
@@ -24,36 +23,8 @@ import trobify.logica.Vivienda;
  *
  * @author gabri
  */
-public class ConectorViviendaBD {
-
-    public static Conectar con = Conectar.conexion();
-    
-    private static boolean consultaBoolean(String sql){
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            if (rs.first()) {
-                return true;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
-    }
-    
-    private static void consultaVoid(String sql){
-         try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate(sql);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private static ArrayList<String> consultaLista(String sql){
+public class ConectorViviendaBD extends Conector{
+     private static ArrayList<String> consultaLista(String sql){
          ArrayList<String> listaFotos = new ArrayList();
         try {
             Statement stm = con.getConnection().createStatement();
@@ -170,7 +141,7 @@ public class ConectorViviendaBD {
 
      public static ArrayList<String> viviendasDelUsuario(String username, String orden) {
         String sql = "SELECT id FROM vivienda WHERE id_propietario = '" + username + "' " + orden;
-        return Plantilla.consultaLista(sql);
+        return consultaLista(sql);
     }
      
       public static ArrayList<String> historialDelUsuario(String username) {
@@ -448,7 +419,7 @@ public class ConectorViviendaBD {
         Vivienda vivi = getVivienda(id);
         vivi.setActivo(0);
       String sql = "UPDATE `vivienda` SET `activo`='" + vivi.getActivo() + "' WHERE id = '" + vivi.getId() + "'";
-      Plantilla.consultaVoid(sql);
+      consultaVoid(sql);
     }
    
      public static int getActivo(String id){

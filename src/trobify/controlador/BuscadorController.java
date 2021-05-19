@@ -55,7 +55,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-import trobify.Conectar;
+import trobify.conectores.Conectar;
 import trobify.logica.Filtros;
 import trobify.logica.Vivienda;
 

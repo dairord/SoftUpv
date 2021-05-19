@@ -5,7 +5,6 @@
  */
 package trobify.conectores;
 
-import trobify.Conectar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,35 +17,13 @@ import trobify.logica.Usuario;
  *
  * @author davido747
  */
-public class ConectorUsuarioBD {
+public class ConectorUsuarioBD extends Conector{
 
-    public static Conectar con = Conectar.conexion();
-
-    public static boolean consultaBoolean(String sql) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            if (rs.first()) {
-                return true;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
-    }
-
-    public static void añadirUsuario(Usuario u) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            stm.executeUpdate("INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
+     public static void añadirUsuario(Usuario u) {
+       String sql = "INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
                     + u.getId() + "','" + u.getDni() + "','" + u.getPassword() + "','" + u.getNombre() + "','"
-                    + u.getApellidos() + "','" + u.getEmail() + "')");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    + u.getApellidos() + "','" + u.getEmail() + "')";
+         consultaVoid(sql);
     } //fin añadir usuario. 
 
     public static Usuario getUsuario(String id) {
@@ -70,4 +47,6 @@ public class ConectorUsuarioBD {
         String rs = "select id from usuario where id = '" + id + " ' and password = '" + contra + " '";
         return consultaBoolean(rs);
     }
+    
+   
 }
