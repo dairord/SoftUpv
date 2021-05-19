@@ -5,6 +5,7 @@
  */
 package trobify.controlador;
 
+
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.FileInputStream;
@@ -307,5 +308,23 @@ public class InicioController implements Initializable {
             //Aqui hay que conectar con la base de datos
         }
     
+    }
+
+    @FXML
+    private void historial(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
+         HistorialController.pasarUsuario(username);
+         HistorialController.deDondeViene("inicio");
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            HistorialController.pasarStage(stage);
+            
+            //añadir todos los controller a los que podria ir
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();  
     }
 }

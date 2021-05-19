@@ -140,13 +140,13 @@ public class BuscadorController implements Initializable {
     @FXML
     private Button notificaciones;
     @FXML
-    private Label agente;
-    @FXML
     private Button registrarV;
     @FXML
     private Button misViviBoton;
     @FXML
     private ImageView fotoNotificacion;
+    @FXML
+    private Button historialBoton;
 
     /**
      * Initializes the controller class.
@@ -180,6 +180,7 @@ public class BuscadorController implements Initializable {
             IniciarSesionBoton.setVisible(false);
             RegistrarseBoton.setVisible(false);
         } else {
+            historialBoton.setVisible(false);
             nombreUsuario.setText("usuario");
             favoritos.setVisible(false);
             mensajes.setVisible(false);
@@ -704,6 +705,24 @@ public class BuscadorController implements Initializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void historial(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
+         HistorialController.pasarUsuario(username);
+         HistorialController.deDondeViene("buscador");
+         s.close();
+            Stage stage = new Stage();
+            Scene scene = new Scene (fxmlLoader.load());
+            HistorialController.pasarStage(stage);
+            
+            //añadir todos los controller a los que podria ir
+            stage.setScene(scene);
+            stage.setTitle("Trobify");
+            stage.show();
+            event.consume();  
     }
 
 }// fin clase

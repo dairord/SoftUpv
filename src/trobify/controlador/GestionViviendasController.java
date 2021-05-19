@@ -60,7 +60,6 @@ public class GestionViviendasController implements Initializable {
     private ArrayList<String> misViviendas;
     private String activo;
     private String textoBoton;
-    @FXML
     private ImageView fotoNotificacion;
    
     /**
@@ -89,16 +88,7 @@ public class GestionViviendasController implements Initializable {
            }
     }
     
-     private void hayNotis(){
-        //falta un if con un boolean
-         try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-                 fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+   
     private void rellenoComboBox(){
      ArrayList<String> orden = new ArrayList();
         orden.add("Relevancia");
@@ -276,25 +266,5 @@ public class GestionViviendasController implements Initializable {
      public static void deDondeViene (String donde){
          vieneDe = donde;
     }
-
-    @FXML
-    private void favoritos(ActionEvent event) throws IOException {
-          FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Favoritos.fxml"));
-         FavoritosController.deDondeViene("gestionVivienda");
-         FavoritosController.pasarUsuario(username);
-         st.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            FavoritosController.pasarStage(stage);
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();
-    }
-
-    @FXML
-    private void notifica(ActionEvent event) {
-    }
-            
+         
 }

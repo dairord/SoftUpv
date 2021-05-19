@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import trobify.Conectar;
 import trobify.controlador.InicioController;
 import trobify.logica.Favoritos;
+import trobify.logica.Historial;
 import trobify.logica.Vivienda;
 
 /**
@@ -171,6 +172,25 @@ public class ConectorViviendaBD {
         String sql = "SELECT id FROM vivienda WHERE id_propietario = '" + username + "' " + orden;
         return Plantilla.consultaLista(sql);
     }
+     
+      public static ArrayList<String> historialDelUsuario(String username) {
+        String sql = "SELECT id_vivienda FROM historial WHERE username = '" + username + "' ";
+          ArrayList<String> lista = new ArrayList();
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery(sql);
+            if (rsl.isBeforeFirst()) {
+                
+                while (rsl.next()) {
+                    lista.add(rsl.getString("id_vivienda"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+      
     public static ArrayList<String> crearListaFotos(String id) {
        String sql = "SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'";
        return consultaLista(sql);
@@ -436,4 +456,8 @@ public class ConectorViviendaBD {
          return vivi.getActivo();
      }
    
+      public static void añadirAHistorial(Historial h) {
+        String sql = "INSERT INTO `historial`(`id_vivienda`, `username`) VALUES ('"+ h.getId_vivienda() +"','"+ h.getUsername() +"')";
+        consultaVoid(sql);
+    }
 } //fin clase

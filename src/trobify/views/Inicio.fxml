@@ -20,7 +20,19 @@
                <children>
                   <HBox fx:id="iniciado" alignment="CENTER" prefHeight="49.0" prefWidth="943.0">
                      <children>
-                        <Button fx:id="misViviendasBoton" mnemonicParsing="false" onAction="#misViviendas" text="Mis viviendas" />
+                        <Button fx:id="misViviendasBoton" mnemonicParsing="false" onAction="#misViviendas" text="Mis viviendas">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></Button>
+                        <Button mnemonicParsing="false" onAction="#historial">
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/historial.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <Label fx:id="agente" prefHeight="30.0" prefWidth="18.0" textFill="#0a06f5">
                            <font>
                               <Font size="20.0" />

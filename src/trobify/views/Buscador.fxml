@@ -48,11 +48,18 @@
             <HBox alignment="CENTER" prefHeight="41.0" prefWidth="617.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="misViviBoton" mnemonicParsing="false" onAction="#misViviendas" text="Mis viviendas" />
-                  <Label fx:id="agente" prefHeight="30.0" prefWidth="33.0" textFill="#0a06f5">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
+                  <Button fx:id="historialBoton" mnemonicParsing="false" onAction="#historial">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/historial.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </Button>
                   <Button fx:id="registrarV" mnemonicParsing="false" onAction="#RegistrarViv" prefHeight="48.0" prefWidth="59.0">
                      <HBox.margin>
                         <Insets />

@@ -22,6 +22,7 @@ import trobify.conectores.ConectorUsuarioBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Filtros;
 import trobify.logica.Fotografia;
+import trobify.logica.Historial;
 import trobify.logica.Notificacion;
 import trobify.logica.Servicios;
 import trobify.logica.Usuario;
@@ -198,6 +199,10 @@ public class FachadaBD {
     public static ArrayList<String> viviendasDelUsusario(String username, String orden) {
         return ConectorViviendaBD.viviendasDelUsuario(username, orden);
     }
+    
+     public static ArrayList<String> historialDelUsusario(String username) {
+        return ConectorViviendaBD.historialDelUsuario(username);
+    }
     public static void activarVivienda(String id){
         ConectorViviendaBD.activarVivienda(id);
     }
@@ -231,5 +236,8 @@ public class FachadaBD {
         ConectorNotificacionBD.borrarNotificacion(id);
     }
    
+    public static void añadirAHistorial (Historial h){
+        ConectorViviendaBD.añadirAHistorial(h);
+    }
 
 }

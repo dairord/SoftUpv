@@ -51,6 +51,7 @@ import netscape.javascript.JSObject;
 import static trobify.controlador.BuscadorController.location;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;
+import trobify.logica.Historial;
 import trobify.logica.Notificacion;
 //import trobify.logica.ConectorServiciosBD;
 //import trobify.logica.ConectorViviendaBD;
@@ -121,6 +122,7 @@ public class FichaViviendaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        historial();
         if (username == null) {
             addFavoritos.setVisible(false);
             ofertaBox.setVisible(false);
@@ -210,13 +212,24 @@ public class FichaViviendaController implements Initializable {
         }
         if (deDondeViene.equals("gestionVivienda")) {
             aDondeVa = "/trobify/views/GestionViviendas.fxml";
-        } else {
+        } 
+        if (deDondeViene.equals("historial")) {
+            aDondeVa = "/trobify/views/Historial.fxml";
+        } 
+        else {
             aDondeVa = "/trobify/views/Buscador.fxml";
         }
 
         geo();
         
         actiOdesacti();
+    }
+    
+    private void historial(){
+       if(username != null){
+        Historial h = new Historial (1, id, username);
+        FachadaBD.añadirAHistorial(h);
+       }
     }
 
     private void geo() {
@@ -408,6 +421,7 @@ public class FichaViviendaController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
+        HistorialController.pasarStage(stage);
         GestionViviendasController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
         stage.setScene(scene);
