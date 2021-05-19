@@ -19,6 +19,7 @@ import trobify.conectores.ConectorFiltrosBD;
 import trobify.conectores.ConectorFotosBD;
 import trobify.conectores.ConectorNotificacionBD;
 import trobify.conectores.ConectorUsuarioBD;
+import trobify.conectores.ConectorMensajeBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Filtros;
 import trobify.logica.Fotografia;
@@ -28,6 +29,7 @@ import trobify.logica.Servicios;
 import trobify.logica.Usuario;
 import trobify.logica.Vivienda;
 import trobify.logica.Vivienda;
+import trobify.logica.Mensaje;
 
 /**
  *
@@ -238,6 +240,10 @@ public class FachadaBD {
    
     public static void añadirAHistorial (Historial h){
         ConectorViviendaBD.añadirAHistorial(h);
+    }
+    
+    public static void añadirMensaje (Mensaje m){
+        ConectorMensajeBD.añadirMensaje(m);
     }
 
 }

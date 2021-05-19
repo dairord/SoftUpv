@@ -47,6 +47,7 @@ import javafx.stage.Stage;
 import javax.swing.JFrame;
 import trobify.Conectar;
 import trobify.fachada.FachadaBD;
+import trobify.logica.Mensaje;
 
 /**
  * FXML Controller class
@@ -306,6 +307,8 @@ public class InicioController implements Initializable {
         if (result.isPresent()){
             System.out.println(result.get());
             //Aqui hay que conectar con la base de datos
+            Mensaje m = new Mensaje(result.get());
+            FachadaBD.añadirMensaje(m);
         }
     
     }
