@@ -389,15 +389,34 @@ public class FichaViviendaController implements Initializable {
             Favoritos nuevo = new Favoritos(id, username, 1);
             FachadaBD.añadirFavorito(nuevo);
             this.estaEnFav = true;
+            añadidoAfavo();
             mostrarBotones();
         } else {
             FachadaBD.eliminarFavorito(id, username);
             this.estaEnFav = false;
             this.valoracion = -1;
+            eliminadoDeFavo();
             mostrarBotones();
 
         }
         logicaBotonesValoracion();
+    }
+    private void añadidoAfavo(){
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+       alerta.setHeaderText("Vivienda añadida a favoritos");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+        }
+        alerta.close();
+    }
+    
+    private void eliminadoDeFavo(){
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+       alerta.setHeaderText("Vivienda eliminada de favoritos");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+        }
+        alerta.close();
     }
 
     @FXML
