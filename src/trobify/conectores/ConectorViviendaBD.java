@@ -145,7 +145,7 @@ public class ConectorViviendaBD extends Conector{
     }
      
       public static ArrayList<String> historialDelUsuario(String username) {
-        String sql = "SELECT id_vivienda FROM historial WHERE username = '" + username + "' ";
+        String sql = "SELECT id_vivienda FROM historial WHERE username = '" + username + "'  order By `id` DESC";
           ArrayList<String> lista = new ArrayList();
         try {
             Statement stm = con.getConnection().createStatement();

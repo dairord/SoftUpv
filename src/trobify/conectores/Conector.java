@@ -17,7 +17,7 @@ import trobify.controlador.InicioController;
  *
  * @author gabri
  */
-abstract class Conector {
+abstract class Conector <E extends Comparable <E>> {
   
     public static Conectar con = Conectar.conexion();
     
@@ -46,5 +46,9 @@ abstract class Conector {
         }
     }
     
-   
+  //  final public static E objetoAPartirDeId(){
+  //     return null;
+  //  }
+    
+  
 }//fin clase

@@ -33,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -44,7 +45,7 @@ import trobify.logica.Vivienda;
  *
  * @author gabri
  */
-public class GestionViviendasController implements Initializable {
+public class GestionViviendasController extends GeneradorMiniaturas implements Initializable {
 
     @FXML
     private Label nombreUsuario;
@@ -121,73 +122,10 @@ public class GestionViviendasController implements Initializable {
 
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, String activo) throws FileNotFoundException{
-        
-        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();  
-        
-        miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        Button botonRedireccion = new Button();
-        botonRedireccion.setPadding(new Insets(0,0,0,0));
-        botonRedireccion.setId(id);
-        botonRedireccion.setOnAction( e-> {
-            FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
-            FichaViviendaController.deDondeViene("gestionVivienda");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
-            st.close();
-            Stage stage = new Stage();
-            Scene scene;
-            try {
-               FichaViviendaController.pasarUsuario(username);
-                scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage);
-                stage.setScene(scene);
-                stage.setTitle("Trobify");
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        });
-                
-        Image image1 = new Image(new FileInputStream(rutaFoto));
-        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
-        foto.setFitWidth(200);
-        foto.setFitHeight(150);
-        
-        botonRedireccion.setGraphic(foto);
-                
-        javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
-        datos.setAlignment(Pos.CENTER_LEFT);
-        datos.setPadding(new Insets(20,30,30,15));
-        
-        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
-        javafx.scene.control.Label estado = new javafx.scene.control.Label("Vivienda " + activo );
-        
-        
-        datos.getChildren().addAll(calle,precio,estado);
-        
-      javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
-       eliminarFav.setAlignment(Pos.CENTER);
-       eliminarFav.setPadding(new Insets(20,20,20,25));
-       //boton de activar o desactivar
-       if(activo.equals("Publicada")) textoBoton = "Despublicar vivienda";
-       else textoBoton = "Publicar vivienda";
       
-        Button botonGestionar = new Button();
-        botonGestionar.setText(textoBoton);
-        botonGestionar.setId(id);
-        botonGestionar.setOnAction(e -> {
-        alerta(botonGestionar.getId());
-       });
-       
-        
-       eliminarFav.getChildren().add(botonGestionar);
-        
-        miniatura.getChildren().addAll(botonRedireccion, datos, eliminarFav);        
-      
-       return miniatura;
+        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, activo, 0, 1);  
 
+        return miniatura;
     }
     
     //Lista de viviendas
@@ -266,5 +204,52 @@ public class GestionViviendasController implements Initializable {
      public static void deDondeViene (String donde){
          vieneDe = donde;
     }
+
+    @Override
+    public VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, VBox datos, int alquilada) {
+       javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        javafx.scene.control.Label estado = new javafx.scene.control.Label("Vivienda " + activo );
+         
+       datos.getChildren().addAll(calle,precio,estado);
+       return datos;
+    }
+
+    @Override
+    public javafx.scene.layout.VBox crearBoton(String id) {
+         
+       javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
+       eliminarFav.setAlignment(Pos.CENTER);
+       eliminarFav.setPadding(new Insets(20,20,20,25));
+       //boton de activar o desactivar
+       if(activo.equals("Publicada")) textoBoton = "Despublicar vivienda";
+       else textoBoton = "Publicar vivienda";
+      
+        Button botonGestionar = new Button();
+        botonGestionar.setText(textoBoton);
+        botonGestionar.setId(id);
+        botonGestionar.setOnAction(e -> {
+        alerta(botonGestionar.getId());
+       });
+       
+        
+       eliminarFav.getChildren().add(botonGestionar);
+       return eliminarFav;
+    }
+
+    @Override
+    public HBox añadirAMiniatura(HBox miniatura, Button botonRedireccion, VBox datos,  javafx.scene.layout.VBox boton) {
+          miniatura.getChildren().addAll(botonRedireccion, datos, boton);   
+          return miniatura;
+    }
+
+    @Override
+    public void cambiarPantalla() {
+         FichaViviendaController.deDondeViene("gestionVivienda");
+            st.close();
+        
+    }
+
+  
          
 }

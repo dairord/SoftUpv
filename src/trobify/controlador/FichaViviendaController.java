@@ -123,6 +123,7 @@ public class FichaViviendaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         historial();
+        direccion();
         if (username == null) {
             addFavoritos.setVisible(false);
             ofertaBox.setVisible(false);
@@ -205,24 +206,28 @@ public class FichaViviendaController implements Initializable {
         final URL googleMaps = getClass().getResource("GeoPrueba.html");
         final WebEngine engine = mapa.getEngine();
         engine.load(googleMaps.toExternalForm());
-
-        //para saber de donde viene y volver atrás correctamente
+        System.out.println(deDondeViene);
+     
+        geo();
+        
+        actiOdesacti();
+    }
+    
+    public void direccion(){
         if (deDondeViene.equals("favoritos")) {
             aDondeVa = "/trobify/views/Favoritos.fxml";
         }
         if (deDondeViene.equals("gestionVivienda")) {
             aDondeVa = "/trobify/views/GestionViviendas.fxml";
-        } 
+        }
         if (deDondeViene.equals("historial")) {
             aDondeVa = "/trobify/views/Historial.fxml";
         } 
-        else {
+        if (deDondeViene.equals("buscador")) {
             aDondeVa = "/trobify/views/Buscador.fxml";
         }
-
-        geo();
-        
-        actiOdesacti();
+        System.out.println(deDondeViene.equals("gestionVivienda"));
+      
     }
     
     private void historial(){
@@ -434,15 +439,16 @@ public class FichaViviendaController implements Initializable {
     @FXML
     private void atrasBoton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
+        System.out.println(aDondeVa);
         fxmlLoader.setLocation(getClass().getResource(aDondeVa));
         s.close();
         Stage stage = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
         InicioController.pasarStage(stage);
         FavoritosController.pasarStage(stage);
         HistorialController.pasarStage(stage);
         GestionViviendasController.pasarStage(stage);
         BuscadorController.pasarStage(stage);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setTitle("Trobify");
         stage.show();

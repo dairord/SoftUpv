@@ -39,6 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -50,7 +51,7 @@ import trobify.logica.Vivienda;
  *
  * @author jagon
  */
-public class FavoritosController implements Initializable {
+public class FavoritosController extends GeneradorMiniaturas implements Initializable {
 
     @FXML
     private Label nombreUsuario;
@@ -114,65 +115,7 @@ public class FavoritosController implements Initializable {
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int valoracionVivienda) throws FileNotFoundException{
         
-        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();  
-        
-        miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        Button botonRedireccion = new Button();
-        botonRedireccion.setPadding(new Insets(0,0,0,0));
-        botonRedireccion.setId(id);
-        botonRedireccion.setOnAction( e-> {
-            FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
-            FichaViviendaController.deDondeViene("favoritos");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
-            s.close();
-            Stage stage = new Stage();
-            Scene scene;
-            try {
-               FichaViviendaController.pasarUsuario(username);
-                scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage);
-                stage.setScene(scene);
-                stage.setTitle("Trobify");
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        });
-                
-        Image image1 = new Image(new FileInputStream(rutaFoto));
-        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
-        foto.setFitWidth(200);
-        foto.setFitHeight(150);
-        
-        botonRedireccion.setGraphic(foto);
-                
-        javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
-        datos.setAlignment(Pos.CENTER_LEFT);
-        datos.setPadding(new Insets(20,30,30,15));
-        
-        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
-        javafx.scene.control.Label valoracion = new javafx.scene.control.Label("Valoracion: " + valoracionVivienda);
-        if(valoracionVivienda == -1) valoracion.setVisible(false);
-        
-        datos.getChildren().addAll(calle,precio,valoracion);
-        
-        javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
-        eliminarFav.setAlignment(Pos.CENTER);
-        eliminarFav.setPadding(new Insets(20,20,20,25));
-        
-        Button botonEliminar = new Button();
-        botonEliminar.setText("Eliminar de favoritos");
-        botonEliminar.setId(id);
-        botonEliminar.setOnAction(e -> {
-          alerta(botonEliminar.getId());
-        });
-        
-        eliminarFav.getChildren().add(botonEliminar);
-        
-        miniatura.getChildren().addAll(botonRedireccion, datos, eliminarFav);        
+        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", valoracionVivienda, 1);
         return miniatura;
     }
     
@@ -277,5 +220,47 @@ public class FavoritosController implements Initializable {
 
     @FXML
     private void notificaciones(ActionEvent event) {
+    }
+
+    @Override
+    public VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracionVivienda, VBox datos, int alquilada) {
+       javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        javafx.scene.control.Label valoracion = new javafx.scene.control.Label("Valoracion: " + valoracionVivienda);
+        if(valoracionVivienda == -1) valoracion.setVisible(false);
+        
+        datos.getChildren().addAll(calle,precio,valoracion);
+        return datos;
+    }
+
+    @Override
+    public VBox crearBoton(String id) {
+        javafx.scene.layout.VBox eliminarFav = new javafx.scene.layout.VBox(10);
+        eliminarFav.setAlignment(Pos.CENTER);
+        eliminarFav.setPadding(new Insets(20,20,20,25));
+        
+        Button botonEliminar = new Button();
+        botonEliminar.setText("Eliminar de favoritos");
+        botonEliminar.setId(id);
+        botonEliminar.setOnAction(e -> {
+          alerta(botonEliminar.getId());
+        });
+        
+        eliminarFav.getChildren().add(botonEliminar);
+        return eliminarFav;
+        
+    }
+
+    @Override
+    public HBox añadirAMiniatura(HBox miniatura, Button botonRedireccion, VBox datos, VBox boton) {
+      miniatura.getChildren().addAll(botonRedireccion, datos, boton);        
+        return miniatura;
+    }
+
+    @Override
+    public void cambiarPantalla() {
+         FichaViviendaController.deDondeViene("favoritos");
+            s.close();
+           
     }
 }

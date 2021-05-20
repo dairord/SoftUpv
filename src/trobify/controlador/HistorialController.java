@@ -38,7 +38,7 @@ import trobify.logica.Vivienda;
  * @author gabri
  */
 
-public class HistorialController implements Initializable {
+public class HistorialController extends GeneradorMiniaturas implements Initializable {
 
     @FXML
     private Label nombreUsuario;
@@ -75,54 +75,9 @@ public class HistorialController implements Initializable {
     }
      
       private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException{
-        
-        javafx.scene.layout.HBox miniatura = new javafx.scene.layout.HBox();  
-        
-        miniatura.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        Button botonRedireccion = new Button();
-        botonRedireccion.setPadding(new Insets(0,0,0,0));
-        botonRedireccion.setId(id);
-        botonRedireccion.setOnAction( e-> {
-            FichaViviendaController.pasarIdVivienda(botonRedireccion.getId());
-            FichaViviendaController.deDondeViene("historial");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/trobify/views/FichaVivienda.fxml"));
-            st.close();
-            Stage stage = new Stage();
-            Scene scene;
-            try {
-               FichaViviendaController.pasarUsuario(username);
-                scene = new Scene(fxmlLoader.load());
-                FichaViviendaController.pasarStage(stage);
-                stage.setScene(scene);
-                stage.setTitle("Trobify");
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        });
-                
-        Image image1 = new Image(new FileInputStream(rutaFoto));
-        javafx.scene.image.ImageView foto = new javafx.scene.image.ImageView(image1);
-        foto.setFitWidth(200);
-        foto.setFitHeight(150);
-        
-        botonRedireccion.setGraphic(foto);
-                
-        javafx.scene.layout.VBox datos = new javafx.scene.layout.VBox(10);
-        datos.setAlignment(Pos.CENTER_LEFT);
-        datos.setPadding(new Insets(20,30,30,15));
-        
-        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
-       // javafx.scene.control.Label estado = new javafx.scene.control.Label("Vivienda " + activo );
-        
-        
-       datos.getChildren().addAll(calle,precio);
-        
-       miniatura.getChildren().addAll(botonRedireccion, datos);        
-      
+       
+        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, 1);  
+     
        return miniatura;
 
     }
@@ -162,6 +117,7 @@ public class HistorialController implements Initializable {
             Scene scene = new Scene (fxmlLoader.load());
             InicioController.pasarStage(stage);
             BuscadorController.pasarStage(stage);
+            FichaViviendaController.pasarStage(stage);
             //añadir todos los controller a los que podria ir
             stage.setScene(scene);
             stage.setTitle("Trobify");
@@ -179,6 +135,32 @@ public class HistorialController implements Initializable {
     
     public static void deDondeViene (String donde){
          vieneDe = donde;
+    }
+
+    @Override
+    public javafx.scene.layout.VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, javafx.scene.layout.VBox datos, int alquilada) {
+        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        
+        datos.getChildren().addAll(calle,precio);
+        return datos;
+    }
+
+    @Override
+    public  javafx.scene.layout.VBox crearBoton(String id) {
+         return null;
+    }
+
+    @Override
+    public javafx.scene.layout.HBox añadirAMiniatura(javafx.scene.layout.HBox miniatura, Button botonRedireccion, javafx.scene.layout.VBox datos, javafx.scene.layout.VBox boton) {
+       miniatura.getChildren().addAll(botonRedireccion, datos);        
+       return miniatura;
+    }
+
+    @Override
+    public void cambiarPantalla() {
+        FichaViviendaController.deDondeViene("historial");
+        st.close();
     }
          
 }
