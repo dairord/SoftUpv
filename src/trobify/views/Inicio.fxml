@@ -151,15 +151,16 @@
             <Label fx:id="mensajeError" prefHeight="17.0" prefWidth="346.0" textAlignment="CENTER" textFill="#fc0303" />
          </children>
       </HBox>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="94.0" prefWidth="1272.0" VBox.vgrow="ALWAYS">
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="94.0" prefWidth="1272.0" spacing="10.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="reportarErroreresBoton" mnemonicParsing="false" onAction="#reportarErrores" style="-fx-background-color: #cf5b5b;" text="Reportar errores" textFill="WHITE" textOverrun="CLIP" />
+            <Label text="¿Tienes algun problema y/o alguna sugerencia?" textOverrun="CLIP" HBox.hgrow="ALWAYS" />
+            <Button fx:id="reportarErroreresBoton" mnemonicParsing="false" onAction="#reportarErrores" style="-fx-background-color: #cf5b5b;" text="Haznoslo saber" textFill="WHITE" textOverrun="CLIP" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
          <padding>
-            <Insets bottom="10.0" />
+            <Insets bottom="10.0" right="30.0" />
          </padding>
       </HBox>
    </children>

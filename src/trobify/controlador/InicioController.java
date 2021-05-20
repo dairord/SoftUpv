@@ -301,7 +301,7 @@ public class InicioController implements Initializable {
         
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Reportar errores");
-        dialog.setHeaderText("Indique brevemente los errores encontrados");
+        dialog.setHeaderText("Indique brevemente los errores o sugerencias que tengas");
         
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){
