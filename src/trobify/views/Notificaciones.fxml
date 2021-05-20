@@ -6,7 +6,10 @@
 
 <AnchorPane id="AnchorPane" prefHeight="512.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trobify.controlador.NotificacionesController">
    <children>
-      <ListView fx:id="lista" prefHeight="444.0" prefWidth="674.0" />
-      <Button layoutX="302.0" layoutY="454.0" mnemonicParsing="false" onAction="#atras" prefHeight="35.0" prefWidth="70.0" text="Atrás" />
+      <ListView fx:id="lista" onMouseClicked="#selectorNoti" prefHeight="444.0" prefWidth="674.0" />
+      <Button layoutX="312.0" layoutY="454.0" mnemonicParsing="false" onAction="#atras" prefHeight="35.0" prefWidth="70.0" text="Atrás" />
+      <Button fx:id="rechazarButton" disable="true" layoutX="160.0" layoutY="454.0" mnemonicParsing="false" onAction="#rechazarOferta" prefHeight="35.0" prefWidth="70.0" text="Rechazar" />
+      <Button fx:id="aceptarButton" disable="true" layoutX="51.0" layoutY="454.0" mnemonicParsing="false" onAction="#aceptarOferta" prefHeight="35.0" prefWidth="70.0" text="Aceptar" />
+      <Button fx:id="borrarButton" disable="true" layoutX="546.0" layoutY="454.0" mnemonicParsing="false" onAction="#borrarNoti" prefHeight="35.0" prefWidth="70.0" text="Borrar" />
    </children>
 </AnchorPane>

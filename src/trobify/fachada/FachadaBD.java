@@ -7,6 +7,7 @@ package trobify.fachada;
 
 import trobify.conectores.ConectorServiciosBD;
 import java.io.FileNotFoundException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -100,7 +101,8 @@ public class FachadaBD {
         return false;
     }
 //////Sobra
-   /* public static int consultarValoracion(String id, String username) {
+
+    /* public static int consultarValoracion(String id, String username) {
         return ConectorViviendaBD.consultarValoracion(id, username);
     }*/
 
@@ -197,53 +199,79 @@ public class FachadaBD {
     public static void desactivarVivienda(String id) {
         ConectorViviendaBD.desactivarVivienda(id);
     }
-    
+
     public static ArrayList<String> viviendasDelUsusario(String username, String orden) {
         return ConectorViviendaBD.viviendasDelUsuario(username, orden);
     }
-    
-     public static ArrayList<String> historialDelUsusario(String username) {
+
+    public static ArrayList<String> historialDelUsusario(String username) {
         return ConectorViviendaBD.historialDelUsuario(username);
     }
-    public static void activarVivienda(String id){
+
+    public static void activarVivienda(String id) {
         ConectorViviendaBD.activarVivienda(id);
     }
-    public static String getActivo(String id){
-       if( ConectorViviendaBD.getActivo(id) == 0) return "activo";
-       else return "desactivo";
+
+    public static String getActivo(String id) {
+        if (ConectorViviendaBD.getActivo(id) == 0) {
+            return "activo";
+        } else {
+            return "desactivo";
+        }
     }
-    
-    public static Notificacion getNotificacion(int id){
+
+    public static Notificacion getNotificacion(int id) {
         return ConectorNotificacionBD.getNotificacion(id);
     }
-    
-    public static ArrayList<Notificacion> getNotificacionPorUsuario(String id_usuario){
-        return ConectorNotificacionBD.getNotificacionPorUsuario(id_usuario);
+
+    public static ArrayList<Notificacion> getNotificacionPorUsuario(String id_usuario_dest) {
+        return ConectorNotificacionBD.getNotificacionPorUsuario(id_usuario_dest);
     }
-    
-    public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda){
+
+    public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda) {
         return ConectorNotificacionBD.getNotificacionPorVivienda(id_vivienda);
     }
-    
+
     //Los 2 siguientes métodos hacen lo mismo y sobra 1 pero está para probar
-     public static void añadirNotificacion(Notificacion n) {
-         ConectorNotificacionBD.añadirNotificacion(n);
-     }
-    
+    public static void añadirNotificacion(Notificacion n) {
+        ConectorNotificacionBD.añadirNotificacion(n);
+    }
+
     public static void añadirNotificacionNoID(Notificacion n) {
         ConectorNotificacionBD.añadirNotificacionNoID(n);
     }
-    
-    public static void borrarNotificacion(int id) {
-        ConectorNotificacionBD.borrarNotificacion(id);
+
+    public static void borrarNotificacion(Notificacion n) {
+        ConectorNotificacionBD.borrarNotificacion(n);
     }
-   
-    public static void añadirAHistorial (Historial h){
+
+    public static void añadirAHistorial(Historial h) {
         ConectorViviendaBD.añadirAHistorial(h);
     }
-    
-    public static void añadirMensaje (Mensaje m){
+
+    public static void añadirMensaje(Mensaje m) {
         ConectorMensajeBD.añadirMensaje(m);
+    }
+
+    public static void notificarDesact(String id_vivienda) {
+        Notificacion res = new Notificacion(id_vivienda, null, null, null, new Date(System.currentTimeMillis()), 0, 0);
+        ArrayList<String> users = ConectorViviendaBD.getUsuariosPorViviendaFav(id_vivienda);
+        ConectorNotificacionBD.borrarNotificacionesEnMasa(id_vivienda, 0);
+        for (int i = 0; i < users.size(); i++) {
+            res.setId_usuario_dest(users.get(i));
+            añadirNotificacionNoID(res);
+        }
+    }
+
+    public static void notificarActiv(String id_vivienda) {
+        Notificacion res = new Notificacion(id_vivienda, null, null, null, new Date(System.currentTimeMillis()), 1, 0);
+        ArrayList<String> users = ConectorViviendaBD.getUsuariosPorViviendaFav(id_vivienda);
+
+        ConectorNotificacionBD.borrarNotificacionesEnMasa(id_vivienda, 0);
+        for (int i = 0; i < users.size(); i++) {
+            res.setId_usuario_dest(users.get(i));
+            añadirNotificacionNoID(res);
+        }
     }
 
 }

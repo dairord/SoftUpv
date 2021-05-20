@@ -586,23 +586,11 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     @FXML
     private void notifica(ActionEvent event) throws IOException {
         //notificar(null);
-        ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
-        ArrayList<String> res = new ArrayList<String>();
+        //ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
+       // ArrayList<String> res = new ArrayList<String>();
 
-        /* ///////////////////////////////////////////////////////////////////
-        Vivienda prueba = new Vivienda();
-        prueba.setCalle("Calle de pruebas");
-        prueba.setActivo(1);
-        viviendasFav.add(prueba);
-        //////////////////////////////////////////////////////////////////*/
-        for (int i = 0; i < viviendasFav.size(); i++) {
-
-            if (viviendasFav.get(i).getActivo() == 1) {
-
-                res.add("La vivienda de la " + viviendasFav.get(i).getCalle() + " ya no se encuentra disponible.");
-            }
-        }
-        NotificacionesController.pasarNotis(res);
+        
+      //  NotificacionesController.pasarNotis(res);
 
         NotificacionesController.pasarUsuario(username);
         FXMLLoader fxmlLoader = new FXMLLoader();
