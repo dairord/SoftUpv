@@ -33,7 +33,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -309,6 +311,11 @@ public class InicioController implements Initializable {
             //Aqui hay que conectar con la base de datos
             Mensaje m = new Mensaje(result.get());
             FachadaBD.añadirMensaje(m);
+            Alert alerta = new Alert (Alert.AlertType.INFORMATION);
+        alerta.setHeaderText("Tu queja o sujerencia se ha guardado correctamente. Muchas gracias!");
+        Optional<ButtonType> ok = alerta.showAndWait();
+        if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
+              } alerta.close();
         }
     
     }
