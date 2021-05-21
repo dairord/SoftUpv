@@ -13,6 +13,8 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -44,6 +46,7 @@ import javafx.stage.Stage;
 import static jdk.nashorn.internal.objects.NativeArray.forEach;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Fotografia;
+import trobify.logica.Notificacion;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
 
@@ -407,7 +410,7 @@ public class RegistrarViviendaController implements Initializable {
     }
 
     @FXML
-    private void registrarYPublicar(ActionEvent event) throws IOException {
+    private void registrarYPublicar(ActionEvent event) throws IOException, SQLException {
         int numero = FachadaBD.numeroViviendas() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
@@ -469,6 +472,13 @@ public class RegistrarViviendaController implements Initializable {
         Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
             FachadaBD.registrarVivienda(vivi, servi, fotos);
+            
+            Notificacion n = new Notificacion(id, null, null, CiudadField.getText(), new Date(System.currentTimeMillis()), 0, 2);
+            ArrayList<String> users = FachadaBD.listaUsuariosPorPreferencia(CiudadField.getText()); 
+            for(int i = 0; i < users.size(); i++){
+                n.setId_usuario_dest(users.get(i));
+                FachadaBD.añadirNotificacionNoID(n);
+            }
 
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);
             alerta.setHeaderText("Vivienda registrada y publicada correctamente.");

@@ -104,6 +104,12 @@ public class NotificacionesController implements Initializable {
                             break;
                     }
                     break;
+                    
+                case 2:
+                    
+                    res = "Nueva vivienda disponible en " + viv.getCiudad();
+                    listaNotis.add(res);
+                    break;
             }
         }
     }
@@ -199,10 +205,17 @@ public class NotificacionesController implements Initializable {
                     rechazarButton.setDisable(true);
                     borrarButton.setDisable(false);
                     break;
+                    
                 case 'H':
                     aceptarButton.setDisable(false);
                     rechazarButton.setDisable(false);
                     borrarButton.setDisable(true);
+                    break;
+                    
+                case 'N':
+                    aceptarButton.setDisable(true);
+                    rechazarButton.setDisable(true);
+                    borrarButton.setDisable(false);
                     break;
 
                 default:

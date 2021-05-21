@@ -273,5 +273,9 @@ public class FachadaBD {
             añadirNotificacionNoID(res);
         }
     }
+    
+    public static ArrayList<String> listaUsuariosPorPreferencia(String preferencia) throws SQLException{
+        return ConectorUsuarioBD.getUsariosPorPreferencia(preferencia);        
+    }
 
 }

@@ -11,7 +11,7 @@ package trobify.logica;
  */
 public class Usuario {
 
-    String id, dni, password, nombre, apellidos, email, foto;
+    String id, dni, password, nombre, apellidos, email, foto, preferencia;
 
     public Usuario(String id, String dni, String password, String nombre, String apellidos, String email, String foto) {
         this.id = id;
@@ -21,6 +21,7 @@ public class Usuario {
         this.apellidos = apellidos;
         this.email = email;
         this.foto = foto;
+        this.preferencia = null;
     }
 
     public Usuario() {
@@ -31,6 +32,7 @@ public class Usuario {
         this.apellidos = "";
         this.email = "";
         this.foto = "";
+        this.preferencia = null;
     }
 
     public String getId() {
@@ -59,5 +61,13 @@ public class Usuario {
 
     public String getFoto() {
         return foto;
+    }
+
+    public String getPreferencia() {
+        return preferencia;
+    }
+
+    public void setPreferencia(String preferencia) {
+        this.preferencia = preferencia;
     }
 }
