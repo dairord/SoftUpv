@@ -155,9 +155,15 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     alerta.setHeaderText("Seguro que quieres "+texto+" esta vivienda?");
     Optional<ButtonType> ok = alerta.showAndWait();
     if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
-    if(texto.equals("despublicar")) FachadaBD.desactivarVivienda(botonGestionar);
+    if(texto.equals("despublicar")){
+        FachadaBD.desactivarVivienda(botonGestionar);
+        FachadaBD.notificarDesact(botonGestionar);
+    }
     
-    else FachadaBD.activarVivienda(botonGestionar);
+    else{
+        FachadaBD.activarVivienda(botonGestionar);
+        FachadaBD.notificarActiv(botonGestionar);
+    }
     ordenCambiado(null);
     
 }   alerta.close();

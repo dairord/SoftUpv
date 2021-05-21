@@ -431,4 +431,32 @@ public class ConectorViviendaBD extends Conector{
         String sql = "INSERT INTO `historial`(`id_vivienda`, `username`) VALUES ('"+ h.getId_vivienda() +"','"+ h.getUsername() +"')";
         consultaVoid(sql);
     }
+      
+      
+      public static ArrayList<String> getUsuariosPorViviendaFav(String id_vivienda) {
+        // System.out.println("GetStrings");
+        ArrayList<String> res = new ArrayList<String>();
+        try {
+            // System.out.println(id_usuario);
+            Statement stm = con.getConnection().createStatement();
+
+            ResultSet rs = stm.executeQuery("SELECT * FROM favoritos WHERE id = '" + id_vivienda + "'");
+
+            if (rs.isBeforeFirst()) {
+               
+                while (rs.next()) {
+                   String nuevo = rs.getString("id_cliente");
+                    //System.out.println(nuevo);
+                    res.add(nuevo);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return res;
+    }
+      
+      
 } //fin clase

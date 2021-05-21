@@ -17,12 +17,13 @@ public class Notificacion {
     
     private String id_vivienda;
     private String id_usuario;
+    private String id_usuario_dest;
     private String desc;
     private Date last_mod;
     private int estado;
     private int tipo;
 
-    public Notificacion(int id, String id_vivienda, String id_usuario, String desc, Date last_mod, int estado, int tipo) {
+    public Notificacion(int id, String id_vivienda, String id_usuario, String id_usuario_dest, String desc, Date last_mod, int estado, int tipo) {
         this.id = id;
         this.id_vivienda = id_vivienda;
         this.id_usuario = id_usuario;
@@ -30,17 +31,19 @@ public class Notificacion {
         this.last_mod = last_mod;
         this.estado = estado;
         this.tipo = tipo;
+        this.id_usuario_dest = id_usuario_dest;
         
         
     }
 
-    public Notificacion(String id_vivienda, String id_usuario, String desc, Date last_mod, int estado, int tipo) {
+    public Notificacion(String id_vivienda, String id_usuario, String id_usuario_dest, String desc, Date last_mod, int estado, int tipo) {
         this.id_vivienda = id_vivienda;
         this.id_usuario = id_usuario;
         this.desc = desc;
         this.last_mod = last_mod;
         this.estado = estado;
         this.tipo = tipo;
+        this.id_usuario_dest = id_usuario_dest;
     }
     
     
@@ -71,6 +74,16 @@ public class Notificacion {
     public void setId_usuario(String id_usuario) {
         this.id_usuario = id_usuario;
     }
+
+    public String getId_usuario_dest() {
+        return id_usuario_dest;
+    }
+
+    public void setId_usuario_dest(String id_usuario_dest) {
+        this.id_usuario_dest = id_usuario_dest;
+    }
+    
+    
 
     public String getDesc() {
         return desc;

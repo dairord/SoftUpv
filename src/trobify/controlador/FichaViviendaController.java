@@ -510,7 +510,9 @@ public class FichaViviendaController implements Initializable {
             ofertaField.clear();
         } else {
             Date now = new Date(System.currentTimeMillis());
-            Notificacion oferta = new Notificacion(id, username, ofertaField.getText(), now, 0, 1);
+            System.out.println(FachadaBD.getVivienda(id));
+            System.out.println(FachadaBD.getVivienda(id).getId_propietario());
+            Notificacion oferta = new Notificacion(id, username, FachadaBD.getVivienda(id).getId_propietario(), ofertaField.getText(), now, 0, 1);
             FachadaBD.añadirNotificacionNoID(oferta);
         }
     }
@@ -527,8 +529,10 @@ public class FichaViviendaController implements Initializable {
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
             if (texto.equals("desactivar")) {
                 FachadaBD.desactivarVivienda(id);
+                FachadaBD.notificarDesact(id);
             } else {
                 FachadaBD.activarVivienda(id);
+                FachadaBD.notificarActiv(id);
             }
             listaFotos.clear();
             this.imageList.getChildren().clear();

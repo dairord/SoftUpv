@@ -5,7 +5,6 @@
  */
 package trobify.controlador;
 
-
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.FileInputStream;
@@ -50,6 +49,7 @@ import javax.swing.JFrame;
 import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Mensaje;
+import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -138,16 +138,28 @@ public class InicioController implements Initializable {
                 .or(Bindings.isNull(tipo.getSelectionModel().selectedItemProperty()))
                 .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()));
         buscarBoton.disableProperty().bind(sePuedeBuscar);
+        
+        hayNotis();
 
     }
 
     private void hayNotis() {
-        //falta un if con un boolean
-        try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-            fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
+            //falta un if con un boolean
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -295,18 +307,55 @@ public class InicioController implements Initializable {
     }
 
     @FXML
-    private void notifica(ActionEvent event) {
+    private void notifica(ActionEvent event) throws IOException {
+        //notificar(null);
+       // ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
+        //ArrayList<String> res = new ArrayList<String>();
+
+        /* ///////////////////////////////////////////////////////////////////
+        Vivienda prueba = new Vivienda();
+        prueba.setCalle("Calle de pruebas");
+        prueba.setActivo(1);
+        viviendasFav.add(prueba);
+        //////////////////////////////////////////////////////////////////*/
+       /* for (int i = 0; i < viviendasFav.size(); i++) {
+
+            if (viviendasFav.get(i).getActivo() == 1) {
+
+                res.add("La vivienda de la " + viviendasFav.get(i).getCalle() + " ya no se encuentra disponible.");
+            }
+        }*/
+        //NotificacionesController.pasarNotis(res);
+
+        NotificacionesController.pasarUsuario(username);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        NotificacionesController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+        
+        try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 
     @FXML
     private void reportarErrores(ActionEvent event) {
-        
+
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Reportar errores");
         dialog.setHeaderText("Indique brevemente los errores o sugerencias que tengas");
-        
+
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
+        if (result.isPresent()) {
             System.out.println(result.get());
             //Aqui hay que conectar con la base de datos
             Mensaje m = new Mensaje(result.get());
@@ -317,24 +366,24 @@ public class InicioController implements Initializable {
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
               } alerta.close();
         }
-    
+
     }
 
     @FXML
     private void historial(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
-         HistorialController.pasarUsuario(username);
-         HistorialController.deDondeViene("inicio");
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            HistorialController.pasarStage(stage);
-            
-            //añadir todos los controller a los que podria ir
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();  
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
+        HistorialController.pasarUsuario(username);
+        HistorialController.deDondeViene("inicio");
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        HistorialController.pasarStage(stage);
+
+        //añadir todos los controller a los que podria ir
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 }

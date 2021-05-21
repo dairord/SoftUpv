@@ -7,6 +7,7 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,7 +22,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
@@ -45,10 +48,19 @@ public class NotificacionesController implements Initializable {
     private static String notis;
     private static ObservableList listaNotis;
     // private static ArrayList<Notificacion> notificaciones;
+    @FXML
+    private Button rechazarButton;
+    @FXML
+    private Button aceptarButton;
+    @FXML
+    private Button borrarButton;
+
+    private ArrayList<Notificacion> notificaciones;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ArrayList<Notificacion> notificaciones = FachadaBD.getNotificacionPorUsuario(username);
+        listaNotis = FXCollections.observableList(new ArrayList<String>());
+        notificaciones = FachadaBD.getNotificacionPorUsuario(username);
         gestorNotis(notificaciones);
         lista.setItems(listaNotis);
         // favList = new ArrayList(); 
@@ -60,16 +72,37 @@ public class NotificacionesController implements Initializable {
             Notificacion noti = notifi.get(i);
             String res;
             switch (noti.getTipo()) {
-                
+
                 case 0:
-                    res = "La vivienda de la " +viv.getCalle() +"ya no se encuentra disponible.";
-                    listaNotis.add(res);
+                    if (noti.getEstado() == 0) {
+                        res = "La vivienda de la " + viv.getCalle() + " ya no se encuentra disponible.";
+                        listaNotis.add(res);
+                    } else {
+                        res = "La vivienda de la " + viv.getCalle() + " vuelve a encontrarse disponible.";
+                        listaNotis.add(res);
+                    }
                     break;
-                
+
                 case 1:
-                    int resto = Integer.parseInt(noti.getDesc()) - viv.getPrecio();
-                    res = "Has recibido una contraoferta de " +noti.getDesc() +"€ (" +resto +") para tu vivienda de la " +viv.getCalle();
-                    listaNotis.add(res);
+
+                    switch (noti.getEstado()) {
+
+                        case 0:
+                            int resto = Integer.parseInt(noti.getDesc()) - viv.getPrecio();
+                            res = "Has recibido una contraoferta de " + noti.getDesc() + "€ (" + resto + ") para tu vivienda de la " + viv.getCalle();
+                            listaNotis.add(res);
+                            break;
+
+                        case 1:
+                            res = "La contraoferta de " + noti.getDesc() + "€ en la vivienda de la " + viv.getCalle() + " ha sido aprobada por el propietario, ponte en contacto para proceder con el pago";
+                            listaNotis.add(res);
+                            break;
+
+                        case 2:
+                            res = "La contraoferta de " + noti.getDesc() + "€ en la vivienda de la " + viv.getCalle() + " ha sido rechazada por el propietario";
+                            listaNotis.add(res);
+                            break;
+                    }
                     break;
             }
         }
@@ -121,6 +154,68 @@ public class NotificacionesController implements Initializable {
         }
     }
 
+    @FXML
+    private void rechazarOferta(ActionEvent event) {
+        int index = lista.getSelectionModel().getSelectedIndex();
+        Notificacion noti = notificaciones.get(index);
+        Notificacion resp = new Notificacion(noti.getId_vivienda(), username, noti.getId_usuario(), noti.getDesc(), new Date(System.currentTimeMillis()), 2, 1);
+        FachadaBD.añadirNotificacionNoID(resp);
 
+        borrarNoti(null);
+
+    }
+
+    @FXML
+    private void aceptarOferta(ActionEvent event) {
+        int index = lista.getSelectionModel().getSelectedIndex();
+        Notificacion noti = notificaciones.get(index);
+        Notificacion resp = new Notificacion(noti.getId_vivienda(), username, noti.getId_usuario(), noti.getDesc(), new Date(System.currentTimeMillis()), 1, 1);
+        FachadaBD.añadirNotificacionNoID(resp);
+
+        borrarNoti(null);
+
+    }
+
+    @FXML
+    private void borrarNoti(ActionEvent event) {
+        int index = lista.getSelectionModel().getSelectedIndex();
+        Notificacion noti = notificaciones.get(index);
+        FachadaBD.borrarNotificacion(noti);
+
+        notificaciones = FachadaBD.getNotificacionPorUsuario(username);
+        gestorNotis(notificaciones);
+        listaNotis.clear();
+        lista.setItems(listaNotis);
+    }
+
+    @FXML
+    private void selectorNoti(MouseEvent event) {
+        String selected = lista.getSelectionModel().getSelectedItem();
+        try {
+            switch (selected.charAt(0)) {
+
+                case 'L':
+                    aceptarButton.setDisable(true);
+                    rechazarButton.setDisable(true);
+                    borrarButton.setDisable(false);
+                    break;
+                case 'H':
+                    aceptarButton.setDisable(false);
+                    rechazarButton.setDisable(false);
+                    borrarButton.setDisable(true);
+                    break;
+
+                default:
+                    aceptarButton.setDisable(true);
+                    rechazarButton.setDisable(true);
+                    borrarButton.setDisable(true);
+                    break;
+            }
+        } catch (Exception e) {
+            aceptarButton.setDisable(true);
+            rechazarButton.setDisable(true);
+            borrarButton.setDisable(true);
+        }
+    }
 
 }
