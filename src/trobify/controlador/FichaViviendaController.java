@@ -515,7 +515,7 @@ public class FichaViviendaController implements Initializable {
             Notificacion oferta = new Notificacion(id, username, FachadaBD.getVivienda(id).getId_propietario(), ofertaField.getText(), now, 0, 1);
             FachadaBD.añadirNotificacionNoID(oferta);
             Alert alerta = new Alert (Alert.AlertType.INFORMATION);
-        alerta.setHeaderText("Tu contraoferta se ha enviado correctamente. Pronto recivirás una contestación del propietario.");
+        alerta.setHeaderText("Tu contraoferta se ha enviado correctamente. Pronto recibirás una contestación del propietario.");
         Optional<ButtonType> ok = alerta.showAndWait();
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
               } alerta.close();
