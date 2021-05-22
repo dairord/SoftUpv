@@ -153,6 +153,8 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     private ImageView fotoNotificacion;
     @FXML
     private Button historialBoton;
+    @FXML
+    private Button notificarNuevasBoton;
 
     /**
      * Initializes the controller class.
@@ -194,6 +196,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             botonGuardarFiltros.setVisible(false);
             registrarV.setVisible(false);
             misViviBoton.setVisible(false);
+            notificarNuevasBoton.setVisible(false); 
         }
     }
 
@@ -411,17 +414,20 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             }
         }
         NotificacionesController.pasarNotis(res);*/
-        Alert alert = new Alert(AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Fijar preferencia de ciudad");
         
-        String city = ciudad.getText();
+        String city = location;
         String cityMin = city.toLowerCase();
         String texto;
         String preferenciaUsuario = FachadaBD.getPreferenciaDeUsuario(username);
         String preferenciaUsuarioMin = preferenciaUsuario.toLowerCase();
         
         if(preferenciaUsuario.equals(" ")) texto = "¿Desea fijar " + city + " como su ciudad de preferencia?";    
-        else if(preferenciaUsuarioMin.equals(cityMin)) texto = "" + city + " ya esta fijada como su ciudad de preferencia";
+        else if(preferenciaUsuarioMin.equals(cityMin)){
+            texto = "" + city + " ya esta fijada como su ciudad de preferencia";
+            alert.setAlertType(AlertType.INFORMATION);
+        }
         else texto = "Actualmente " + preferenciaUsuario + " es su ciudad de preferencia, ¿Desea cambiarla por " + city + "?";
         alert.setHeaderText(texto);
 
@@ -437,6 +443,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         geo();
 
         comprobaciones();
+        
     }
 
     @FXML
