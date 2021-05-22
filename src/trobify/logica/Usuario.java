@@ -21,7 +21,18 @@ public class Usuario {
         this.apellidos = apellidos;
         this.email = email;
         this.foto = foto;
-        this.preferencia = null;
+        this.preferencia = "";
+    }
+    
+    public Usuario(String id, String dni, String password, String nombre, String apellidos, String email, String foto, String preferencia){
+        this.id = id;
+        this.dni = dni;
+        this.password = password;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.foto = foto;
+        this.preferencia = preferencia;
     }
 
     public Usuario() {

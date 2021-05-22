@@ -34,7 +34,7 @@ public class ConectorUsuarioBD extends Conector {
             if (rsl.first()) {
                 return new Usuario(rsl.getString("id"), rsl.getString("dni"),
                         rsl.getString("password"), rsl.getString("nombre"), rsl.getString("apellidos"),
-                        rsl.getString("email"), rsl.getString("foto"));
+                        rsl.getString("email"), rsl.getString("foto"), rsl.getString("preferencia"));
             }
 
         } catch (SQLException ex) {
@@ -64,5 +64,14 @@ public class ConectorUsuarioBD extends Conector {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
+    }
+    
+    public static void actualizarPreferenciaDeUsuario(String preferencia, String id){
+        try {            
+            Statement stm = con.getConnection().createStatement();
+            stm.executeUpdate("UPDATE `usuario` SET `preferencia`='" + preferencia + "' WHERE id = '" + id + "'");            
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

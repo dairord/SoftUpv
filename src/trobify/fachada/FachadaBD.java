@@ -277,5 +277,14 @@ public class FachadaBD {
     public static ArrayList<String> listaUsuariosPorPreferencia(String preferencia) throws SQLException{
         return ConectorUsuarioBD.getUsariosPorPreferencia(preferencia);        
     }
+    
+    public static String getPreferenciaDeUsuario(String id){
+        Usuario u = ConectorUsuarioBD.getUsuario(id);
+        return u.getPreferencia();
+    }
+    
+    public static void updatePreferenciaDeUsuario(String preferencia, String id){
+        ConectorUsuarioBD.actualizarPreferenciaDeUsuario(preferencia, id);
+    }
 
 }

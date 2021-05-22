@@ -20,6 +20,8 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +39,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -406,6 +411,25 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             }
         }
         NotificacionesController.pasarNotis(res);*/
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Fijar preferencia de ciudad");
+        
+        String city = ciudad.getText();
+        String cityMin = city.toLowerCase();
+        String texto;
+        String preferenciaUsuario = FachadaBD.getPreferenciaDeUsuario(username);
+        String preferenciaUsuarioMin = preferenciaUsuario.toLowerCase();
+        
+        if(preferenciaUsuario.equals(" ")) texto = "¿Desea fijar " + city + " como su ciudad de preferencia?";    
+        else if(preferenciaUsuarioMin.equals(cityMin)) texto = "" + city + " ya esta fijada como su ciudad de preferencia";
+        else texto = "Actualmente " + preferenciaUsuario + " es su ciudad de preferencia, ¿Desea cambiarla por " + city + "?";
+        alert.setHeaderText(texto);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            FachadaBD.updatePreferenciaDeUsuario(city, username);
+        }
+        alert.close();
     }
 
     @FXML
