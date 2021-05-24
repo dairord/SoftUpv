@@ -99,16 +99,26 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
         nombreUsuario.setText(username);
         
         direccion();
-        
+        hayNotis();
     }    
    
-     private void hayNotis(){
-        //falta un if con un boolean
-         try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-                 fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+     private void hayNotis() {
+        if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
+            //falta un if con un boolean
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -219,7 +229,44 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     }
 
     @FXML
-    private void notificaciones(ActionEvent event) {
+    private void notificaciones(ActionEvent event) throws IOException {
+         //notificar(null);
+       // ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
+        //ArrayList<String> res = new ArrayList<String>();
+
+        /* ///////////////////////////////////////////////////////////////////
+        Vivienda prueba = new Vivienda();
+        prueba.setCalle("Calle de pruebas");
+        prueba.setActivo(1);
+        viviendasFav.add(prueba);
+        //////////////////////////////////////////////////////////////////*/
+       /* for (int i = 0; i < viviendasFav.size(); i++) {
+
+            if (viviendasFav.get(i).getActivo() == 1) {
+
+                res.add("La vivienda de la " + viviendasFav.get(i).getCalle() + " ya no se encuentra disponible.");
+            }
+        }*/
+        //NotificacionesController.pasarNotis(res);
+
+        NotificacionesController.pasarUsuario(username);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        NotificacionesController.pasarStage(stage);
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
+        
+        try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 
     @Override
