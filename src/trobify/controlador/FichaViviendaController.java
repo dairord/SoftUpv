@@ -119,6 +119,8 @@ public class FichaViviendaController implements Initializable {
     public static String activo;
     @FXML
     private Button desOactBoton;
+    @FXML
+    private Text DireccionViviendaTexto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -165,6 +167,9 @@ public class FichaViviendaController implements Initializable {
                 Logger.getLogger(FavoritosController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        //Mostrar direccion de la casa
+        this.DireccionViviendaTexto.setText(FachadaBD.getVivienda(id).getCalle());
 
         //Mostrar la descripcion de la vivienda
         this.descripcion.setText(FachadaBD.getVivienda(id).getDescripcion());
