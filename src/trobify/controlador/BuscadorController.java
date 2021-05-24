@@ -178,6 +178,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         }
 
         geo();
+        hayNotis();
     } //fin initialice
 
     private void sesionIniciada() {
@@ -668,12 +669,22 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     }
 
     private void hayNotis() {
-        //falta un if con un boolean
-        try {
-            Image image1 = new Image(new FileInputStream("C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\notiActiva.png"));
-            fotoNotificacion.setImage(image1);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+        if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
+            //falta un if con un boolean
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
+                fotoNotificacion.setImage(image1);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

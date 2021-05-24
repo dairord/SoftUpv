@@ -96,7 +96,6 @@ public class RegistrarViviendaController implements Initializable {
     @FXML
     private RadioButton botonFarmacia;
 
-  
     private static Stage st;
     private static String username;
     private static int alquilerOVenta;
@@ -124,7 +123,7 @@ public class RegistrarViviendaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       rellenoComboBox();
+        rellenoComboBox();
 
         //El botón registrar no está disponible hasta rellenar los campos obligatorios
         final BooleanBinding sePuedeBuscar = Bindings.isEmpty(calleField.textProperty())
@@ -195,15 +194,17 @@ public class RegistrarViviendaController implements Initializable {
         direccion();
     }
 
-     private void direccion(){
-        if(vieneDe.equals("inicio"))
-           direccion = "/trobify/views/Inicio.fxml";
-        
-        if(vieneDe.equals("buscador"))
+    private void direccion() {
+        if (vieneDe.equals("inicio")) {
+            direccion = "/trobify/views/Inicio.fxml";
+        }
+
+        if (vieneDe.equals("buscador")) {
             direccion = "/trobify/views/Buscador.fxml";
-       else { //otros sitios de donde pueda venir
-           }
+        } else { //otros sitios de donde pueda venir
+        }
     }
+
     @FXML
     private void atras(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -219,10 +220,10 @@ public class RegistrarViviendaController implements Initializable {
         event.consume();
     }
 
-     public static void deDondeViene (String donde){
-         vieneDe = donde;
+    public static void deDondeViene(String donde) {
+        vieneDe = donde;
     }
-     
+
     @FXML
     private void añadirFoto(ActionEvent event) throws IOException {
         FileChooser imageChooser = new FileChooser();
@@ -259,6 +260,7 @@ public class RegistrarViviendaController implements Initializable {
 
     @FXML
     private void registrar(ActionEvent event) throws IOException {
+        fotos.clear();
         int numero = FachadaBD.numeroViviendas() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
@@ -312,15 +314,18 @@ public class RegistrarViviendaController implements Initializable {
         Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
 
         for (String f : FotosSource) {
+
             fotos.add(new Fotografia(f, id));
         }
 
-      Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
         alerta1.setHeaderText("¿Seguro que desea registrar esta vivienda?");
         Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            FachadaBD.registrarVivienda(vivi, servi, fotos);
 
+            System.out.println(vivi.getId() + " " + fotos.size());
+            FachadaBD.registrarVivienda(vivi, servi, fotos);
+            
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);
             alerta.setHeaderText("Vivienda registrada correctamente.");
             Optional<ButtonType> vale = alerta.showAndWait();
@@ -341,7 +346,7 @@ public class RegistrarViviendaController implements Initializable {
             alerta.close();
         }
         alerta1.close();
-    
+
     }
 
     private void rellenoComboBox() {
@@ -411,6 +416,7 @@ public class RegistrarViviendaController implements Initializable {
 
     @FXML
     private void registrarYPublicar(ActionEvent event) throws IOException, SQLException {
+        fotos.clear();
         int numero = FachadaBD.numeroViviendas() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
@@ -467,15 +473,15 @@ public class RegistrarViviendaController implements Initializable {
             fotos.add(new Fotografia(f, id));
         }
 
-      Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
         alerta1.setHeaderText("¿Seguro que desea registrar y publicar esta vivienda?");
         Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
             FachadaBD.registrarVivienda(vivi, servi, fotos);
             
             Notificacion n = new Notificacion(id, null, null, CiudadField.getText(), new Date(System.currentTimeMillis()), 0, 2);
-            ArrayList<String> users = FachadaBD.listaUsuariosPorPreferencia(CiudadField.getText()); 
-            for(int i = 0; i < users.size(); i++){
+            ArrayList<String> users = FachadaBD.listaUsuariosPorPreferencia(CiudadField.getText());
+            for (int i = 0; i < users.size(); i++) {
                 n.setId_usuario_dest(users.get(i));
                 FachadaBD.añadirNotificacionNoID(n);
             }
@@ -500,8 +506,7 @@ public class RegistrarViviendaController implements Initializable {
             alerta.close();
         }
         alerta1.close();
-    
+
     }
-    
-   
+
 }
