@@ -250,7 +250,7 @@ public class FichaViviendaController implements Initializable {
 
     private void geolocalizacion() {
         //Inicialización del WebView para que se muestre GoogleMaps
-        location = ciudad.getCalle();
+        location = ciudad.getCiudad();
         System.setProperty("java.net.useSystemProxies", "true");
         googleMaps = getClass().getResource("GeoPrueba.html");
         engine = mapa.getEngine();

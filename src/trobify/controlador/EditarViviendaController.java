@@ -305,7 +305,7 @@ public class EditarViviendaController implements Initializable {
     @FXML
     private void registrar(ActionEvent event) throws IOException {
          Alert alerta1 = new Alert (Alert.AlertType.CONFIRMATION);
-        alerta1.setHeaderText("Seguro que quieres actul¡alizar la vivienda?");
+        alerta1.setHeaderText("Seguro que quieres actualizar la vivienda?");
         Optional<ButtonType> aceptar = alerta1.showAndWait();
         if(aceptar.isPresent() && aceptar.get().equals(ButtonType.OK)) {
                 Vivienda viviActualizada = viviendaActualizada();
