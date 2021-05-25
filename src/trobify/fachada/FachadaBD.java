@@ -286,5 +286,9 @@ public class FachadaBD {
     public static void updatePreferenciaDeUsuario(String preferencia, String id){
         ConectorUsuarioBD.actualizarPreferenciaDeUsuario(preferencia, id);
     }
+    
+    public static String getAgenciaAgente(String id_usuario){
+        return ConectorAgenciaBD.getAgenciaAgente(id_usuario);
+    }
 
 }

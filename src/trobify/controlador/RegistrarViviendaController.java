@@ -308,8 +308,14 @@ public class RegistrarViviendaController implements Initializable {
         if (FotosSource.isEmpty()) {
             FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");
         }
+        
+        String agencia = FachadaBD.getAgenciaAgente(username);
+        
+        if(agencia.equals("")){
+            agencia = "ninguna";
+        }
 
-        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, "ninguna", precio, username, tipo, baños, habitaciones,
+        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, agencia, precio, username, tipo, baños, habitaciones,
                 descripcionField.getText(), piso, numeroField.getText(), codigo, 0);
         Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
 
@@ -464,8 +470,14 @@ public class RegistrarViviendaController implements Initializable {
         if (FotosSource.isEmpty()) {
             FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");
         }
+        
+        String agencia = FachadaBD.getAgenciaAgente(username);
+        
+        if(agencia.equals("")){
+            agencia = "ninguna";
+        }
 
-        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, "ninguna", precio, username, tipo, baños, habitaciones,
+        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, agencia, precio, username, tipo, baños, habitaciones,
                 descripcionField.getText(), piso, numeroField.getText(), codigo, 1);
         Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
 

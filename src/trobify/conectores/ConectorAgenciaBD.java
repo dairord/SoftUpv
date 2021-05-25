@@ -31,4 +31,19 @@ public class ConectorAgenciaBD extends Conector{
                         + a.getUsername() +"','" + a.getAgencia() + "')";
        consultaVoid(sql);
    }
+   
+   public static String getAgenciaAgente(String id_usuario){
+       try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("select agencia from agente where username = '" + id_usuario + " '");
+            if (rsl.first()) {
+                return rsl.getString("agencia");
+            }
+
+        } catch (SQLException ex) {
+            return "";
+        }
+
+        return "";
+   }
 }
