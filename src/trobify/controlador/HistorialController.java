@@ -76,7 +76,7 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
      
       private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda) throws FileNotFoundException{
        
-        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, 1);  
+        javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, 1);  
      
        return miniatura;
 
@@ -138,7 +138,8 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
     }
 
     @Override
-    public javafx.scene.layout.VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, javafx.scene.layout.VBox datos, int alquilada) {
+    public javafx.scene.layout.VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, 
+                                                                            javafx.scene.layout.VBox datos, int alquilada) {
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
         javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
         

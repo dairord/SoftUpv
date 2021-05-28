@@ -123,7 +123,7 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, String activo) throws FileNotFoundException{
       
-        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, activo, 0, 1);  
+        javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, activo, 0, 1);  
 
         return miniatura;
     }

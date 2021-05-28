@@ -547,7 +547,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
 
     //generador de miniaturas
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int alquilada) throws FileNotFoundException {
-         javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, alquilada);
+         javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, alquilada);
         return miniatura;
     }
 

@@ -125,7 +125,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     //Generador de miniauras
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int valoracionVivienda) throws FileNotFoundException{
         
-        javafx.scene.layout.HBox miniatura = crearMini(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", valoracionVivienda, 1);
+        javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", valoracionVivienda, 1);
         return miniatura;
     }
     
