@@ -25,11 +25,6 @@ public class ConectorFotosBD extends Conector {
         consultaVoid(sql);
     }
     
-    public static void añadirConjuntoFotos (ArrayList <Fotografia> fotos) {
-        for(Fotografia f: fotos) {
-            añadirFotografia(f);
-        }
-    }
     
       public static Fotografia getFotografia(String id) {
         try {
@@ -53,5 +48,22 @@ public class ConectorFotosBD extends Conector {
         } else {
             return "C:\\Users\\gabri\\Desktop\\gabri\\SoftUpv\\src\\trobify\\images\\foto0.jpeg";
         }
+    }
+      
+    public static ArrayList<Fotografia> getListaFotos(String id){
+         ArrayList<Fotografia> listaFotos = new ArrayList();
+        try {
+            Statement stm = con.getConnection().createStatement();
+            ResultSet rsl = stm.executeQuery("SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'");
+            if (rsl.isBeforeFirst()) {
+                
+                while (rsl.next()) {
+                    listaFotos.add(new Fotografia(rsl.getString("id"), id));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFotos;
     }
 }

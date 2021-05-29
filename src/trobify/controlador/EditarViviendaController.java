@@ -185,7 +185,7 @@ public class EditarViviendaController implements Initializable {
         else ComprarAlquilar.getSelectionModel().select("Alquilar");
     }
     private void mostrarServicios(){
-        Servicios servi = FachadaBD.getServicios(id);
+        Servicios servi = vivi.getServicios();
         if(servi.getSupermercado()==1) botonSupermercado.selectedProperty().set(true);
         if(servi.getTransporte_publico()==1) BotonTransportePublico.selectedProperty().set(true);
         if(servi.getBanco()==1) botonBanco.selectedProperty().set(true);
@@ -309,8 +309,8 @@ public class EditarViviendaController implements Initializable {
         Optional<ButtonType> aceptar = alerta1.showAndWait();
         if(aceptar.isPresent() && aceptar.get().equals(ButtonType.OK)) {
                 Vivienda viviActualizada = viviendaActualizada();
-                Servicios servActualizado = serviciosActualizados();
-                FachadaBD.actualiarVivienda(viviActualizada, servActualizado);
+                viviActualizada.setServicios(serviciosActualizados());
+                FachadaBD.actualiarVivienda(viviActualizada);
             
                 Alert alerta2 = new Alert (Alert.AlertType.INFORMATION);
                     alerta2.setHeaderText("Vivienda actualizada correctamente");

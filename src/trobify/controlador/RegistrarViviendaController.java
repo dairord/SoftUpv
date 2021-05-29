@@ -323,6 +323,8 @@ public class RegistrarViviendaController implements Initializable {
 
             fotos.add(new Fotografia(f, id));
         }
+        vivi.setServicios(servi);
+        vivi.setFotos(fotos);
 
         Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
         alerta1.setHeaderText("¿Seguro que desea registrar esta vivienda?");
@@ -330,7 +332,7 @@ public class RegistrarViviendaController implements Initializable {
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
 
             System.out.println(vivi.getId() + " " + fotos.size());
-            FachadaBD.registrarVivienda(vivi, servi, fotos);
+            FachadaBD.registrarVivienda(vivi);
             
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);
             alerta.setHeaderText("Vivienda registrada correctamente.");
@@ -476,20 +478,23 @@ public class RegistrarViviendaController implements Initializable {
         if(agencia.equals("")){
             agencia = "ninguna";
         }
-
-        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, agencia, precio, username, tipo, baños, habitaciones,
-                descripcionField.getText(), piso, numeroField.getText(), codigo, 1);
-        Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
+        
+         Servicios servi = new Servicios(id, supermercado, transportePublico, banco, estanco, centroComercial, gimnasio, farmacia);
 
         for (String f : FotosSource) {
             fotos.add(new Fotografia(f, id));
         }
 
+        Vivienda vivi = new Vivienda(id, calleField.getText(), CiudadField.getText(), alquilerOVenta, agencia, precio, username, tipo, baños, habitaciones,
+                descripcionField.getText(), piso, numeroField.getText(), codigo, 1);
+        vivi.setServicios(servi);
+        vivi.setFotos(fotos);
+       
         Alert alerta1 = new Alert(Alert.AlertType.CONFIRMATION);
         alerta1.setHeaderText("¿Seguro que desea registrar y publicar esta vivienda?");
         Optional<ButtonType> ok = alerta1.showAndWait();
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-            FachadaBD.registrarVivienda(vivi, servi, fotos);
+            FachadaBD.registrarVivienda(vivi);
             
             Notificacion n = new Notificacion(id, null, null, CiudadField.getText(), new Date(System.currentTimeMillis()), 0, 2);
             ArrayList<String> users = FachadaBD.listaUsuariosPorPreferencia(CiudadField.getText());

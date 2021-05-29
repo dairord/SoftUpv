@@ -25,6 +25,7 @@ import trobify.logica.Favoritos;
 import trobify.logica.Filtros;
 import trobify.logica.Fotografia;
 import trobify.logica.Historial;
+import trobify.logica.IIterator;
 import trobify.logica.Notificacion;
 import trobify.logica.Servicios;
 import trobify.logica.Usuario;
@@ -60,7 +61,10 @@ public class FachadaBD {
     }
 
     public static Vivienda getVivienda(String id) {
-        return ConectorViviendaBD.getVivienda(id);
+        Vivienda viv = ConectorViviendaBD.getVivienda(id);
+        viv.setServicios(ConectorServiciosBD.getServicios(id));
+        viv.setFotos(ConectorFotosBD.getListaFotos(id));
+        return viv;
     }
 
     public static Servicios getServicios(String id) {
@@ -71,9 +75,9 @@ public class FachadaBD {
         ConectorViviendaBD.añadirFotografia(idFotoBD, id);
     }
 
-    public static void actualiarVivienda(Vivienda viviActualizada, Servicios servActualizado) {
+    public static void actualiarVivienda(Vivienda viviActualizada) {
         ConectorViviendaBD.actualizarVivienda(viviActualizada);
-        ConectorServiciosBD.acualizarServicios(servActualizado);
+        ConectorServiciosBD.acualizarServicios(viviActualizada.getServicios());
     }
 
     public static ArrayList<String> crearListaFotos(String id) {
@@ -84,10 +88,14 @@ public class FachadaBD {
         ConectorViviendaBD.eliminarFoto(rutaFoto, id);
     }
 
-    public static void registrarVivienda(Vivienda v, Servicios s, ArrayList<Fotografia> fotos) {
+    public static void registrarVivienda(Vivienda v) {
         ConectorViviendaBD.añadirVivienda(v);
-        ConectorServiciosBD.añadirServicios(s);
-        ConectorFotosBD.añadirConjuntoFotos(fotos);
+        ConectorServiciosBD.añadirServicios(v.getServicios());
+        IIterator it = v.createIterator();
+        while(it.hasNext()){
+            ConectorFotosBD.añadirFotografia((Fotografia) it.currentObject());
+            it.next();
+        }
     }
 
     public static int numeroViviendas() {

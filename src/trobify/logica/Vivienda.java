@@ -5,11 +5,16 @@
  */
 package trobify.logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author dairo
  */
-public class Vivienda {
+public class Vivienda implements IContainer{
+
+    public Vivienda() {
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -71,6 +76,16 @@ public class Vivienda {
         this.activo = activo;
     }
 
+    public void setServicios(Servicios servicios) {
+        this.servicios = servicios;
+    }
+
+    public void setFotos(ArrayList<Fotografia> fotos) {
+        this.fotos = fotos;
+    }
+    
+    
+
     public String getId() {
         return id;
     }
@@ -131,9 +146,43 @@ public class Vivienda {
         return activo;
     }
 
+    public Servicios getServicios() {
+        return servicios;
+    }
+
+    public ArrayList<Fotografia> getFotos() {
+        return fotos;
+    }
+    
+    
+
     private String id, calle, ciudad, descripcion, id_agencia, id_propietario, puerta;
     private int ventaAlquiler, precio, tipo, baños,
             habitaciones, piso, codigo_postal, activo;
+    private Servicios servicios;
+    private ArrayList<Fotografia> fotos;
+
+    public Vivienda(String id, String calle, String ciudad, String descripcion, String id_agencia, String id_propietario, String puerta, int ventaAlquiler, int precio, int tipo, int baños, int habitaciones, int piso, int codigo_postal, int activo, Servicios servicios, ArrayList<Fotografia> fotos) {
+        this.id = id;
+        this.calle = calle;
+        this.ciudad = ciudad;
+        this.descripcion = descripcion;
+        this.id_agencia = id_agencia;
+        this.id_propietario = id_propietario;
+        this.puerta = puerta;
+        this.ventaAlquiler = ventaAlquiler;
+        this.precio = precio;
+        this.tipo = tipo;
+        this.baños = baños;
+        this.habitaciones = habitaciones;
+        this.piso = piso;
+        this.codigo_postal = codigo_postal;
+        this.activo = activo;
+        this.servicios = servicios;
+        this.fotos = fotos;
+    }
+    
+    
 
     public Vivienda(String id, String calle, String ciudad, int ventaAlquiler, String id_agencia, int precio, String id_propietario, int tipo, int baños, int habitaciones, String descripcion, int piso, String puerta, int codigo_postal, int activo) {
         this.id = id;
@@ -153,7 +202,38 @@ public class Vivienda {
         this.activo = activo;
     }
 
-    public Vivienda() {
+    @Override
+    public IIterator createIterator() {
+        IteratorFotos result = new IteratorFotos();
+        return result;
     }
 
+    public class IteratorFotos implements IIterator {
+        
+        private int position = 0;
+        
+        @Override
+        public boolean hasNext() {
+            if (position < fotos.size()) {return true;}
+           else {return false;}
+        }
+
+        @Override
+        public void next() {
+            if(this.hasNext()) {
+                position++;
+            }
+        }
+
+        @Override
+        public Object currentObject() {
+            return fotos.get(position);
+        }
+
+        @Override
+        public void first() {
+            position = 0;
+        }
+    
+    }
 }
