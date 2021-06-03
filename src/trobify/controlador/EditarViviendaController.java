@@ -13,7 +13,6 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -89,8 +88,7 @@ public class EditarViviendaController implements Initializable {
     private RadioButton botonBanco;
     @FXML
     private RadioButton botonFarmacia;
-    @FXML
-    private Button registrarBoton;
+   
 
     private static Stage st;
     private static String username;

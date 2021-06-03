@@ -21,8 +21,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import trobify.fachada.FachadaBD;
-import trobify.logica.Vivienda;
+
 
 /**
  *
@@ -57,6 +56,7 @@ public abstract class GeneradorMiniaturas {
             FichaViviendaController.pasarUsuario(username);
             FichaViviendaController.pasarStage(stage);
         try {
+            cambiarPantalla();
             scene = new Scene(fxmlLoader.load());
                 stage.setScene(scene);
                 stage.setTitle("Trobify");

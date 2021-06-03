@@ -7,12 +7,7 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
@@ -22,15 +17,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import trobify.conectores.Conectar;
 import trobify.logica.Usuario;
 import trobify.conectores.ConectorUsuarioBD;
@@ -45,8 +37,7 @@ public class RegistrarUsuarioController implements Initializable {
 
     @FXML
     private CheckBox agenteCheck;
-    @FXML
-    private Button foto;
+
 
     Conectar con;
     private static Stage st;
@@ -77,8 +68,7 @@ public class RegistrarUsuarioController implements Initializable {
     private TextField email;
     @FXML
     private Label dniError;
-    @FXML
-    private Label emailError;
+  
     
     
     /**
@@ -87,13 +77,50 @@ public class RegistrarUsuarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-    //ruta para volver atras
-        if(vieneDe.equals("buscador")){ 
-           direccion = "/trobify/views/Buscador.fxml";
+        direccion();
+        botonRegistrarseApagado();
+        nombreSoloLetras();
+        apellidoSoloLetras();
+        formatoDni();
+         
+    }  //fin initialize  
+
+    private void formatoDni(){
+          dni.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number valorAnterior, Number valorActual) -> {
+            if (valorActual.intValue() > valorAnterior.intValue()) {
+                // Revisa que la longitud del texto no sea mayor a la variable definida.
+                if (dni.getText().length() >= 9) {
+                    dni.setText(dni.getText().substring(0, 9));
+                }
             }
-       else {direccion = "/trobify/views/Inicio.fxml";
-           }
+        });
+    }
     
+    private void apellidoSoloLetras(){
+    apellidos.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
+                    apellidos.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
+                }
+            }
+        });
+    }
+    
+    private void nombreSoloLetras(){
+     nombre.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                if (!newValue.matches("\\sa-zA-Z*")) {
+                    nombre.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
+                }
+            }
+        });
+    }
+    
+    private void botonRegistrarseApagado(){
     //boton registrar desactivado hasta que haya datos
          final BooleanBinding sePuedeBuscar = Bindings.isEmpty(username.textProperty())
                .or(Bindings.isEmpty(contraseña.textProperty()))
@@ -105,37 +132,17 @@ public class RegistrarUsuarioController implements Initializable {
                  
                  ;
          registrarmeBoton.disableProperty().bind(sePuedeBuscar);
-     
-         nombre.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                    String newValue) {
-                if (!newValue.matches("\\sa-zA-Z*")) {
-                    nombre.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
-                }
+    }
+    
+   private void direccion(){
+   //ruta para volver atras
+        if(vieneDe.equals("buscador")){ 
+           direccion = "/trobify/views/Buscador.fxml";
             }
-        });
-         
-         apellidos.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                    String newValue) {
-                if (!newValue.matches("\\sa-zA-Z*")) {
-                    apellidos.setText(newValue.replaceAll("[^\\sa-zA-Z*]", ""));
-                }
-            }
-        });
-         
-        dni.lengthProperty().addListener((ObservableValue<? extends Number> observable, Number valorAnterior, Number valorActual) -> {
-            if (valorActual.intValue() > valorAnterior.intValue()) {
-                // Revisa que la longitud del texto no sea mayor a la variable definida.
-                if (dni.getText().length() >= 9) {
-                    dni.setText(dni.getText().substring(0, 9));
-                }
-            }
-        });
-    }    
-
+       else {direccion = "/trobify/views/Inicio.fxml";
+           }
+   }
+   
    private boolean errorContraseña(){
        if(!contraseña.getText().equals(repetirContraseña.getText())) {
            repetirContraseña.setText("");

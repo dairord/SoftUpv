@@ -299,4 +299,7 @@ public class FachadaBD {
         return ConectorAgenciaBD.getAgenciaAgente(id_usuario);
     }
 
+    public static boolean getNotificacionesCliente (String username){
+        return ConectorNotificacionBD.consultaBoolean(username);
+    }
 }

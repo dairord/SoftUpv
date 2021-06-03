@@ -43,7 +43,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import static jdk.nashorn.internal.objects.NativeArray.forEach;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Fotografia;
 import trobify.logica.Notificacion;

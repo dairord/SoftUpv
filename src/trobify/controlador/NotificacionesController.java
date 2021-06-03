@@ -8,25 +8,17 @@ package trobify.controlador;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Notificacion;
 import trobify.logica.Vivienda;
@@ -42,10 +34,10 @@ public class NotificacionesController implements Initializable {
     private ListView<String> lista;
     private static Stage st;
     private static String username;
-    Conectar con;
-    private String[] viviendas;
+    
+
     ArrayList<String> favList;
-    private static String notis;
+    
     private static ObservableList listaNotis;
     // private static ArrayList<Notificacion> notificaciones;
     @FXML
@@ -129,25 +121,7 @@ public class NotificacionesController implements Initializable {
     }
 
     public boolean consulta() {
-        Statement s;
-        try {
-            s = con.getConnection().createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM `favoritos` WHERE `id_cliente` = '" + username + "' AND `id` IN (SELECT `id` FROM `vivienda` WHERE `activo` = 1)");
-            if (rs.first()) {
-                rs.beforeFirst();
-                while (rs.next()) {
-                    //System.out.println("hay algo");
-                    //  favList.add("hola");
-                }
-
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+       return FachadaBD.getNotificacionesCliente(username);
     }
 
     public static void pasarUsuario(String u) {

@@ -81,4 +81,6 @@ public class Usuario {
     public void setPreferencia(String preferencia) {
         this.preferencia = preferencia;
     }
+
+   
 }

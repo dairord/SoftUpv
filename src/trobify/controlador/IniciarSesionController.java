@@ -7,12 +7,8 @@ package trobify.controlador;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
@@ -25,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 
 /**
@@ -50,7 +45,7 @@ public class IniciarSesionController implements Initializable {
     private String pas;
     private static String vieneDe;
     private String direccion;
-    private String dondeVa;
+
     
     /**
      * Initializes the controller class.
@@ -66,9 +61,9 @@ public class IniciarSesionController implements Initializable {
        
        if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";
-            dondeVa = "BuscadorController";}
+            }
        else {direccion = "/trobify/views/Inicio.fxml";
-            dondeVa = "InicioController";}
+            }
     }    
 
     @FXML

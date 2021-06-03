@@ -5,18 +5,11 @@
  */
 package trobify.controlador;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -30,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -38,18 +30,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javax.swing.JFrame;
-import trobify.conectores.Conectar;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Mensaje;
-import trobify.logica.Vivienda;
 
 /**
  * FXML Controller class
@@ -90,21 +78,8 @@ public class InicioController implements Initializable {
     @FXML
     private HBox iniciado;
     @FXML
-    private Button misViviendasBoton;
-    @FXML
-    private Label agente;
-    @FXML
-    private Button registrarV;
-    @FXML
-    private Button favoritos;
-    @FXML
-    private Button mensajes;
-    @FXML
-    private Button notificaciones;
-    @FXML
     private ImageView fotoNotificacion;
-    @FXML
-    private Button reportarErroreresBoton;
+   
 
     /**
      * Initializes the controller class.
@@ -115,34 +90,30 @@ public class InicioController implements Initializable {
         //si está iniciado sesión
         iniciado.setVisible(false);
         bienvenido();
+        rellenoComboBox();
+        hayNotis();
 
-        //tipos de viviendas gabri
+    }
+
+    private void rellenoComboBox(){
+        //tipos de vivienda 
         ArrayList<String> tiposViviendas = new ArrayList<String>();
         tiposViviendas.add("Indiferente");
         tiposViviendas.add("Piso");
         tiposViviendas.add("Casa");
-
+        
         ObservableList<String> viviendas = FXCollections.observableList(tiposViviendas);
         tipo.setItems(viviendas);
-
-        //comprar alquilar o compartir gabri
-        ArrayList<String> queHacer = new ArrayList<String>();
+        
+        //venta o alguiler
+         ArrayList<String> queHacer = new ArrayList<String>();
         queHacer.add("Comprar");
         queHacer.add("Alquilar");
 
         ObservableList<String> caoc = FXCollections.observableList(queHacer);
         queBuscas.setItems(caoc);
-
-        //activar y desactivar boton buscar gabri
-        final BooleanBinding sePuedeBuscar = Bindings.isEmpty(ciudadText.textProperty())
-                .or(Bindings.isNull(tipo.getSelectionModel().selectedItemProperty()))
-                .or(Bindings.isNull(queBuscas.getSelectionModel().selectedItemProperty()));
-        buscarBoton.disableProperty().bind(sePuedeBuscar);
-        
-        hayNotis();
-
     }
-
+    
     private void hayNotis() {
         if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
             //falta un if con un boolean

@@ -10,17 +10,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,7 +20,6 @@ import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +28,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -51,12 +41,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -99,21 +85,19 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     private static Stage s;
     private static String ciu;
     private static String tip;
-    private static int alqOVen;
+    private static int alquilarOVender;
     ArrayList<String> viviendasList;
-    private static String usuario;
+   
     //conexion
     Conectar con;
     @FXML
     private Label entradaText;
     @FXML
     private Label salidaText;
-    @FXML
-    private Button buscarBoton;
+    
     @FXML
     private Button botonGuardarFiltros;
-    @FXML
-    private Label errorText;
+    
     @FXML
     private VBox listaViviendas;
     @FXML
@@ -161,8 +145,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Crear una conexion
-
+       
         //lista con las viviendas a mostrar
         viviendasList = new ArrayList();
 
@@ -241,7 +224,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         fechaSalida.disableProperty().bind(sePuedePonerFecha);
 
         //si es comprar no salen las fechas
-        if (alqOVen == 1) {
+        if (alquilarOVender == 1) {
             entradaText.setVisible(false);
             salidaText.setVisible(false);
             fechaEntrada.setVisible(false);
@@ -269,7 +252,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         ordenarPor.getSelectionModel().selectFirst();
 
         //variacion fechas
-        if (alqOVen != 1) {
+        if (alquilarOVender != 1) {
             ArrayList<String> varf = new ArrayList<String>();
             varf.add("Fechas exactas");
             varf.add("± 1 dia");
@@ -294,7 +277,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             wait(500);
         } catch (Exception ex) {
         }
-        ArrayList<Vivienda> listaCiudad = FachadaBD.viviendasEnCiudad(ciudad.getText(), alqOVen);
+        ArrayList<Vivienda> listaCiudad = FachadaBD.viviendasEnCiudad(ciudad.getText(), alquilarOVender);
         try {
             for (int i = 0; i < listaCiudad.size(); i++) {
                 if (listaCiudad.get(i).getPrecio() >= Integer.parseInt(precioMin.getText()) && listaCiudad.get(i).getPrecio() <= Integer.parseInt(precioMax.getText())) {
@@ -381,7 +364,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         int pMax = Integer.parseInt(precioMax.getText());
         int baños = Integer.parseInt(numBaños.getText());
         int habitaciones = Integer.parseInt(numHabitaciones.getText());
-        Filtros f = new Filtros(username, ciudad.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), tipo, pMin, pMax, habitaciones, baños, alqOVen);
+        Filtros f = new Filtros(username, ciudad.getText(), fechaEntrada.getValue(), fechaSalida.getValue(), tipo, pMin, pMax, habitaciones, baños, alquilarOVender);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/MantenerFiltros.fxml"));
         MantenerFiltrosController.pasarFiltrosBuscar(f);
@@ -475,7 +458,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     public static void pasarFiltrosInicio(String c, String t, int queBuscas) {
         ciu = c;
         tip = t;
-        alqOVen = queBuscas;
+        alquilarOVender = queBuscas;
     }
 
     public static void pasarLocalizacion(String local) {
@@ -541,7 +524,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     //metodo nuevo de sql
     private void consulta() throws SQLException {
         ciu = ciudad.getText();
-        viviendasList = FachadaBD.consultaBuscador(ciu, alqOVen, tipo, pMin, pMax, baños, habita, comoOrdenar);
+        viviendasList = FachadaBD.consultaBuscador(ciu, alquilarOVender, tipo, pMin, pMax, baños, habita, comoOrdenar);
         ordenarLista();
     }//fin consulta
 

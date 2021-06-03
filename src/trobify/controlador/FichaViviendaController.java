@@ -219,6 +219,7 @@ public class FichaViviendaController implements Initializable {
     }
     
     public void direccion(){
+        System.out.println(deDondeViene);
         if (deDondeViene.equals("favoritos")) {
             aDondeVa = "/trobify/views/Favoritos.fxml";
         }

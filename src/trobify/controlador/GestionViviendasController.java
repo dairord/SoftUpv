@@ -5,7 +5,7 @@
  */
 package trobify.controlador;
 
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -28,14 +28,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Vivienda;
@@ -61,7 +56,7 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     private ArrayList<String> misViviendas;
     private String activo;
     private String textoBoton;
-    private ImageView fotoNotificacion;
+ 
    
     /**
      * Initializes the controller class.

@@ -106,4 +106,25 @@ public class ConectorNotificacionBD extends Conector{
         consultaVoid(sql);
     }
 
+    public boolean consulta(String username) {
+        Statement s;
+        try {
+            s = con.getConnection().createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM `favoritos` WHERE `id_cliente` = '" + username + "' AND `id` IN (SELECT `id` FROM `vivienda` WHERE `activo` = 1)");
+            if (rs.first()) {
+                rs.beforeFirst();
+                while (rs.next()) {
+                    //System.out.println("hay algo");
+                    //  favList.add("hola");
+                }
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }
