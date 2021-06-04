@@ -32,7 +32,7 @@ public class Conectar {
         }
     }
     
-    public static Conectar conexion(){
+    public static Conectar crearConexion(){
         if (con == null){
             con = new Conectar();
         }

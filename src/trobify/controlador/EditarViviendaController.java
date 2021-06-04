@@ -261,7 +261,7 @@ public class EditarViviendaController implements Initializable {
         mostrarFotos();
     }
     
-    private Vivienda viviendaActualizada(){
+    private Vivienda crearViviendaConDatosActualizados(){
         int compOalq = 0;
         if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Vender")) compOalq = 1;
         if(ComprarAlquilar.getSelectionModel().getSelectedItem().equals("Alquilar")) compOalq = 2;
@@ -306,7 +306,7 @@ public class EditarViviendaController implements Initializable {
         alerta1.setHeaderText("Seguro que quieres actualizar la vivienda?");
         Optional<ButtonType> aceptar = alerta1.showAndWait();
         if(aceptar.isPresent() && aceptar.get().equals(ButtonType.OK)) {
-                Vivienda viviActualizada = viviendaActualizada();
+                Vivienda viviActualizada = crearViviendaConDatosActualizados();
                 viviActualizada.setServicios(serviciosActualizados());
                 FachadaBD.actualiarVivienda(viviActualizada);
             

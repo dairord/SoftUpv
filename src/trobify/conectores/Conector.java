@@ -19,7 +19,7 @@ import trobify.controlador.InicioController;
  */
 abstract class Conector {
   
-    public static Conectar con = Conectar.conexion();
+    public static Conectar con = Conectar.crearConexion();
     
     final public static boolean consultaBoolean(String sql){
         try {

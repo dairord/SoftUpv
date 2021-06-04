@@ -21,9 +21,9 @@ public class PruebasUnitarias {
     public static boolean probarSingleton() {
         Conectar con1, con2;
 
-        con1 = Conectar.conexion();
+        con1 = Conectar.crearConexion();
 
-        con2 = Conectar.conexion();
+        con2 = Conectar.crearConexion();
 
         if (con1.equals(con2)) {
             return true;
