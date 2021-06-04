@@ -132,7 +132,7 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
     public javafx.scene.layout.VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, 
                                                                             javafx.scene.layout.VBox datos, int alquilada) {
         javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + " €");
         
         datos.getChildren().addAll(calle,precio);
         return datos;

@@ -87,17 +87,17 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     private static String tip;
     private static int alquilarOVender;
     ArrayList<String> viviendasList;
-   
+
     //conexion
     Conectar con;
     @FXML
     private Label entradaText;
     @FXML
     private Label salidaText;
-    
+
     @FXML
     private Button botonGuardarFiltros;
-    
+
     @FXML
     private VBox listaViviendas;
     @FXML
@@ -145,7 +145,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+
         //lista con las viviendas a mostrar
         viviendasList = new ArrayList();
 
@@ -180,7 +180,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             botonGuardarFiltros.setVisible(false);
             registrarV.setVisible(false);
             misViviBoton.setVisible(false);
-            notificarNuevasBoton.setVisible(false); 
+            notificarNuevasBoton.setVisible(false);
         }
     }
 
@@ -277,16 +277,22 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             wait(500);
         } catch (Exception ex) {
         }
-        ArrayList<Vivienda> listaCiudad = FachadaBD.viviendasEnCiudad(ciudad.getText(), alquilarOVender);
+        ArrayList<Vivienda> listaCiudad = new ArrayList<Vivienda>();
+        for (int i = 0; i < viviendasList.size(); i++) {
+            listaCiudad.add(FachadaBD.getVivienda(viviendasList.get(i)));
+        }
+
         try {
             for (int i = 0; i < listaCiudad.size(); i++) {
                 if (listaCiudad.get(i).getPrecio() >= Integer.parseInt(precioMin.getText()) && listaCiudad.get(i).getPrecio() <= Integer.parseInt(precioMax.getText())) {
+
                     listarGeoPunto(listaCiudad.get(i), i);
                 }
             }
         } catch (Exception ex) {
-            for (int i = 0; i < listaCiudad.size(); i++) {
 
+            for (int i = 0; i < listaCiudad.size(); i++) {
+                System.out.println(listaCiudad.get(i).getCalle());
                 listarGeoPunto(listaCiudad.get(i), i);
 
             }
@@ -400,23 +406,25 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         NotificacionesController.pasarNotis(res);*/
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Fijar preferencia de ciudad");
-        
+
         String city = location;
         String cityMin = city.toLowerCase();
         String texto;
         String preferenciaUsuario = FachadaBD.getPreferenciaDeUsuario(username);
         String preferenciaUsuarioMin = preferenciaUsuario.toLowerCase();
-        
-        if(preferenciaUsuario.equals(" ")) texto = "¿Desea fijar " + city + " como su ciudad de preferencia?";    
-        else if(preferenciaUsuarioMin.equals(cityMin)){
+
+        if (preferenciaUsuario.equals(" ")) {
+            texto = "¿Desea fijar " + city + " como su ciudad de preferencia?";
+        } else if (preferenciaUsuarioMin.equals(cityMin)) {
             texto = "" + city + " ya esta fijada como su ciudad de preferencia";
             alert.setAlertType(AlertType.INFORMATION);
+        } else {
+            texto = "Actualmente " + preferenciaUsuario + " es su ciudad de preferencia, ¿Desea cambiarla por " + city + "?";
         }
-        else texto = "Actualmente " + preferenciaUsuario + " es su ciudad de preferencia, ¿Desea cambiarla por " + city + "?";
         alert.setHeaderText(texto);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             FachadaBD.updatePreferenciaDeUsuario(city, username);
         }
         alert.close();
@@ -427,7 +435,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
         geo();
 
         comprobaciones();
-        
+
     }
 
     @FXML
@@ -525,12 +533,13 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     private void consulta() throws SQLException {
         ciu = ciudad.getText();
         viviendasList = FachadaBD.consultaBuscador(ciu, alquilarOVender, tipo, pMin, pMax, baños, habita, comoOrdenar);
+        geo();
         ordenarLista();
     }//fin consulta
 
     //generador de miniaturas
     private javafx.scene.layout.HBox crearMiniatura(String id, String rutaFoto, String nombreCalle, int precioVivienda, int alquilada) throws FileNotFoundException {
-         javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, alquilada);
+        javafx.scene.layout.HBox miniatura = crearMiniaturas(id, rutaFoto, nombreCalle, precioVivienda, username, "nada", 0, alquilada);
         return miniatura;
     }
 
@@ -602,11 +611,9 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     private void notifica(ActionEvent event) throws IOException {
         //notificar(null);
         //ArrayList<Vivienda> viviendasFav = FachadaBD.favoritosUsuario(username);
-       // ArrayList<String> res = new ArrayList<String>();
+        // ArrayList<String> res = new ArrayList<String>();
 
-        
-      //  NotificacionesController.pasarNotis(res);
-
+        //  NotificacionesController.pasarNotis(res);
         NotificacionesController.pasarUsuario(username);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Notificaciones.fxml"));
@@ -660,8 +667,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(BuscadorController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
+        } else {
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notificacion.jpg"));
                 fotoNotificacion.setImage(image1);
@@ -674,19 +680,19 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     @FXML
     private void historial(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-         fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
-         HistorialController.pasarUsuario(username);
-         HistorialController.deDondeViene("buscador");
-         s.close();
-            Stage stage = new Stage();
-            Scene scene = new Scene (fxmlLoader.load());
-            HistorialController.pasarStage(stage);
-            
-            //añadir todos los controller a los que podria ir
-            stage.setScene(scene);
-            stage.setTitle("Trobify");
-            stage.show();
-            event.consume();  
+        fxmlLoader.setLocation(getClass().getResource("/trobify/views/Historial.fxml"));
+        HistorialController.pasarUsuario(username);
+        HistorialController.deDondeViene("buscador");
+        s.close();
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        HistorialController.pasarStage(stage);
+
+        //añadir todos los controller a los que podria ir
+        stage.setScene(scene);
+        stage.setTitle("Trobify");
+        stage.show();
+        event.consume();
     }
 
     @Override
@@ -706,7 +712,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
 
     @Override
     public VBox crearBoton(String id) {
-       return null;
+        return null;
     }
 
     @Override
@@ -717,8 +723,8 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
 
     @Override
     public void cambiarPantalla() {
-         FichaViviendaController.deDondeViene("buscador");
-            s.close();
+        FichaViviendaController.deDondeViene("buscador");
+        s.close();
     }
 
 }// fin clase

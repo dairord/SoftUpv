@@ -34,10 +34,9 @@ public class NotificacionesController implements Initializable {
     private ListView<String> lista;
     private static Stage st;
     private static String username;
-    
 
     ArrayList<String> favList;
-    
+
     private static ObservableList listaNotis;
     // private static ArrayList<Notificacion> notificaciones;
     @FXML
@@ -51,11 +50,15 @@ public class NotificacionesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        init();
+// favList = new ArrayList();
+    }
+
+    public void init() {
         listaNotis = FXCollections.observableList(new ArrayList<String>());
         notificaciones = FachadaBD.getNotificacionPorUsuario(username);
         gestorNotis(notificaciones);
         lista.setItems(listaNotis);
-        // favList = new ArrayList(); 
     }
 
     private void gestorNotis(ArrayList<Notificacion> notifi) {
@@ -96,9 +99,9 @@ public class NotificacionesController implements Initializable {
                             break;
                     }
                     break;
-                    
+
                 case 2:
-                    
+
                     res = "Nueva vivienda disponible en " + viv.getCiudad();
                     listaNotis.add(res);
                     break;
@@ -121,7 +124,7 @@ public class NotificacionesController implements Initializable {
     }
 
     public boolean consulta() {
-       return FachadaBD.getNotificacionesCliente(username);
+        return FachadaBD.getNotificacionesCliente(username);
     }
 
     public static void pasarUsuario(String u) {
@@ -166,6 +169,7 @@ public class NotificacionesController implements Initializable {
         gestorNotis(notificaciones);
         listaNotis.clear();
         lista.setItems(listaNotis);
+        init();
     }
 
     @FXML
@@ -179,13 +183,13 @@ public class NotificacionesController implements Initializable {
                     rechazarButton.setDisable(true);
                     borrarButton.setDisable(false);
                     break;
-                    
+
                 case 'H':
                     aceptarButton.setDisable(false);
                     rechazarButton.setDisable(false);
                     borrarButton.setDisable(true);
                     break;
-                    
+
                 case 'N':
                     aceptarButton.setDisable(true);
                     rechazarButton.setDisable(true);

@@ -209,7 +209,7 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     @Override
     public VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracion, VBox datos, int alquilada) {
        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + " €");
         javafx.scene.control.Label estado = new javafx.scene.control.Label("Vivienda " + activo );
          
        datos.getChildren().addAll(calle,precio,estado);

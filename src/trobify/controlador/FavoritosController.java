@@ -268,7 +268,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     @Override
     public VBox crearDatos(String nombreCalle, int precioVivienda, String activo, int valoracionVivienda, VBox datos, int alquilada) {
        javafx.scene.control.Label calle = new javafx.scene.control.Label("Calle: " + nombreCalle);
-        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + "/mes");
+        javafx.scene.control.Label precio = new javafx.scene.control.Label("Precio: " + precioVivienda + " €");
         javafx.scene.control.Label valoracion = new javafx.scene.control.Label("Valoracion: " + valoracionVivienda);
         if(valoracionVivienda == -1) valoracion.setVisible(false);
         
