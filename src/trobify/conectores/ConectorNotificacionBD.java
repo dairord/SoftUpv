@@ -23,22 +23,7 @@ public class ConectorNotificacionBD extends Conector{
     
     public static Conexion con = Conexion.crearConexion();
 
-    public static Notificacion getNotificacion(int id) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("select * from notificaciones where id = '" + id + " '");
-            if (rsl.first()) {
-                return new Notificacion(rsl.getInt("id"), rsl.getString("id_vivi"),
-                        rsl.getString("id_usuario"), rsl.getString("id_usuario_destino"), rsl.getString("descripción"), rsl.getDate("last_mod"),
-                        rsl.getInt("estado"), rsl.getInt("tipo"));
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return new Notificacion();
-    }
+    
 
     public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda) {
         ArrayList<Notificacion> res = new ArrayList<Notificacion>();
@@ -84,12 +69,6 @@ public class ConectorNotificacionBD extends Conector{
         return res;
     }
 
-    public static void añadirNotificacion(Notificacion n) {
-      String sql = "INSERT INTO `notificaciones`(`id`, `id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
-                    + n.getId() + "','" + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
-                    + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')";
-      consultaVoid(sql, con);
-    }
     
     public static void añadirNotificacionNoID(Notificacion n) {
        String sql = "INSERT INTO `notificaciones`(`id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`, `id_usuario_destino`) VALUES ('"
@@ -108,25 +87,4 @@ public class ConectorNotificacionBD extends Conector{
         consultaVoid(sql, con);
     }
 
-    public boolean consulta(String username) {
-        Statement s;
-        try {
-            s = con.getConnection().createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM `favoritos` WHERE `id_cliente` = '" + username + "' AND `id` IN (SELECT `id` FROM `vivienda` WHERE `activo` = 1)");
-            if (rs.first()) {
-                rs.beforeFirst();
-                while (rs.next()) {
-                    //System.out.println("hay algo");
-                    //  favList.add("hola");
-                }
-
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
 }
