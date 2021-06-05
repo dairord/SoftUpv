@@ -49,17 +49,15 @@ public class NotificacionesController implements Initializable {
     private ArrayList<Notificacion> notificaciones;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        init();
-// favList = new ArrayList();
-    }
-
-    public void init() {
+    public void initialize(URL url, ResourceBundle rb) {       
+        
         listaNotis = FXCollections.observableList(new ArrayList<String>());
         notificaciones = FachadaBD.getNotificacionPorUsuarioDestinoDestino(username);
         gestorNotis(notificaciones);
         lista.setItems(listaNotis);
+// favList = new ArrayList();
     }
+
 
     private void gestorNotis(ArrayList<Notificacion> notifi) {
         for (int i = 0; i < notifi.size(); i++) {
@@ -162,7 +160,7 @@ public class NotificacionesController implements Initializable {
         gestorNotis(notificaciones);
         listaNotis.clear();
         lista.setItems(listaNotis);
-        init();
+        initialize(null, null);
     }
 
     @FXML
