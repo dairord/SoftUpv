@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  *
  * @author gabri
  */
-public abstract class GeneradorMiniaturas {
+public abstract class GeneradorMiniaturas {    
     
   abstract public javafx.scene.layout.VBox crearDatos(String nombreCalle, int precioVivienda,
           String activo, int valoracion, javafx.scene.layout.VBox datos, int alquilada);
