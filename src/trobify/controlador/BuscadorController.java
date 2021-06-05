@@ -47,7 +47,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-import trobify.conectores.Conectar;
+import trobify.conectores.Conexion;
 import trobify.logica.Filtros;
 import trobify.logica.Vivienda;
 
@@ -89,7 +89,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     ArrayList<String> viviendasList;
 
     //conexion
-    Conectar con;
+    Conexion con;
     @FXML
     private Label entradaText;
     @FXML

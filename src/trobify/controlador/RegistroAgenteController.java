@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import trobify.conectores.Conectar;
+import trobify.conectores.Conexion;
 import trobify.logica.Agente;
 import trobify.fachada.FachadaBD;
 
@@ -50,7 +50,7 @@ public class RegistroAgenteController implements Initializable {
     private Label errorText;
     @FXML
     private Button confirmarBoton;
-    Conectar con;
+    Conexion con;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

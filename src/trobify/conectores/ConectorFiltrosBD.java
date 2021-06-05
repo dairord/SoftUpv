@@ -18,7 +18,7 @@ import trobify.logica.Filtros;
  * @author gabri
  */
 public class ConectorFiltrosBD {
-    public static Conectar con = Conectar.crearConexion();
+    public static Conexion con = Conexion.crearConexion();
     
    
     public static void insertarFiltrosSinFecha(Filtros f){

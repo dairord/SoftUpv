@@ -39,7 +39,7 @@ public class IniciarSesionController implements Initializable {
     @FXML
     private Button aceptarBoton;
 
-    //Conectar con;
+    //Conexion con;
     private static Stage st;
     private String nom;
     private String pas;
@@ -57,7 +57,7 @@ public class IniciarSesionController implements Initializable {
                .or(Bindings.isEmpty(contraseña.textProperty()));
                 ;
           aceptarBoton.disableProperty().bind(sePuedeBuscar);
-       //con = new Conectar();
+       //con = new Conexion();
        
        if(vieneDe.equals("buscador")){ 
            direccion = "/trobify/views/Buscador.fxml";

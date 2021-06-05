@@ -47,7 +47,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-//import trobify.Conectar;
+//import trobify.Conexion;
 import static trobify.controlador.BuscadorController.location;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;

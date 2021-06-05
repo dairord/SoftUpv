@@ -5,7 +5,7 @@
  */
 package trobify;
 
-import trobify.conectores.Conectar;
+import trobify.conectores.Conexion;
 
 /**
  *
@@ -19,11 +19,11 @@ public class PruebasUnitarias {
     }
 
     public static boolean probarSingleton() {
-        Conectar con1, con2;
+        Conexion con1, con2;
 
-        con1 = Conectar.crearConexion();
+        con1 = Conexion.crearConexion();
 
-        con2 = Conectar.crearConexion();
+        con2 = Conexion.crearConexion();
 
         if (con1.equals(con2)) {
             return true;

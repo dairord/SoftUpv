@@ -328,7 +328,7 @@ public class InicioController implements Initializable {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             System.out.println(result.get());
-            //Aqui hay que conectar con la base de datos
+            //Aqui hay que Conexion con la base de datos
             Mensaje m = new Mensaje(result.get());
             FachadaBD.añadirMensaje(m);
             Alert alerta = new Alert (Alert.AlertType.INFORMATION);

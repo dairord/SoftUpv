@@ -23,7 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import trobify.conectores.Conectar;
+import trobify.conectores.Conexion;
 import trobify.logica.Usuario;
 import trobify.conectores.ConectorUsuarioBD;
 import trobify.fachada.FachadaBD;
@@ -39,7 +39,7 @@ public class RegistrarUsuarioController implements Initializable {
     private CheckBox agenteCheck;
 
 
-    Conectar con;
+    Conexion con;
     private static Stage st;
     private static String vieneDe;
     private String direccion;

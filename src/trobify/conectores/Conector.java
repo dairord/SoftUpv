@@ -19,9 +19,9 @@ import trobify.controlador.InicioController;
  */
 abstract class Conector {
   
-    public static Conectar con = Conectar.crearConexion();
+    public static Conexion con = Conexion.crearConexion();
     
-    final public static boolean consultaBoolean(String sql){
+    final public static boolean consultaBoolean(String sql ){
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rs = stm.executeQuery(sql);

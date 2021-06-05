@@ -13,15 +13,15 @@ import java.sql.SQLException;
  *
  * @author davido747
  */
-public class Conectar {
-    private static Conectar con;
+public class Conexion {
+    private static Conexion con;
     private static Connection conn;
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
     private static final String password = "";
     private static final String url = "jdbc:mysql://localhost:3306/soft_db";
     int i = 0;
-    protected Conectar() {
+    protected Conexion() {
         conn = null;
         try {
         Class.forName(driver);
@@ -32,9 +32,9 @@ public class Conectar {
         }
     }
     
-    public static Conectar crearConexion(){
+    public static Conexion crearConexion(){
         if (con == null){
-            con = new Conectar();
+            con = new Conexion();
         }
         return con;
     }
@@ -44,7 +44,7 @@ public class Conectar {
         return conn;
     }
 
-     public void desconectar(){
+     public void desConexion(){
         conn = null;
     }
 }

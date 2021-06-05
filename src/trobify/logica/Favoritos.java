@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import trobify.conectores.Conectar;
+import trobify.conectores.Conexion;
 import trobify.controlador.InicioController;
 
 /**
