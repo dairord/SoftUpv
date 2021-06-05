@@ -69,25 +69,10 @@ public class ConectorViviendaBD extends Conector{
         return viviendasList;
     }
 
-   
-
-  
-    public static String consultarDireccion(String id) {
-        Vivienda vivi = getVivienda(id);
-        if (vivi.getCalle() != null) {
-            return vivi.getCalle();
-        }
-        return "No disponible";
-    }
 
     public static int getPrecioVivienda(String id) {
         Vivienda vivi = getVivienda(id);
         return vivi.getPrecio();
-    }
-    
-    public static int consultarAlquiler(String id) {
-        Vivienda vivi = getVivienda(id);
-        return vivi.getVentaAlquiler();
     }
 
     public static void eliminarFavorito(String id, String username) {
@@ -95,36 +80,12 @@ public class ConectorViviendaBD extends Conector{
                     + username + "'";
         consultaVoid(sql, con);
     }
-/////////Sobra
-    /*public static int consultarValoracion(String id, String username) {
-        int aux = -1;
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT valoracion FROM favoritos WHERE id LIKE '" + id + "' AND id_cliente = '" + username + " '");
-            if (rsl.first()) {
-                aux = rsl.getInt(1);
-            }
-            if (aux == 0) {
-                return -1;
-            } else {
-                return aux;
-            }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return aux;
-    }*/
 
     public static ArrayList<String> getListaFavoritosUsuario(String username, String orden) {
         String sql = "SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + "' and activo = 0 " + orden;
         return consultaLista(sql);
     }
-/////Sobra
-   /* public static boolean estaEnFavoritos(String id, String username) {
-       String sql = "SELECT id FROM favoritos WHERE id LIKE '" + id + "' AND id_cliente = '" + username + "'";
-       return consultaBoolean(sql, con);
-    }*/
 
      public static ArrayList<String> getListaIdViviendasDelUsusario(String username, String orden) {
         String sql = "SELECT id FROM vivienda WHERE id_propietario = '" + username + "' " + orden;
@@ -183,33 +144,6 @@ public class ConectorViviendaBD extends Conector{
        String sql = "UPDATE `favoritos` SET `valoracion`='" + valoracion + "' WHERE id = '" + id + "' AND id_cliente = '" + username + "'";
        consultaVoid(sql, con);
     }
-////////Sobra, existe getVivienda
-    /*public static Vivienda vivienda(String id) {
-        try {
-            Statement stm = con.getConnection().createStatement();
-            ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id + "'");
-            if (rsl.first()) {
-                Vivienda vivi = new Vivienda(rsl.getNString("id"), rsl.getNString("calle"), rsl.getNString("ciudad"),
-                        rsl.getInt("ventaAlquiler"), rsl.getNString("id_Agencia"), rsl.getInt("precio"), rsl.getNString("id_propietario"),
-                        rsl.getInt("tipo"), rsl.getInt("baños"), rsl.getInt("habitaciones"), rsl.getNString("descripcion"),
-                        rsl.getInt("piso"), rsl.getNString("puerta"), rsl.getInt("codigo_postal"), rsl.getInt("activo"));
-                return vivi;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }*/
-////////Sobra
-    /*public static String consultarDescripcion(String id) {
-        String texto = "No lo dejes escapar.";
-        Vivienda vivi = vivienda(id);
-        if (vivi.getDescripcion() != null) {
-            texto = vivi.getDescripcion();
-        }
-        return texto;
-    }*/
 
     public static String getIdVivienda(String direccionFoto) {
         String cadena = direccionFoto;
@@ -237,12 +171,6 @@ public class ConectorViviendaBD extends Conector{
         consultaVoid(sql, con);
     }
 
-  
-////////Sobra
-   /* public static boolean esPropietario(String id, String username) {
-        String sql ="SELECT * FROM vivienda WHERE id = '" + id + "' and id_propietario = '" + username + "'";
-        return consultaBoolean(sql, con);
-    }*/
 
     public static void desactivarVivienda(String id) {
         Vivienda vivi = getVivienda(id);
@@ -303,58 +231,7 @@ public class ConectorViviendaBD extends Conector{
 
     }
 
-    public static ArrayList<Vivienda> getFavoritosUsuario(String id_usuario) {
 
-        ArrayList<String> lista_String = getStringsFavoritos(id_usuario);
-        ArrayList<Vivienda> lista = new ArrayList<Vivienda>();
-
-        for (int i = 0; i < lista_String.size(); i++) {
-            //System.out.println(lista_String.size());
-            try {
-                String id_viv = lista_String.get(i);
-                Statement stm = con.getConnection().createStatement();
-                ResultSet rsl = stm.executeQuery("SELECT * FROM vivienda WHERE id = '" + id_viv + "'");
-                if (rsl.isBeforeFirst()) {
-                    while (rsl.next()) {
-                      Vivienda  res = getVivienda(rsl.getNString("id"));
-                        lista.add(res);
-                    }
- 
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-                return lista;
-            }
-        }
-
-        return lista;
-
-    }
-
-    public static ArrayList<String> getStringsFavoritos(String id_usuario) {
-        // System.out.println("GetStrings");
-        ArrayList<String> res = new ArrayList<String>();
-        try {
-            // System.out.println(id_usuario);
-            Statement stm = con.getConnection().createStatement();
-
-            ResultSet rs = stm.executeQuery("SELECT * FROM favoritos WHERE id_cliente = '" + id_usuario + "'");
-
-            if (rs.isBeforeFirst()) {
-               
-                while (rs.next()) {
-                   String nuevo = rs.getString("id");
-                    //System.out.println(nuevo);
-                    res.add(nuevo);
-                }
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return res;
-    }
     
     public static Vivienda getVivienda(String id){
         Vivienda res = new Vivienda();
