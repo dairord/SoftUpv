@@ -28,7 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -127,9 +126,9 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     private void ordenarLista(){
         for (int i = 0; i < misViviendas.size(); ++i) {
            String idBoton = misViviendas.get(i);
-           Vivienda vivi = FachadaBD.pasarVivienda(idBoton);
+           Vivienda vivi = FachadaBD.getVivienda(idBoton);
             try {
-                String foto = FachadaBD.consultarFoto(idBoton);
+                String foto = FachadaBD.consultarFotoViviendaPorId(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 activo = "Publicada";
@@ -152,12 +151,12 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
     if(ok.isPresent() && ok.get().equals(ButtonType.OK)) { 
     if(texto.equals("despublicar")){
         FachadaBD.desactivarVivienda(botonGestionar);
-        FachadaBD.notificarDesact(botonGestionar);
+        FachadaBD.notificarDesactivacionVivienda(botonGestionar);
     }
     
     else{
         FachadaBD.activarVivienda(botonGestionar);
-        FachadaBD.notificarActiv(botonGestionar);
+        FachadaBD.notificarActivacionVivienda(botonGestionar);
     }
     ordenCambiado(null);
     
@@ -190,7 +189,7 @@ public class GestionViviendasController extends GeneradorMiniaturas implements I
                 break;
         }
         listaViviendas.getChildren().clear();
-        misViviendas = FachadaBD.viviendasDelUsusario(username, orden);
+        misViviendas = FachadaBD.getListaIdViviendasDelUsusario(username, orden);
                 ordenarLista();
     }
     

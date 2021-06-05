@@ -15,8 +15,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,8 +51,7 @@ public class InicioController implements Initializable {
 
     @FXML
     private TextField ciudadText;
-    @FXML
-    private Button buscarBoton;
+   
     @FXML
     private ComboBox<String> queBuscas;
     @FXML
@@ -115,7 +112,7 @@ public class InicioController implements Initializable {
     }
     
     private void hayNotis() {
-        if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
+        if (FachadaBD.getNotificacionPorUsuarioDestino(username).size() != 0) {
             //falta un if con un boolean
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
@@ -196,7 +193,7 @@ public class InicioController implements Initializable {
 
     public boolean consulta() {
         String ciu = ciudadText.getText();
-        return FachadaBD.consultaInicial(ciu, tipvivi, alqOVen);
+        return FachadaBD.hayViviendasEnLaCiudad(ciu, tipvivi, alqOVen);
     }//fin consulta
 
     public static void pasarUsuario(boolean iniciado, String usuario) {

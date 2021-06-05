@@ -66,4 +66,20 @@ public class ConectorFotosBD extends Conector {
         }
         return listaFotos;
     }
+    
+      public static void eliminarFoto(String rutaFoto, String idVivienda){
+        String cadena = rutaFoto;
+        String[] parts = cadena.split("\\\\");
+        String direccion = parts[parts.length - 1];
+        //System.out.println(direccion);
+        
+       String sql = "DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'";
+       consultaVoid(sql);
+    }
+      
+       public static void añadirFotografia (String idFoto, String idVivienda){
+        String sql = "INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')";
+        consultaVoid(sql);
+    }
+   
 }

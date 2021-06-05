@@ -27,17 +27,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Vivienda;
@@ -99,7 +94,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     }    
    
      private void hayNotis() {
-        if (FachadaBD.getNotificacionPorUsuario(username).size() != 0) {
+        if (FachadaBD.getNotificacionPorUsuarioDestino(username).size() != 0) {
             //falta un if con un boolean
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
@@ -129,9 +124,9 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     private void ordenarLista(){
         for (int i = 0; i < favList.size(); ++i) {
            String idBoton = favList.get(i);
-           Vivienda vivi = FachadaBD.pasarVivienda(idBoton);
+           Vivienda vivi = FachadaBD.getVivienda(idBoton);
             try {
-                String foto = FachadaBD.consultarFoto(idBoton);
+                String foto = FachadaBD.consultarFotoViviendaPorId(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 int valoracion = FachadaBD.getValoracion(favList.get(i), username);
@@ -159,7 +154,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
         alerta.setHeaderText("Seguro que quieres eliminar?");
         Optional<ButtonType> ok = alerta.showAndWait();
         if(ok.isPresent() && ok.get().equals(ButtonType.OK)) {
-             FachadaBD.eliminarDeFavoritos(botonEliminar, username);
+             FachadaBD.eliminarFavorito(botonEliminar, username);
             ordenCambiado(null);
             alerta.close();
            
@@ -191,7 +186,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
                 break;
         }
         listaViviendas.getChildren().clear();
-        favList = FachadaBD.ordenarFavoritos(username, orden);
+        favList = FachadaBD.getListaFavoritosUsuario(username, orden);
                 ordenarLista();
     }
     

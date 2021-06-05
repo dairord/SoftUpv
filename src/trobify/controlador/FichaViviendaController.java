@@ -7,14 +7,9 @@ package trobify.controlador;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import java.util.Optional;
@@ -39,7 +34,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -48,7 +42,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 //import trobify.Conexion;
-import static trobify.controlador.BuscadorController.location;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Historial;
@@ -65,8 +58,6 @@ import trobify.logica.Vivienda;
  */
 public class FichaViviendaController implements Initializable {
 
-    @FXML
-    private Button volver;
     @FXML
     private Text descripcion;
     @FXML
@@ -137,7 +128,7 @@ public class FichaViviendaController implements Initializable {
 
         //Dando valor a mano de la id de vivienda AQUI SE DEBERA
         //PASAR EL ID DE LA VIVIENDA DESDE LA VENTANA ANTERIOR
-        this.precioBase = FachadaBD.consultarPrecio(id);
+        this.precioBase = FachadaBD.getPrecioVivienda(id);
 
         //Mostrar botones de valoraciones de favortitos o no
         this.estaEnFav = FachadaBD.estaEnFavoritos(id, username);
@@ -148,11 +139,11 @@ public class FichaViviendaController implements Initializable {
 
         //Crear Array con la lista de fotos de la galeria
         this.listaFotos = new ArrayList();
-        listaFotos = FachadaBD.crearListaFotos(id);
+        listaFotos = FachadaBD.getListaFotosVivienda(id);
 
         //Crear Array con la lista de fotos de la galeria
         this.listaRecomendados = new ArrayList();
-        listaRecomendados = FachadaBD.crearListaRecomendados(id);
+        listaRecomendados = FachadaBD.getListaRecomendados(id);
 
         //Mostrar el precio de la vivienda    
         precioVivienda.setText("Precio: " + this.precioBase + "€");
@@ -182,7 +173,7 @@ public class FichaViviendaController implements Initializable {
         for (int i = 0; i < listaRecomendados.size(); i++) {
             Button botonRecomendacion = new Button();
             botonRecomendacion.setPadding(new Insets(0, 0, 0, 0));
-            botonRecomendacion.setId(FachadaBD.consultarIdVivienda(listaRecomendados.get(i)));
+            botonRecomendacion.setId(FachadaBD.getIdVivienda(listaRecomendados.get(i)));
 
             configurarBoton(botonRecomendacion);
             try {
@@ -239,7 +230,7 @@ public class FichaViviendaController implements Initializable {
     private void historial(){
        if(username != null){
         Historial h = new Historial (1, id, username);
-        FachadaBD.añadirAHistorial(h);
+        FachadaBD.añadirViviendaHistorial(h);
        }
     }
 
@@ -341,7 +332,7 @@ public class FichaViviendaController implements Initializable {
     }
 
     public void consultarServicios(String id) {
-        Servicios servi = FachadaBD.getServicios(id);
+        Servicios servi = FachadaBD.getServiciosPorVivienda(id);
         if (servi.getBanco() == 1) {
             listaServicios.add("Banco");
         }
@@ -519,7 +510,7 @@ public class FichaViviendaController implements Initializable {
             System.out.println(FachadaBD.getVivienda(id));
             System.out.println(FachadaBD.getVivienda(id).getId_propietario());
             Notificacion oferta = new Notificacion(id, username, FachadaBD.getVivienda(id).getId_propietario(), ofertaField.getText(), now, 0, 1);
-            FachadaBD.añadirNotificacionNoID(oferta);
+            FachadaBD.añadirNotificacion(oferta);
             Alert alerta = new Alert (Alert.AlertType.INFORMATION);
         alerta.setHeaderText("Tu contraoferta se ha enviado correctamente. Pronto recibirás una contestación del propietario.");
         Optional<ButtonType> ok = alerta.showAndWait();
@@ -540,10 +531,10 @@ public class FichaViviendaController implements Initializable {
         if (ok.isPresent() && ok.get().equals(ButtonType.OK)) {
             if (texto.equals("desactivar")) {
                 FachadaBD.desactivarVivienda(id);
-                FachadaBD.notificarDesact(id);
+                FachadaBD.notificarDesactivacionVivienda(id);
             } else {
                 FachadaBD.activarVivienda(id);
-                FachadaBD.notificarActiv(id);
+                FachadaBD.notificarActivacionVivienda(id);
             }
             listaFotos.clear();
             this.imageList.getChildren().clear();

@@ -6,14 +6,11 @@
 package trobify.fachada;
 
 import trobify.conectores.ConectorServiciosBD;
-import java.io.FileNotFoundException;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import trobify.conectores.ConectorAgenciaBD;
-import trobify.conectores.ConectorFotosBD;
 import trobify.conectores.ConectorViviendaBD;
 import trobify.logica.Agente;
 import trobify.conectores.ConectorFiltrosBD;
@@ -39,19 +36,6 @@ import trobify.logica.Mensaje;
  */
 public class FachadaBD {
 
-    public static Vivienda pasarVivienda(String id) {
-        Vivienda vivi = ConectorViviendaBD.getVivienda(id);
-        return vivi;
-    }
-
-    public static String consultarFoto(String id) {
-        return ConectorFotosBD.consultarFoto(id);
-    }
-
-    public static ArrayList<Vivienda> favoritosUsuario(String username) {
-        return ConectorViviendaBD.getFavoritosUsuario(username);
-    }
-
     public static ArrayList<Vivienda> viviendasEnCiudad(String ciu, int alqOVen) {
         return ConectorViviendaBD.getViviendasPorCiudadActivas(ciu, alqOVen);
     }
@@ -67,102 +51,43 @@ public class FachadaBD {
         return viv;
     }
 
-    public static Servicios getServicios(String id) {
-        return ConectorServiciosBD.getServicios(id);
-    }
-
-    public static void añadirFotografia(String idFotoBD, String id) {
+    /*public static void añadirFotografia(String idFotoBD, String id) {
         ConectorViviendaBD.añadirFotografia(idFotoBD, id);
-    }
-
+    }*/
     public static void actualiarVivienda(Vivienda viviActualizada) {
         ConectorViviendaBD.actualizarVivienda(viviActualizada);
         ConectorServiciosBD.acualizarServicios(viviActualizada.getServicios());
     }
 
-    public static ArrayList<String> crearListaFotos(String id) {
-        return ConectorViviendaBD.crearListaFotos(id);
+    public static ArrayList<String> getListaFotosVivienda(String id) {
+        return ConectorViviendaBD.getListaFotosVivienda(id);
     }
 
-    public static void eliminarFoto(String rutaFoto, String id) {
-        ConectorViviendaBD.eliminarFoto(rutaFoto, id);
-    }
-
+  
     public static void registrarVivienda(Vivienda v) {
         ConectorViviendaBD.añadirVivienda(v);
         ConectorServiciosBD.añadirServicios(v.getServicios());
         IIterator it = v.createIterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             ConectorFotosBD.añadirFotografia((Fotografia) it.currentObject());
             it.next();
         }
     }
 
-    public static int numeroViviendas() {
-        return ConectorViviendaBD.numeroViviendas();
+    public static int numeroViviendasEnBD() {
+        return ConectorViviendaBD.numeroViviendasEnBD();
     }
 
-    public static Boolean isUsernameRepetido(String username) {
-        if (username.equals(ConectorUsuarioBD.getUsuario(username).getId())) {
-            return true;
-        }
-        return false;
-    }
-//////Sobra
-
-    /* public static int consultarValoracion(String id, String username) {
-        return ConectorViviendaBD.consultarValoracion(id, username);
-    }*/
-
-    public static void eliminarDeFavoritos(String botonElinimar, String username) {
-        ConectorViviendaBD.eliminarDeFavoritos(botonElinimar, username);
+    public static ArrayList<String> getListaFavoritosUsuario(String username, String orden) {
+        return ConectorViviendaBD.getListaFavoritosUsuario(username, orden);
     }
 
-    public static ArrayList<String> ordenarFavoritos(String username, String orden) {
-        return ConectorViviendaBD.ordenarFavoritos(username, orden);
+    public static boolean hayViviendasEnLaCiudad(String ciu, String tipo, int alqOVen) {
+        return ConectorViviendaBD.hayViviendasEnLaCiudad(ciu, tipo, alqOVen);
     }
 
-    public static void guardarFiltros(Filtros f, boolean hayFechas) {
-        if (f.getVentaAlquiler() == 2 && hayFechas == true) {//Opción alquilar y los datepicker tienen fechas
-            if (ConectorFiltrosBD.comprobarFiltros(f)) {
-                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
-                ConectorFiltrosBD.insertarFiltrosConFechas(f);
-            } else {
-                ConectorFiltrosBD.insertarFiltrosConFechas(f);
-            }
-        } else {//Opción comprar o alquilar sin fechas en los datepicker
-            if (ConectorFiltrosBD.comprobarFiltros(f)) {
-                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
-                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
-            } else {
-                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
-            }
-        }
-    }
-
-    public static boolean consultaInicial(String ciu, String tipo, int alqOVen) {
-        return ConectorViviendaBD.consultaInicial(ciu, tipo, alqOVen);
-    }
-
-    public static boolean contraseñaCorrecta(String codigo, String contraseña) {
-        return ConectorAgenciaBD.contraseñaCorrecta(codigo, contraseña);
-    }
-
-    public static void guardarAgente(Agente a) {
-        ConectorAgenciaBD.guardarAgente(a);
-    }
-
-    public static boolean usuarioCorrecto(String nom, String pas) {
-        Usuario u = ConectorUsuarioBD.getUsuario(nom);
-        return pas.equals(u.getPassword());
-    }
-
-    public static int consultarPrecio(String id) {
-        return ConectorViviendaBD.consultarPrecio(id);
-    }
-
-    public static void añadirUsuario(Usuario user) {
-        ConectorUsuarioBD.añadirUsuario(user);
+    public static int getPrecioVivienda(String id) {
+        return ConectorViviendaBD.getPrecioVivienda(id);
     }
 
     public static boolean esPropietario(String id_viv, String propie) {
@@ -184,12 +109,12 @@ public class FachadaBD {
         return true;
     }
 
-    public static ArrayList<String> crearListaRecomendados(String id) {
-        return ConectorViviendaBD.crearListaRecomendados(id);
+    public static ArrayList<String> getListaRecomendados(String id) {
+        return ConectorViviendaBD.getListaRecomendados(id);
     }
 
-    public static String consultarIdVivienda(String direccionFoto) {
-        return ConectorViviendaBD.consultarIdVivienda(direccionFoto);
+    public static String getIdVivienda(String direccionFoto) {
+        return ConectorViviendaBD.getIdVivienda(direccionFoto);
     }
 
     public static void añadirFavorito(Favoritos fav) {
@@ -197,7 +122,7 @@ public class FachadaBD {
     }
 
     public static void eliminarFavorito(String id, String username) {
-        ConectorViviendaBD.eliminarDeFavoritos(id, username);
+        ConectorViviendaBD.eliminarFavorito(id, username);
     }
 
     public static void editarValoracion(int valoracion, String id, String username) {
@@ -208,12 +133,12 @@ public class FachadaBD {
         ConectorViviendaBD.desactivarVivienda(id);
     }
 
-    public static ArrayList<String> viviendasDelUsusario(String username, String orden) {
-        return ConectorViviendaBD.viviendasDelUsuario(username, orden);
+    public static ArrayList<String> getListaIdViviendasDelUsusario(String username, String orden) {
+        return ConectorViviendaBD.getListaIdViviendasDelUsusario(username, orden);
     }
 
-    public static ArrayList<String> historialDelUsusario(String username) {
-        return ConectorViviendaBD.historialDelUsuario(username);
+    public static ArrayList<String> getListaIdHistorialDelUsusario(String username) {
+        return ConectorViviendaBD.getListaIdHistorialDelUsusario(username);
     }
 
     public static void activarVivienda(String id) {
@@ -228,24 +153,104 @@ public class FachadaBD {
         }
     }
 
-    public static Notificacion getNotificacion(int id) {
-        return ConectorNotificacionBD.getNotificacion(id);
+    public static void añadirViviendaHistorial(Historial h) {
+        ConectorViviendaBD.añadirAHistorial(h);
     }
 
-    public static ArrayList<Notificacion> getNotificacionPorUsuario(String id_usuario_dest) {
+    //cosas de usuario
+    public static Boolean isUsernameRepetido(String username) {
+        if (username.equals(ConectorUsuarioBD.getUsuario(username).getId())) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean comprobarContraseñaDelUsuarioCorrecta(String nom, String pas) {
+        Usuario u = ConectorUsuarioBD.getUsuario(nom);
+        return pas.equals(u.getPassword());
+    }
+
+    public static void añadirUsuario(Usuario user) {
+        ConectorUsuarioBD.añadirUsuario(user);
+    }
+
+    public static ArrayList<String> listaUsuariosPorPreferencia(String preferencia) throws SQLException {
+        return ConectorUsuarioBD.getUsariosPorPreferencia(preferencia);
+    }
+
+    public static String getPreferenciaDeUsuario(String id) {
+        Usuario u = ConectorUsuarioBD.getUsuario(id);
+        return u.getPreferencia();
+    }
+
+    public static void updatePreferenciaDeUsuario(String preferencia, String id) {
+        ConectorUsuarioBD.actualizarPreferenciaDeUsuario(preferencia, id);
+    }
+
+    //cosas de fotos
+    public static String consultarFotoViviendaPorId(String id) {
+        return ConectorFotosBD.consultarFoto(id);
+    }
+
+    public static void añadirFotografia(String idFotoBD, String id) {
+        ConectorFotosBD.añadirFotografia(idFotoBD, id);
+    }
+    
+      public static void eliminarFoto(String rutaFoto, String id) {
+        ConectorFotosBD.eliminarFoto(rutaFoto, id);
+    }
+
+    //cosas de servicios
+    public static Servicios getServiciosPorVivienda(String id) {
+        return ConectorServiciosBD.getServicios(id);
+    }
+
+    //cosas de filtros
+    public static void guardarFiltros(Filtros f, boolean hayFechas) {
+        if (f.getVentaAlquiler() == 2 && hayFechas == true) {//Opción alquilar y los datepicker tienen fechas
+            if (ConectorFiltrosBD.comprobarFiltros(f)) {
+                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
+                ConectorFiltrosBD.insertarFiltrosConFechas(f);
+            } else {
+                ConectorFiltrosBD.insertarFiltrosConFechas(f);
+            }
+        } else {//Opción comprar o alquilar sin fechas en los datepicker
+            if (ConectorFiltrosBD.comprobarFiltros(f)) {
+                ConectorFiltrosBD.borrarFiltrosAnteriores(f);
+                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
+            } else {
+                ConectorFiltrosBD.insertarFiltrosSinFecha(f);
+            }
+        }
+    }
+
+    //cosas agencia
+    public static boolean contraseñaDeAgenciaCorrecta(String codigo, String contraseña) {
+        return ConectorAgenciaBD.contraseñaCorrecta(codigo, contraseña);
+    }
+
+    public static String getAgenciaDelAgente(String id_usuario) {
+        return ConectorAgenciaBD.getAgenciaAgente(id_usuario);
+    }
+
+    public static void guardarAgente(Agente a) {
+        ConectorAgenciaBD.guardarAgente(a);
+    }
+
+    //cosas de notificaciones
+    public static ArrayList<Notificacion> getNotificacionPorUsuarioDestino(String id_usuario_dest) {
         return ConectorNotificacionBD.getNotificacionPorUsuario(id_usuario_dest);
+    }
+
+    public static boolean getNotificacionesUsuarioRemitente(String username) {
+        return ConectorNotificacionBD.consultaBoolean(username);
     }
 
     public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda) {
         return ConectorNotificacionBD.getNotificacionPorVivienda(id_vivienda);
     }
 
-    //Los 2 siguientes métodos hacen lo mismo y sobra 1 pero está para probar
     public static void añadirNotificacion(Notificacion n) {
-        ConectorNotificacionBD.añadirNotificacion(n);
-    }
-
-    public static void añadirNotificacionNoID(Notificacion n) {
         ConectorNotificacionBD.añadirNotificacionNoID(n);
     }
 
@@ -253,53 +258,29 @@ public class FachadaBD {
         ConectorNotificacionBD.borrarNotificacion(n);
     }
 
-    public static void añadirAHistorial(Historial h) {
-        ConectorViviendaBD.añadirAHistorial(h);
-    }
-
+    //cosas de mensajes
     public static void añadirMensaje(Mensaje m) {
         ConectorMensajeBD.añadirMensaje(m);
     }
 
-    public static void notificarDesact(String id_vivienda) {
+    public static void notificarDesactivacionVivienda(String id_vivienda) {
         Notificacion res = new Notificacion(id_vivienda, null, null, null, new Date(System.currentTimeMillis()), 0, 0);
         ArrayList<String> users = ConectorViviendaBD.getUsuariosPorViviendaFav(id_vivienda);
         ConectorNotificacionBD.borrarNotificacionesEnMasa(id_vivienda, 0);
         for (int i = 0; i < users.size(); i++) {
             res.setId_usuario_dest(users.get(i));
-            añadirNotificacionNoID(res);
+            añadirNotificacion(res);
         }
     }
 
-    public static void notificarActiv(String id_vivienda) {
+    public static void notificarActivacionVivienda(String id_vivienda) {
         Notificacion res = new Notificacion(id_vivienda, null, null, null, new Date(System.currentTimeMillis()), 1, 0);
         ArrayList<String> users = ConectorViviendaBD.getUsuariosPorViviendaFav(id_vivienda);
 
         ConectorNotificacionBD.borrarNotificacionesEnMasa(id_vivienda, 0);
         for (int i = 0; i < users.size(); i++) {
             res.setId_usuario_dest(users.get(i));
-            añadirNotificacionNoID(res);
+            añadirNotificacion(res);
         }
-    }
-    
-    public static ArrayList<String> listaUsuariosPorPreferencia(String preferencia) throws SQLException{
-        return ConectorUsuarioBD.getUsariosPorPreferencia(preferencia);        
-    }
-    
-    public static String getPreferenciaDeUsuario(String id){
-        Usuario u = ConectorUsuarioBD.getUsuario(id);
-        return u.getPreferencia();
-    }
-    
-    public static void updatePreferenciaDeUsuario(String preferencia, String id){
-        ConectorUsuarioBD.actualizarPreferenciaDeUsuario(preferencia, id);
-    }
-    
-    public static String getAgenciaAgente(String id_usuario){
-        return ConectorAgenciaBD.getAgenciaAgente(id_usuario);
-    }
-
-    public static boolean getNotificacionesCliente (String username){
-        return ConectorNotificacionBD.consultaBoolean(username);
     }
 }

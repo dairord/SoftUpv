@@ -346,7 +346,7 @@ public class EditarViviendaController implements Initializable {
     
     private void mostrarFotos(){
         listaDeFotos.getChildren().clear();
-        ArrayList<String> fotos = FachadaBD.crearListaFotos(id);
+        ArrayList<String> fotos = FachadaBD.getListaFotosVivienda(id);
         listaDeFotos.setSpacing(5);
         
         for (int i = 0; i < fotos.size(); ++i) {

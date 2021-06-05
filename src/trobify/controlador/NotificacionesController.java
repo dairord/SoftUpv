@@ -56,7 +56,7 @@ public class NotificacionesController implements Initializable {
 
     public void init() {
         listaNotis = FXCollections.observableList(new ArrayList<String>());
-        notificaciones = FachadaBD.getNotificacionPorUsuario(username);
+        notificaciones = FachadaBD.getNotificacionPorUsuarioDestino(username);
         gestorNotis(notificaciones);
         lista.setItems(listaNotis);
     }
@@ -124,7 +124,7 @@ public class NotificacionesController implements Initializable {
     }
 
     public boolean consulta() {
-        return FachadaBD.getNotificacionesCliente(username);
+        return FachadaBD.getNotificacionesUsuarioRemitente(username);
     }
 
     public static void pasarUsuario(String u) {
@@ -142,7 +142,7 @@ public class NotificacionesController implements Initializable {
         int index = lista.getSelectionModel().getSelectedIndex();
         Notificacion noti = notificaciones.get(index);
         Notificacion resp = new Notificacion(noti.getId_vivienda(), username, noti.getId_usuario(), noti.getDesc(), new Date(System.currentTimeMillis()), 2, 1);
-        FachadaBD.añadirNotificacionNoID(resp);
+        FachadaBD.añadirNotificacion(resp);
 
         borrarNoti(null);
 
@@ -153,7 +153,7 @@ public class NotificacionesController implements Initializable {
         int index = lista.getSelectionModel().getSelectedIndex();
         Notificacion noti = notificaciones.get(index);
         Notificacion resp = new Notificacion(noti.getId_vivienda(), username, noti.getId_usuario(), noti.getDesc(), new Date(System.currentTimeMillis()), 1, 1);
-        FachadaBD.añadirNotificacionNoID(resp);
+        FachadaBD.añadirNotificacion(resp);
 
         borrarNoti(null);
 
@@ -165,7 +165,7 @@ public class NotificacionesController implements Initializable {
         Notificacion noti = notificaciones.get(index);
         FachadaBD.borrarNotificacion(noti);
 
-        notificaciones = FachadaBD.getNotificacionPorUsuario(username);
+        notificaciones = FachadaBD.getNotificacionPorUsuarioDestino(username);
         gestorNotis(notificaciones);
         listaNotis.clear();
         lista.setItems(listaNotis);

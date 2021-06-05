@@ -41,7 +41,7 @@ public class ConectorViviendaBD extends Conector{
         return listaFotos;
     }
 
-    public static boolean consultaInicial(String ciudad, String tipoVivienda, int alqOVent) {
+    public static boolean hayViviendasEnLaCiudad(String ciudad, String tipoVivienda, int alqOVent) {
         String sql = "select * from vivienda where ciudad = '" + ciudad + "'" + tipoVivienda + " and ventaAlquiler = " + alqOVent + " and activo = 0";
         return consultaBoolean(sql);
     } //fin consulta inicial 
@@ -67,22 +67,6 @@ public class ConectorViviendaBD extends Conector{
     }
 
    
-    
-    public static void eliminarFoto(String rutaFoto, String idVivienda){
-        String cadena = rutaFoto;
-        String[] parts = cadena.split("\\\\");
-        String direccion = parts[parts.length - 1];
-        //System.out.println(direccion);
-        
-       String sql = "DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'";
-       consultaVoid(sql);
-    }
-    
-    public static void añadirFotografia (String idFoto, String idVivienda){
-        String sql = "INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')";
-        consultaVoid(sql);
-    }
-   
 
   
     public static String consultarDireccion(String id) {
@@ -93,7 +77,7 @@ public class ConectorViviendaBD extends Conector{
         return "No disponible";
     }
 
-    public static int consultarPrecio(String id) {
+    public static int getPrecioVivienda(String id) {
         Vivienda vivi = getVivienda(id);
         return vivi.getPrecio();
     }
@@ -103,7 +87,7 @@ public class ConectorViviendaBD extends Conector{
         return vivi.getVentaAlquiler();
     }
 
-    public static void eliminarDeFavoritos(String id, String username) {
+    public static void eliminarFavorito(String id, String username) {
         String sql = "DELETE FROM favoritos WHERE id = '" + id + "' and id_cliente = '"
                     + username + "'";
         consultaVoid(sql);
@@ -129,7 +113,7 @@ public class ConectorViviendaBD extends Conector{
         return aux;
     }*/
 
-    public static ArrayList<String> ordenarFavoritos(String username, String orden) {
+    public static ArrayList<String> getListaFavoritosUsuario(String username, String orden) {
         String sql = "SELECT f.id FROM favoritos f, vivienda v WHERE f.id = v.id AND id_cliente = '" + username + "' and activo = 0 " + orden;
         return consultaLista(sql);
     }
@@ -139,12 +123,12 @@ public class ConectorViviendaBD extends Conector{
        return consultaBoolean(sql);
     }*/
 
-     public static ArrayList<String> viviendasDelUsuario(String username, String orden) {
+     public static ArrayList<String> getListaIdViviendasDelUsusario(String username, String orden) {
         String sql = "SELECT id FROM vivienda WHERE id_propietario = '" + username + "' " + orden;
         return consultaLista(sql);
     }
      
-      public static ArrayList<String> historialDelUsuario(String username) {
+      public static ArrayList<String> getListaIdHistorialDelUsusario(String username) {
         String sql = "SELECT id_vivienda FROM historial WHERE username = '" + username + "'  order By `id` DESC";
           ArrayList<String> lista = new ArrayList();
         try {
@@ -162,14 +146,14 @@ public class ConectorViviendaBD extends Conector{
         return lista;
     }
       
-    public static ArrayList<String> crearListaFotos(String id) {
+    public static ArrayList<String> getListaFotosVivienda(String id) {
        String sql = "SELECT id FROM fotografia WHERE id_vivienda = '" + id + "'";
        return consultaLista(sql);
     }
 
-    public static ArrayList<String> crearListaRecomendados(String id) {
+    public static ArrayList<String> getListaRecomendados(String id) {
         ArrayList<String> listaRecomendados = new ArrayList();
-        int precioBase = consultarPrecio(id);
+        int precioBase = getPrecioVivienda(id);
         double porcentaje = precioBase * 0.15;
         double precioAlto = precioBase + porcentaje;
         double precioBajo = precioBase - porcentaje;
@@ -224,7 +208,7 @@ public class ConectorViviendaBD extends Conector{
         return texto;
     }*/
 
-    public static String consultarIdVivienda(String direccionFoto) {
+    public static String getIdVivienda(String direccionFoto) {
         String cadena = direccionFoto;
         String[] parts = cadena.split("\\\\");
         String direccion = parts[parts.length - 1];
@@ -298,7 +282,7 @@ public class ConectorViviendaBD extends Conector{
         return null;
     }
 
-    public static int numeroViviendas() {
+    public static int numeroViviendasEnBD() {
         int cont = 0;
         try {
             Statement stm = con.getConnection().createStatement();

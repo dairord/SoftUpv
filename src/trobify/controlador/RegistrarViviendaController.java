@@ -260,7 +260,7 @@ public class RegistrarViviendaController implements Initializable {
     @FXML
     private void registrar(ActionEvent event) throws IOException {
         fotos.clear();
-        int numero = FachadaBD.numeroViviendas() + 1;
+        int numero = FachadaBD.numeroViviendasEnBD() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
         int baños = Integer.parseInt(bañosField.getText());
@@ -308,7 +308,7 @@ public class RegistrarViviendaController implements Initializable {
             FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");
         }
         
-        String agencia = FachadaBD.getAgenciaAgente(username);
+        String agencia = FachadaBD.getAgenciaDelAgente(username);
         
         if(agencia.equals("")){
             agencia = "ninguna";
@@ -424,7 +424,7 @@ public class RegistrarViviendaController implements Initializable {
     @FXML
     private void registrarYPublicar(ActionEvent event) throws IOException, SQLException {
         fotos.clear();
-        int numero = FachadaBD.numeroViviendas() + 1;
+        int numero = FachadaBD.numeroViviendasEnBD() + 1;
         String id = "vivienda" + numero;
         int precio = Integer.parseInt(precioField.getText());
         int baños = Integer.parseInt(bañosField.getText());
@@ -472,7 +472,7 @@ public class RegistrarViviendaController implements Initializable {
             FotosSource.add("src\\\\trobify\\\\images\\\\foto0.jpeg");
         }
         
-        String agencia = FachadaBD.getAgenciaAgente(username);
+        String agencia = FachadaBD.getAgenciaDelAgente(username);
         
         if(agencia.equals("")){
             agencia = "ninguna";
@@ -499,7 +499,7 @@ public class RegistrarViviendaController implements Initializable {
             ArrayList<String> users = FachadaBD.listaUsuariosPorPreferencia(CiudadField.getText());
             for (int i = 0; i < users.size(); i++) {
                 n.setId_usuario_dest(users.get(i));
-                FachadaBD.añadirNotificacionNoID(n);
+                FachadaBD.añadirNotificacion(n);
             }
 
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);

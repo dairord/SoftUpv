@@ -112,7 +112,7 @@ public class IniciarSesionController implements Initializable {
          nom = nombre.getText();
          pas = contraseña.getText();
        Statement s;
-        if(FachadaBD.usuarioCorrecto(nom, pas)){
+        if(FachadaBD.comprobarContraseñaDelUsuarioCorrecta(nom, pas)){
             return true;
         } else {
             mensajeError.setText("Nombre de usuario o contraseña incorrecto");

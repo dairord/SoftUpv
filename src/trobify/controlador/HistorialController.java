@@ -76,9 +76,9 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
     private void ordenarLista(){
         for (int i = 0; i < historialViviendas.size(); ++i) {
            String idBoton = historialViviendas.get(i);
-           Vivienda vivi = FachadaBD.pasarVivienda(idBoton);
+           Vivienda vivi = FachadaBD.getVivienda(idBoton);
             try {
-                String foto = FachadaBD.consultarFoto(idBoton);
+                String foto = FachadaBD.consultarFotoViviendaPorId(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 //activo = "Publicada";
@@ -94,7 +94,7 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
     private void consulta(){
     historialViviendas.clear();
       listaViviendas.getChildren().clear();
-        historialViviendas = FachadaBD.historialDelUsusario(username);
+        historialViviendas = FachadaBD.getListaIdHistorialDelUsusario(username);
                System.out.println(historialViviendas);
         ordenarLista();
     }

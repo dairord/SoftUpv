@@ -105,7 +105,7 @@ public class RegistroAgenteController implements Initializable {
     }
     
     private boolean contraseñaCorrecta(){
-        if(FachadaBD.contraseñaCorrecta(codigo.getText(), contraseña.getText())) return true;
+        if(FachadaBD.contraseñaDeAgenciaCorrecta(codigo.getText(), contraseña.getText())) return true;
         else return false;
     }
     
