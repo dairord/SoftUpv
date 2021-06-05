@@ -5,6 +5,8 @@
  */
 package trobify.logica;
 
+import java.util.Objects;
+
 /**
  *
  * @author gabri
@@ -82,5 +84,43 @@ public class Usuario {
         this.preferencia = preferencia;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.dni, other.dni)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.apellidos, other.apellidos)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        
+        if (!Objects.equals(this.preferencia, other.preferencia)) {
+            return false;
+        }
+        return true;
+    }
+
+    
    
 }

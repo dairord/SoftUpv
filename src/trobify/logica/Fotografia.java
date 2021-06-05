@@ -10,6 +10,7 @@ package trobify.logica;
  * @author gabri
  */
 public class Fotografia {
+
     String id, id_vivienda;
 
     public Fotografia(String id, String id_vivienda) {
@@ -32,6 +33,14 @@ public class Fotografia {
     public void setId_vivienda(String id_vivienda) {
         this.id_vivienda = id_vivienda;
     }
-    
-    
+
+    public int compareTo(Fotografia f) {
+        if (this.id.compareTo(f.getId()) == 0 && this.id_vivienda.compareTo(f.getId_vivienda()) == 0) {
+            return 0;
+        } else if (this.id.compareTo(id) == 1) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 }

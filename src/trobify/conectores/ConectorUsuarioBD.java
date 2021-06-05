@@ -72,4 +72,5 @@ public class ConectorUsuarioBD extends Conector {
             Logger.getLogger(InicioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 }

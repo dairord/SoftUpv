@@ -6,11 +6,13 @@
 package trobify;
 
 import java.util.ArrayList;
+import trobify.conectores.ConectorUsuarioBD;
 import trobify.conectores.Conexion;
 import trobify.fachada.FachadaBD;
 import static trobify.fachada.FachadaBD.getVivienda;
 import trobify.logica.Fotografia;
 import trobify.logica.IIterator;
+import trobify.logica.Usuario;
 import trobify.logica.Vivienda;
 
 /**
@@ -23,6 +25,7 @@ public class PruebasUnitarias {
         System.out.println("Prueba del Singleton: " +probarSingleton());
         System.out.println("Prueba del Iterador: " +probarIterador());
         System.out.println("Prueba de la Consulta a Vivienda: " +probarVivienda());
+        System.out.println("Prueba de la Consulta a Usuario: " + probarUsuario());
     }
 
     public static boolean probarSingleton() {
@@ -46,7 +49,7 @@ public class PruebasUnitarias {
         ArrayList<Fotografia> fotos = prueba.getFotos();
         IIterator it = prueba.createIterator();
         while(i < fotos.size() && it.hasNext()){
-            if(!fotos.get(i).equals((Fotografia)it.currentObject())) {
+            if(fotos.get(i).compareTo((Fotografia)it.currentObject()) != 0) {
                 return false;
             }
             i++;
@@ -63,5 +66,14 @@ public class PruebasUnitarias {
         }
         
         return false;
+    }
+    
+    public static boolean probarUsuario(){
+        Usuario usu = new Usuario ("pepe", "12345678A", "123", "pepe", "gomez",
+                "pepe@gmail.com", "", "Valencia");
+        Usuario res = ConectorUsuarioBD.getUsuario("pepe");
+        if(usu.equals(res))
+            return true;
+        else return false;
     }
 }

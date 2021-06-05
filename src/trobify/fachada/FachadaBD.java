@@ -186,6 +186,8 @@ public class FachadaBD {
     public static void updatePreferenciaDeUsuario(String preferencia, String id) {
         ConectorUsuarioBD.actualizarPreferenciaDeUsuario(preferencia, id);
     }
+    
+
 
     //cosas de fotos
     public static String consultarFotoViviendaPorIdViviendaPorId(String id) {
