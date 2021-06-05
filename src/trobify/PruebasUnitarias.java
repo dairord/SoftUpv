@@ -7,6 +7,7 @@ package trobify;
 
 import java.util.ArrayList;
 import trobify.conectores.Conexion;
+import trobify.fachada.FachadaBD;
 import static trobify.fachada.FachadaBD.getVivienda;
 import trobify.logica.Fotografia;
 import trobify.logica.IIterator;
@@ -19,8 +20,9 @@ import trobify.logica.Vivienda;
 public class PruebasUnitarias {
 
     public static void main(String[] args) {
-        System.out.println(probarSingleton());
-        System.out.println(probarIterador());
+        System.out.println("Prueba del Singleton: " +probarSingleton());
+        System.out.println("Prueba del Iterador: " +probarIterador());
+        System.out.println("Prueba de la Consulta a Vivienda: " +probarVivienda());
     }
 
     public static boolean probarSingleton() {
@@ -51,5 +53,15 @@ public class PruebasUnitarias {
             it.next();
         }
         return result;
+    }
+    
+    public static boolean probarVivienda(){
+        Vivienda comp = new Vivienda("vivienda1", "Calle Arzobispo Mayoral", "Valencia", 1, "5", 100000, "admin", 1, 2, 2, null, 2, "2", 46002, 0);
+        Vivienda res = FachadaBD.getVivienda("vivienda1");
+        if (comp.equals(res)){
+            return true;
+        }
+        
+        return false;
     }
 }
