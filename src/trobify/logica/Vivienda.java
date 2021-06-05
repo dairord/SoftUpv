@@ -146,7 +146,7 @@ public class Vivienda implements IContainer{
         return activo;
     }
 
-    public Servicios getServicios() {
+    public Servicios getServiciosPorVivienda() {
         return servicios;
     }
 

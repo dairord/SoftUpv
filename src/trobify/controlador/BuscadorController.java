@@ -549,7 +549,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
             try {
                 String id_vivienda = viviendasList.get(i);
                 Vivienda vivi = FachadaBD.getVivienda(id_vivienda);
-                String foto = FachadaBD.consultarFotoViviendaPorId(id_vivienda);
+                String foto = FachadaBD.consultarFotoViviendaPorIdViviendaPorId(id_vivienda);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 int alquilada = vivi.getVentaAlquiler();
@@ -659,7 +659,7 @@ public class BuscadorController extends GeneradorMiniaturas implements Initializ
     }
 
     private void hayNotis() {
-        if (FachadaBD.getNotificacionPorUsuarioDestino(username).size() != 0) {
+        if (FachadaBD.getNotificacionPorUsuarioDestinoDestino(username).size() != 0) {
             //falta un if con un boolean
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));

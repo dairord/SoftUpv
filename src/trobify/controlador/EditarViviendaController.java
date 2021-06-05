@@ -183,7 +183,7 @@ public class EditarViviendaController implements Initializable {
         else ComprarAlquilar.getSelectionModel().select("Alquilar");
     }
     private void mostrarServicios(){
-        Servicios servi = vivi.getServicios();
+        Servicios servi = vivi.getServiciosPorVivienda();
         if(servi.getSupermercado()==1) botonSupermercado.selectedProperty().set(true);
         if(servi.getTransporte_publico()==1) BotonTransportePublico.selectedProperty().set(true);
         if(servi.getBanco()==1) botonBanco.selectedProperty().set(true);

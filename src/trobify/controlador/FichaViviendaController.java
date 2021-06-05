@@ -332,7 +332,7 @@ public class FichaViviendaController implements Initializable {
     }
 
     public void consultarServicios(String id) {
-        Servicios servi = FachadaBD.getServiciosPorVivienda(id);
+        Servicios servi = FachadaBD.getServiciosPorViviendaPorVivienda(id);
         if (servi.getBanco() == 1) {
             listaServicios.add("Banco");
         }

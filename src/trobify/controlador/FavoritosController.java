@@ -94,7 +94,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
     }    
    
      private void hayNotis() {
-        if (FachadaBD.getNotificacionPorUsuarioDestino(username).size() != 0) {
+        if (FachadaBD.getNotificacionPorUsuarioDestinoDestino(username).size() != 0) {
             //falta un if con un boolean
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));
@@ -126,7 +126,7 @@ public class FavoritosController extends GeneradorMiniaturas implements Initiali
            String idBoton = favList.get(i);
            Vivienda vivi = FachadaBD.getVivienda(idBoton);
             try {
-                String foto = FachadaBD.consultarFotoViviendaPorId(idBoton);
+                String foto = FachadaBD.consultarFotoViviendaPorIdViviendaPorId(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 int valoracion = FachadaBD.getValoracion(favList.get(i), username);

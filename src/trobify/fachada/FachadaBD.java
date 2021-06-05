@@ -46,7 +46,7 @@ public class FachadaBD {
 
     public static Vivienda getVivienda(String id) {
         Vivienda viv = ConectorViviendaBD.getVivienda(id);
-        viv.setServicios(ConectorServiciosBD.getServicios(id));
+        viv.setServicios(ConectorServiciosBD.getServiciosPorVivienda(id));
         viv.setFotos(ConectorFotosBD.getListaFotos(id));
         return viv;
     }
@@ -56,7 +56,7 @@ public class FachadaBD {
     }*/
     public static void actualiarVivienda(Vivienda viviActualizada) {
         ConectorViviendaBD.actualizarVivienda(viviActualizada);
-        ConectorServiciosBD.acualizarServicios(viviActualizada.getServicios());
+        ConectorServiciosBD.acualizarServicios(viviActualizada.getServiciosPorVivienda());
     }
 
     public static ArrayList<String> getListaFotosVivienda(String id) {
@@ -66,7 +66,7 @@ public class FachadaBD {
   
     public static void registrarVivienda(Vivienda v) {
         ConectorViviendaBD.añadirVivienda(v);
-        ConectorServiciosBD.añadirServicios(v.getServicios());
+        ConectorServiciosBD.añadirServicios(v.getServiciosPorVivienda());
         IIterator it = v.createIterator();
         while (it.hasNext()) {
             ConectorFotosBD.añadirFotografia((Fotografia) it.currentObject());
@@ -188,8 +188,8 @@ public class FachadaBD {
     }
 
     //cosas de fotos
-    public static String consultarFotoViviendaPorId(String id) {
-        return ConectorFotosBD.consultarFoto(id);
+    public static String consultarFotoViviendaPorIdViviendaPorId(String id) {
+        return ConectorFotosBD.consultarFotoViviendaPorId(id);
     }
 
     public static void añadirFotografia(String idFotoBD, String id) {
@@ -201,8 +201,8 @@ public class FachadaBD {
     }
 
     //cosas de servicios
-    public static Servicios getServiciosPorVivienda(String id) {
-        return ConectorServiciosBD.getServicios(id);
+    public static Servicios getServiciosPorViviendaPorVivienda(String id) {
+        return ConectorServiciosBD.getServiciosPorVivienda(id);
     }
 
     //cosas de filtros
@@ -226,11 +226,11 @@ public class FachadaBD {
 
     //cosas agencia
     public static boolean contraseñaDeAgenciaCorrecta(String codigo, String contraseña) {
-        return ConectorAgenciaBD.contraseñaCorrecta(codigo, contraseña);
+        return ConectorAgenciaBD.contraseñaDeAgenciaCorrecta(codigo, contraseña);
     }
 
     public static String getAgenciaDelAgente(String id_usuario) {
-        return ConectorAgenciaBD.getAgenciaAgente(id_usuario);
+        return ConectorAgenciaBD.getAgenciaDelAgente(id_usuario);
     }
 
     public static void guardarAgente(Agente a) {
@@ -238,8 +238,8 @@ public class FachadaBD {
     }
 
     //cosas de notificaciones
-    public static ArrayList<Notificacion> getNotificacionPorUsuarioDestino(String id_usuario_dest) {
-        return ConectorNotificacionBD.getNotificacionPorUsuario(id_usuario_dest);
+    public static ArrayList<Notificacion> getNotificacionPorUsuarioDestinoDestino(String id_usuario_dest) {
+        return ConectorNotificacionBD.getNotificacionPorUsuarioDestino(id_usuario_dest);
     }
 
     public static boolean getNotificacionesUsuarioRemitente(String username) {

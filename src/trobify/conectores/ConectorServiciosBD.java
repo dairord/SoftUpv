@@ -36,7 +36,7 @@ public class ConectorServiciosBD extends Conector{
          consultaVoid(sql);
     }
      
-       public static Servicios getServicios(String id) {
+       public static Servicios getServiciosPorVivienda(String id) {
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rsl = stm.executeQuery("SELECT * FROM servicios WHERE id = '" + id + "'");

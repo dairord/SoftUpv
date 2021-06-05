@@ -112,7 +112,7 @@ public class InicioController implements Initializable {
     }
     
     private void hayNotis() {
-        if (FachadaBD.getNotificacionPorUsuarioDestino(username).size() != 0) {
+        if (FachadaBD.getNotificacionPorUsuarioDestinoDestino(username).size() != 0) {
             //falta un if con un boolean
             try {
                 Image image1 = new Image(new FileInputStream("src\\trobify\\images\\notiActiva.png"));

@@ -41,7 +41,7 @@ public class ConectorFotosBD extends Conector {
         return null;
     }
       
-      public static String consultarFoto(String id) {
+      public static String consultarFotoViviendaPorId(String id) {
         Fotografia foto = getFotografia(id);
      if (foto.getId() != null) {
             return foto.getId();

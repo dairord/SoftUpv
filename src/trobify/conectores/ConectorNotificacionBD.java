@@ -60,7 +60,7 @@ public class ConectorNotificacionBD extends Conector{
         return res;
     }
 
-    public static ArrayList<Notificacion> getNotificacionPorUsuario(String id_usuario_dest) {
+    public static ArrayList<Notificacion> getNotificacionPorUsuarioDestino(String id_usuario_dest) {
         ArrayList<Notificacion> res = new ArrayList<Notificacion>();
 
         try {

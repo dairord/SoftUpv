@@ -78,7 +78,7 @@ public class HistorialController extends GeneradorMiniaturas implements Initiali
            String idBoton = historialViviendas.get(i);
            Vivienda vivi = FachadaBD.getVivienda(idBoton);
             try {
-                String foto = FachadaBD.consultarFotoViviendaPorId(idBoton);
+                String foto = FachadaBD.consultarFotoViviendaPorIdViviendaPorId(idBoton);
                 String calle = vivi.getCalle();
                 int precio = vivi.getPrecio();
                 //activo = "Publicada";

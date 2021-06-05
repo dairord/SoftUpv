@@ -96,7 +96,7 @@ public class RegistroAgenteController implements Initializable {
 
     @FXML
     private void confirmar(ActionEvent event) throws IOException {
-        if(contraseñaCorrecta()){
+        if(contraseñaDeAgenciaCorrecta()){
            guardarAgente();
            volver();
         }
@@ -104,7 +104,7 @@ public class RegistroAgenteController implements Initializable {
             errorText.setText("Codigo o contraseña incorrectos.");
     }
     
-    private boolean contraseñaCorrecta(){
+    private boolean contraseñaDeAgenciaCorrecta(){
         if(FachadaBD.contraseñaDeAgenciaCorrecta(codigo.getText(), contraseña.getText())) return true;
         else return false;
     }

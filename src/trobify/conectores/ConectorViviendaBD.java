@@ -165,7 +165,7 @@ public class ConectorViviendaBD extends Conector{
                 rsl.beforeFirst();
                 String foto;
                 while (rsl.next() && i < 3) {
-                    foto = ConectorFotosBD.consultarFoto(rsl.getNString("id_vivienda"));
+                    foto = ConectorFotosBD.consultarFotoViviendaPorId(rsl.getNString("id_vivienda"));
                     listaRecomendados.add(foto);
                     i++;
                 }

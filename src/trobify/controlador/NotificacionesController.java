@@ -56,7 +56,7 @@ public class NotificacionesController implements Initializable {
 
     public void init() {
         listaNotis = FXCollections.observableList(new ArrayList<String>());
-        notificaciones = FachadaBD.getNotificacionPorUsuarioDestino(username);
+        notificaciones = FachadaBD.getNotificacionPorUsuarioDestinoDestino(username);
         gestorNotis(notificaciones);
         lista.setItems(listaNotis);
     }
@@ -165,7 +165,7 @@ public class NotificacionesController implements Initializable {
         Notificacion noti = notificaciones.get(index);
         FachadaBD.borrarNotificacion(noti);
 
-        notificaciones = FachadaBD.getNotificacionPorUsuarioDestino(username);
+        notificaciones = FachadaBD.getNotificacionPorUsuarioDestinoDestino(username);
         gestorNotis(notificaciones);
         listaNotis.clear();
         lista.setItems(listaNotis);

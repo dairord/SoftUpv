@@ -20,7 +20,7 @@ import trobify.logica.Agente;
 public class ConectorAgenciaBD extends Conector{
    
    
-    public static boolean contraseñaCorrecta(String codigo, String contra){
+    public static boolean contraseñaDeAgenciaCorrecta(String codigo, String contra){
          String sql = "select codigo from agencia where codigo = '"
              + codigo + " ' and contraseña = '" + contra + " '";
          return consultaBoolean(sql);
@@ -32,7 +32,7 @@ public class ConectorAgenciaBD extends Conector{
        consultaVoid(sql);
    }
    
-   public static String getAgenciaAgente(String id_usuario){
+   public static String getAgenciaDelAgente(String id_usuario){
        try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rsl = stm.executeQuery("select agencia from agente where username = '" + id_usuario + " '");
