@@ -5,7 +5,12 @@
  */
 package trobify;
 
+import java.util.ArrayList;
 import trobify.conectores.Conexion;
+import static trobify.fachada.FachadaBD.getVivienda;
+import trobify.logica.Fotografia;
+import trobify.logica.IIterator;
+import trobify.logica.Vivienda;
 
 /**
  *
@@ -15,7 +20,7 @@ public class PruebasUnitarias {
 
     public static void main(String[] args) {
         System.out.println(probarSingleton());
-
+        System.out.println(probarIterador());
     }
 
     public static boolean probarSingleton() {
@@ -30,5 +35,21 @@ public class PruebasUnitarias {
         }
 
         return false;
+    }
+    
+    public static boolean probarIterador() {
+        boolean result = true;
+        int i = 0;
+        Vivienda prueba = getVivienda("vivienda1");
+        ArrayList<Fotografia> fotos = prueba.getFotos();
+        IIterator it = prueba.createIterator();
+        while(i < fotos.size() && it.hasNext()){
+            if(!fotos.get(i).equals((Fotografia)it.currentObject())) {
+                return false;
+            }
+            i++;
+            it.next();
+        }
+        return result;
     }
 }
