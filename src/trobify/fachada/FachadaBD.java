@@ -247,7 +247,7 @@ public class FachadaBD {
     }
 
     public static void añadirNotificacion(Notificacion n) {
-        ConectorNotificacionBD.añadirNotificacionNoID(n);
+        ConectorNotificacionBD.añadirNotificacion(n);
     }
 
     public static void borrarNotificacion(Notificacion n) {

@@ -70,7 +70,7 @@ public class ConectorNotificacionBD extends Conector{
     }
 
     
-    public static void añadirNotificacionNoID(Notificacion n) {
+    public static void añadirNotificacion(Notificacion n) {
        String sql = "INSERT INTO `notificaciones`(`id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`, `id_usuario_destino`) VALUES ('"
                      + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
                     + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "','" +n.getId_usuario_dest() + "')";
