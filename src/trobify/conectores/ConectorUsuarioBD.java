@@ -19,12 +19,14 @@ import trobify.logica.Usuario;
  * @author davido747
  */
 public class ConectorUsuarioBD extends Conector {
+    
+    public static Conexion con = Conexion.crearConexion();
 
     public static void añadirUsuario(Usuario u) {
         String sql = "INSERT INTO `usuario`(`id`, `dni`, `password`, `nombre`, `apellidos`, `email`) VALUES ('"
                 + u.getId() + "','" + u.getDni() + "','" + u.getPassword() + "','" + u.getNombre() + "','"
                 + u.getApellidos() + "','" + u.getEmail() + "')";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     } //fin añadir usuario. 
 
     public static Usuario getUsuario(String id) {
@@ -46,7 +48,7 @@ public class ConectorUsuarioBD extends Conector {
 
     public static boolean usuarioCorrecto(String id, String contra) {
         String rs = "select id from usuario where id = '" + id + " ' and password = '" + contra + " '";
-        return consultaBoolean(rs);
+        return consultaBoolean(rs, con);
     }
 
     public static ArrayList<String> getUsariosPorPreferencia(String preferencia) throws SQLException {

@@ -21,10 +21,12 @@ import trobify.logica.Mensaje;
  */
 public class ConectorMensajeBD extends Conector{
     
+    public static Conexion con = Conexion.crearConexion();
+    
    public static void añadirMensaje(Mensaje m) {
       String sql = "INSERT INTO `mensajes`(`id`, `cuerpo`) VALUES ('"
                     + m.getId() + "','" + m.getCuerpo() + "')";
-      consultaVoid(sql);
+      consultaVoid(sql, con);
     }
     
 }

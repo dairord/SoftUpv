@@ -18,13 +18,15 @@ import trobify.logica.Servicios;
  * @author davido747
  */
 public class ConectorServiciosBD extends Conector{
+    
+    public static Conexion con = Conexion.crearConexion();
    
     public static void añadirServicios(Servicios servi){
         String sql = "INSERT INTO servicios (id, supermercado, transporte_publico, banco, estanco, "
                     + "centro_comercial, gimnasio, farmacia) VALUES ('"+servi.getId()+"', '"+servi.getSupermercado()+"'"
                     + ", '"+servi.getTransporte_publico()+"', '"+servi.getBanco()+"', '"+servi.getEstanco()+"'"
                     + ", '"+servi.getCentro_comercial()+"', '"+servi.getGimnasio()+"', '"+servi.getFarmacia()+"')";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     }
     
      public static void acualizarServicios(Servicios serv){
@@ -33,7 +35,7 @@ public class ConectorServiciosBD extends Conector{
                     "',`banco`='"+serv.getBanco()+"',`estanco`='"+serv.getEstanco()+
                     "',`centro_comercial`='"+serv.getCentro_comercial()+"',`gimnasio`='"+serv.getGimnasio()+
                     "',`farmacia`='"+serv.getFarmacia()+"' WHERE `id`='" + serv.getId() +"'";
-         consultaVoid(sql);
+         consultaVoid(sql, con);
     }
      
        public static Servicios getServiciosPorVivienda(String id) {

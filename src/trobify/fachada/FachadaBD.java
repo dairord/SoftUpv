@@ -242,10 +242,6 @@ public class FachadaBD {
         return ConectorNotificacionBD.getNotificacionPorUsuarioDestino(id_usuario_dest);
     }
 
-    public static boolean getNotificacionesUsuarioRemitente(String username) {
-        return ConectorNotificacionBD.consultaBoolean(username);
-    }
-
     public static ArrayList<Notificacion> getNotificacionPorVivienda(String id_vivienda) {
         return ConectorNotificacionBD.getNotificacionPorVivienda(id_vivienda);
     }

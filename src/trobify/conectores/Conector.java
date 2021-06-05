@@ -19,9 +19,9 @@ import trobify.controlador.InicioController;
  */
 abstract class Conector {
   
-    public static Conexion con = Conexion.crearConexion();
+   
     
-    final public static boolean consultaBoolean(String sql ){
+    final public static boolean consultaBoolean(String sql, Conexion con ){
         try {
             Statement stm = con.getConnection().createStatement();
             ResultSet rs = stm.executeQuery(sql);
@@ -36,7 +36,7 @@ abstract class Conector {
         return false;
     }
     
-    final public static void consultaVoid(String sql){
+    final public static void consultaVoid(String sql, Conexion con){
          try {
             Statement stm = con.getConnection().createStatement();
             stm.executeUpdate(sql);

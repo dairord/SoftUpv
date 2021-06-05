@@ -123,19 +123,12 @@ public class NotificacionesController implements Initializable {
 
     }
 
-    public boolean consulta() {
-        return FachadaBD.getNotificacionesUsuarioRemitente(username);
-    }
 
     public static void pasarUsuario(String u) {
         username = u;
     }
 
-    private void lista() {
-        for (int i = 0; i < favList.size(); ++i) {
-            consulta();
-        }
-    }
+   
 
     @FXML
     private void rechazarOferta(ActionEvent event) {

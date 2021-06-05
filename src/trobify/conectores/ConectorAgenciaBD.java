@@ -18,18 +18,18 @@ import trobify.logica.Agente;
  * @author gabri
  */
 public class ConectorAgenciaBD extends Conector{
-   
+   public static Conexion con = Conexion.crearConexion();
    
     public static boolean contraseñaDeAgenciaCorrecta(String codigo, String contra){
          String sql = "select codigo from agencia where codigo = '"
              + codigo + " ' and contraseña = '" + contra + " '";
-         return consultaBoolean(sql);
+         return consultaBoolean(sql, con);
     }
     
    public static void guardarAgente(Agente a){
       String sql = "INSERT INTO `agente`(`username`, `agencia`) VALUES ('"
                         + a.getUsername() +"','" + a.getAgencia() + "')";
-       consultaVoid(sql);
+       consultaVoid(sql, con);
    }
    
    public static String getAgenciaDelAgente(String id_usuario){

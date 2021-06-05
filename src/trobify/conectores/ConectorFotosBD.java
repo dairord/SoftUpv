@@ -19,10 +19,12 @@ import trobify.logica.Fotografia;
  * @author davido747
  */
 public class ConectorFotosBD extends Conector {
+    public static Conexion con = Conexion.crearConexion();
+    
    
     public static void añadirFotografia (Fotografia f) {
        String sql = "INSERT INTO fotografia (id, id_vivienda) VALUES ('"+f.getId()+"', '"+f.getId_vivienda()+"')";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     }
     
     
@@ -74,12 +76,12 @@ public class ConectorFotosBD extends Conector {
         //System.out.println(direccion);
         
        String sql = "DELETE FROM fotografia WHERE id LIKE '%" + direccion + "'";
-       consultaVoid(sql);
+       consultaVoid(sql, con);
     }
       
        public static void añadirFotografia (String idFoto, String idVivienda){
         String sql = "INSERT INTO `fotografia`(`id`, `id_vivienda`) VALUES ('" + idFoto + "','" + idVivienda + "')";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     }
    
 }

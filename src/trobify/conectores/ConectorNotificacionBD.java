@@ -20,6 +20,8 @@ import trobify.logica.Notificacion;
  * @author dairo
  */
 public class ConectorNotificacionBD extends Conector{
+    
+    public static Conexion con = Conexion.crearConexion();
 
     public static Notificacion getNotificacion(int id) {
         try {
@@ -86,24 +88,24 @@ public class ConectorNotificacionBD extends Conector{
       String sql = "INSERT INTO `notificaciones`(`id`, `id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`) VALUES ('"
                     + n.getId() + "','" + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
                     + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "')";
-      consultaVoid(sql);
+      consultaVoid(sql, con);
     }
     
     public static void añadirNotificacionNoID(Notificacion n) {
        String sql = "INSERT INTO `notificaciones`(`id_vivi`, `id_usuario`, `descripción`, `last_mod`, `estado`, `tipo`, `id_usuario_destino`) VALUES ('"
                      + n.getId_vivienda() + "','" + n.getId_usuario() + "','" + n.getDesc() + "','"
                     + n.getLast_mod() + "','" + n.getEstado() + "','" + n.getTipo() + "','" +n.getId_usuario_dest() + "')";
-       consultaVoid(sql);
+       consultaVoid(sql, con);
     }
 
     public static void borrarNotificacion(Notificacion n) {
         String sql = "DELETE FROM notificaciones WHERE id = '" + n.getId() + "'";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     }
     
     public static void borrarNotificacionesEnMasa(String id_vivienda, int tipo) {
         String sql = "DELETE FROM notificaciones WHERE id_vivi = '" + id_vivienda + "' AND tipo = '" +tipo +"'";
-        consultaVoid(sql);
+        consultaVoid(sql, con);
     }
 
     public boolean consulta(String username) {
