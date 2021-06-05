@@ -46,11 +46,7 @@ public class ConectorUsuarioBD extends Conector {
         return new Usuario();
     }
 
-    public static boolean usuarioCorrecto(String id, String contra) {
-        String rs = "select id from usuario where id = '" + id + " ' and password = '" + contra + " '";
-        return consultaBoolean(rs, con);
-    }
-
+    
     public static ArrayList<String> getUsariosPorPreferencia(String preferencia) throws SQLException {
         ArrayList<String> res = new ArrayList<String>();
         try {            
