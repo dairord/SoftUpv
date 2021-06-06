@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
-
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -41,13 +40,10 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-//import trobify.Conexion;
 import trobify.fachada.FachadaBD;
 import trobify.logica.Favoritos;
 import trobify.logica.Historial;
 import trobify.logica.Notificacion;
-//import trobify.logica.ConectorServiciosBD;
-//import trobify.logica.ConectorViviendaBD;
 import trobify.logica.Servicios;
 import trobify.logica.Vivienda;
 

@@ -6,6 +6,7 @@
 package trobify.logica;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -236,4 +237,69 @@ public class Vivienda implements IContainer{
         }
     
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vivienda other = (Vivienda) obj;
+        if (this.ventaAlquiler != other.ventaAlquiler) {
+            return false;
+        }
+        if (this.precio != other.precio) {
+            return false;
+        }
+        if (this.tipo != other.tipo) {
+            return false;
+        }
+        if (this.baños != other.baños) {
+            return false;
+        }
+        if (this.habitaciones != other.habitaciones) {
+            return false;
+        }
+        if (this.piso != other.piso) {
+            return false;
+        }
+        if (this.codigo_postal != other.codigo_postal) {
+            return false;
+        }
+        if (this.activo != other.activo) {
+            return false;
+        }
+        if (!Objects.equals(this.calle, other.calle)) {
+            return false;
+        }
+        if (!Objects.equals(this.ciudad, other.ciudad)) {
+            return false;
+        }
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
+            return false;
+        }
+        if (!Objects.equals(this.id_agencia, other.id_agencia)) {
+            return false;
+        }
+        if (!Objects.equals(this.id_propietario, other.id_propietario)) {
+            return false;
+        }
+        if (!Objects.equals(this.puerta, other.puerta)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

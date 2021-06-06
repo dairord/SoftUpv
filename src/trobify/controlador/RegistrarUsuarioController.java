@@ -43,7 +43,6 @@ public class RegistrarUsuarioController implements Initializable {
     private static Stage st;
     private static String vieneDe;
     private String direccion;
-    
     @FXML
     private TextField username;
     @FXML

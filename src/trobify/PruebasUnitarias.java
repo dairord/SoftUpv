@@ -6,6 +6,7 @@
 package trobify;
 
 import java.util.ArrayList;
+import trobify.conectores.ConectorFotosBD;
 import trobify.conectores.ConectorUsuarioBD;
 import trobify.conectores.Conexion;
 import trobify.fachada.FachadaBD;
@@ -22,10 +23,11 @@ import trobify.logica.Vivienda;
 public class PruebasUnitarias {
 
     public static void main(String[] args) {
-        System.out.println("Prueba del Singleton: " +probarSingleton());
-        System.out.println("Prueba del Iterador: " +probarIterador());
-        System.out.println("Prueba de la Consulta a Vivienda: " +probarVivienda());
+        System.out.println("Prueba del Singleton: " + probarSingleton());
+        System.out.println("Prueba del Iterador: " + probarIterador());
+        System.out.println("Prueba de la Consulta a Vivienda: " + probarVivienda());
         System.out.println("Prueba de la Consulta a Usuario: " + probarUsuario());
+        System.out.println("Prueba de la Consulta a Fotografia: "+ probarFotografia());
     }
 
     public static boolean probarSingleton() {
@@ -41,15 +43,15 @@ public class PruebasUnitarias {
 
         return false;
     }
-    
+
     public static boolean probarIterador() {
         boolean result = true;
         int i = 0;
         Vivienda prueba = getVivienda("vivienda1");
         ArrayList<Fotografia> fotos = prueba.getFotos();
         IIterator it = prueba.createIterator();
-        while(i < fotos.size() && it.hasNext()){
-            if(fotos.get(i).compareTo((Fotografia)it.currentObject()) != 0) {
+        while (i < fotos.size() && it.hasNext()) {
+            if (fotos.get(i).compareTo((Fotografia) it.currentObject()) != 0) {
                 return false;
             }
             i++;
@@ -57,23 +59,37 @@ public class PruebasUnitarias {
         }
         return result;
     }
-    
-    public static boolean probarVivienda(){
-        Vivienda comp = new Vivienda("vivienda1", "Calle Arzobispo Mayoral", "Valencia", 1, "5", 100000, "admin", 1, 2, 2, null, 2, "2", 46002, 0);
+
+    public static boolean probarVivienda() {
+        Vivienda comp = new Vivienda("prueba", "Calle Arzobispo Mayoral",
+                "Valencia", 1, "5", 100000, "admin", 1, 2, 2, "", 2, "2",
+                46002, 0);
         Vivienda res = FachadaBD.getVivienda("vivienda1");
-        if (comp.equals(res)){
-            return true;
-        }
-        
-        return false;
+
+        return comp.equals(res);
+
     }
-    
-    public static boolean probarUsuario(){
-        Usuario usu = new Usuario ("pepe", "12345678A", "123", "pepe", "gomez",
+
+    public static boolean probarUsuario() {
+        Usuario usu = new Usuario("pepe", "12345678A", "123", "pepe", "gomez",
                 "pepe@gmail.com", "", "Valencia");
         Usuario res = ConectorUsuarioBD.getUsuario("pepe");
-        if(usu.equals(res))
+        if (usu.equals(res)) {
             return true;
-        else return false;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean probarFotografia() {
+        Fotografia fotoPrueba = new Fotografia("\\src\\trobify\\images\\casa1.jpg",
+                "vivienda3");
+        ArrayList<Fotografia> fotos = ConectorFotosBD.getListaFotos("vivienda3");
+
+        if (fotoPrueba.compareTo(fotos.get(0)) == 0) {
+            return true;
+        }
+
+        return false;
     }
 }

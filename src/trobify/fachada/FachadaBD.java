@@ -27,7 +27,6 @@ import trobify.logica.Notificacion;
 import trobify.logica.Servicios;
 import trobify.logica.Usuario;
 import trobify.logica.Vivienda;
-import trobify.logica.Vivienda;
 import trobify.logica.Mensaje;
 
 /**
